@@ -1,9 +1,10 @@
 import React from "react";
+import ItemBox from "./ItemBox/ItemBox.tsx";
 
 const MyApp = () => {
   return (
     <div>
-      <h1>My React TypeScript App</h1>
+      <ItemBox/>
     </div>
   );
 };

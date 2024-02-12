@@ -1,0 +1,21 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates a 4-column layout */
+    grid-template-rows: repeat(4, 1fr); /* Creates 4 rows */
+    gap: 20px; /* Sets equal space between grid items both horizontally and vertically */
+    width: calc(100% - 40px); /* Adjust width to account for the total gap size, if necessary */
+    max-width: 600px; /* Adjust max-width as needed */
+    margin-top: 150px; /* Adds space before the table starts */
+    padding: 0; /* Ensure no padding is affecting the grid */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    margin-left: auto; /* Center the grid horizontally */
+    margin-right: auto; /* Center the grid horizontally */
+}
+
+.gridItem {
+    background-color: #4D79CE; /* Sets the background color */
+    height: 100px; /* Sets the height of the grid items, adjust as needed */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    border: 2.5px solid black; /* Adds a thin black border around each grid item */
+}
+
