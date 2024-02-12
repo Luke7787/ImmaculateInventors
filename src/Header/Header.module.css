@@ -1,0 +1,30 @@
+.header {
+    background-color: #6A6161;
+    display: flex;
+    height: 10vh;
+    align-items: center;
+}
+
+.headerLeft {
+    flex: 1;
+    padding: 10px 20px; 
+
+    h1 {
+        color: #FFFFFF;
+        font-size: 28px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+}
+
+.headerRight {
+    flex: 1;
+    text-align: right;
+    padding: 10px 20px;
+    h2 {
+        font-weight: 200;
+        color: #FFFFFF;
+        font-size: 22px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}

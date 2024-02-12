@@ -1,9 +1,10 @@
 import React from "react";
+import Header from "./Header/Header.tsx";
 
 const MyApp = () => {
   return (
     <div>
-      <h1>My React TypeScript App</h1>
+      <Header />
     </div>
   );
 };
