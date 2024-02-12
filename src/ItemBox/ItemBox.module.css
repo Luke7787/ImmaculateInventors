@@ -1,21 +1,38 @@
 .gridContainer {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Creates a 4-column layout */
-    grid-template-rows: repeat(4, 1fr); /* Creates 4 rows */
-    gap: 20px; /* Sets equal space between grid items both horizontally and vertically */
-    width: calc(100% - 40px); /* Adjust width to account for the total gap size, if necessary */
-    max-width: 600px; /* Adjust max-width as needed */
-    margin-top: 150px; /* Adds space before the table starts */
-    padding: 0; /* Ensure no padding is affecting the grid */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    margin-left: auto; /* Center the grid horizontally */
-    margin-right: auto; /* Center the grid horizontally */
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 20px;
+    width: calc(100% - 40px);
+    max-width: 600px;
+    margin-top: 150px;
+    padding: 0;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .gridItem {
-    background-color: #4D79CE; /* Sets the background color */
-    height: 100px; /* Sets the height of the grid items, adjust as needed */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    border: 2.5px solid black; /* Adds a thin black border around each grid item */
+    background-color: #4D79CE;
+    height: 200px; /* Adjusted for content */
+    box-sizing: border-box;
+    border: 2.5px solid black;
+    padding: 10px; /* Add some padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
+.itemImage {
+    max-width: 100%; /* Ensures the image doesn't overflow the grid item */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space between the image and the text */
+}
+
+.itemName,
+.itemQuantity {
+    color: white; /* Text color */
+    margin: 5px 0; /* Spacing for text */
+}
