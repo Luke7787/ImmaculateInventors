@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 .header {
     background-color: #6A6161;
     display: flex;
@@ -21,10 +25,87 @@
     flex: 1;
     text-align: right;
     padding: 10px 20px;
-    h2 {
+
+    .signInButton {
         font-weight: 200;
         color: #FFFFFF;
         font-size: 22px;
         font-family: Arial, Helvetica, sans-serif;
+    }
+
+}
+.signInModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 512px;
+    height: 468px;
+    background-color: white;
+    border-radius: 40px;
+}
+
+.closeIcon {
+    position: absolute;
+    right: 5%;
+    top: 5.5%;
+    cursor: pointer;
+}
+
+.signInHeader {
+    position: relative;
+    width: 100%;
+    height: 76px;
+    background-color: #6A4B4B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    h1 {
+        padding: 0;
+        margin: 0;
+        color: #FFFFFF;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
+
+
+.signInBody {
+    padding: 12px 42px;
+    
+    & > p {
+
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+    }
+}
+
+.userName, .password {
+    
+    font-size: 18px; 
+    font-family: Arial, Helvetica, sans-serif;
+    input {
+        background-color: #e4e4e4;
+        border-radius: 6px;
+        padding-left: 12px;
+        border: 2px #838383 solid;
+        width: 100%;
+        height: 36px;
+    }
+}
+
+.button {
+    background-color: #6A4B4B;
+    border-radius: 6px;
+    color: #FFFFFF;
+    width: 100px;
+    height: 40px;
+    margin-top: 36px;
+    margin-bottom: 12px;
+    &:hover {
+        cursor: pointer;
     }
 }
