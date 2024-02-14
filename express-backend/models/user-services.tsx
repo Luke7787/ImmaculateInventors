@@ -90,8 +90,22 @@ async function findUserByJob(job){
 async function findUserByNameAndJob(name, job) {
     const userModel = getDbConnection().model("User", UserSchema);
     return await userModel.find({"name": name, "job": job});
+
 }
 
+
+async function deleteUserById(id) {
+    console.log("delete user by id", id);
+    const userModel = getDbConnection().model("User", UserSchema);
+    try {
+      if (await userModel.findByIdAndDelete(id)) return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+}
+exports.deleteUserById = deleteUserById;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
