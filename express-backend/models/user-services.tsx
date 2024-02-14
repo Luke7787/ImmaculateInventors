@@ -5,7 +5,7 @@ let dbConnection;
 
 function getDbConnection() {
     if (!dbConnection) {
-        dbConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/users", {
+        dbConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/inventoryUsers", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -13,20 +13,20 @@ function getDbConnection() {
     return dbConnection;
   }
 
-async function getUsers(name, job){
+async function getUsers(username, password){
     const userModel = getDbConnection().model("User", UserSchema);
     let result;
-    if (name === undefined && job === undefined){
+    if (username === undefined && password === undefined){
         result = await userModel.find();
     }
-    else if (name && !job) {
-        result = await findUserByName(name);
+    else if (username && !password) {
+        result = await findUserByUsername(username);
     }
-    else if (job && !name){
-        result = await findUserByJob(job);
+    else if (password && !username){
+        result = await findUserBypassword(password);
     }
-    else if (job && name) {
-        result = await findUserByNameAndJob(name, job);
+    else if (password && username) {
+        result = await findUserByusernameAndpassword(username, password);
     }
     return result;  
 }
@@ -34,7 +34,7 @@ async function getUsers(name, job){
 async function findUserById(id){
     const userModel = getDbConnection().model("User", UserSchema);    
     try{
-        return await userModel.findById(id);
+        return await userModel.findUserByUsername(id);
     }catch(error) {
         console.log(error);
         return undefined;
@@ -67,22 +67,23 @@ async function delUser(user) {
     }
 }
 
-async function findUserByName(name){
+async function findUserByUsername(username){
     const userModel = getDbConnection().model("User", UserSchema);
-    return await userModel.find({'name':name});
+    return await userModel.find({'username':username});
 }
 
-async function findUserByJob(job){
+async function findUserBypassword(password){
     const userModel = getDbConnection().model("User", UserSchema);
-    return await userModel.find({'job':job});
+    return await userModel.find({'password':password});
 }
 
-async function findUserByNameAndJob(name, job) {
+async function findUserByusernameAndpassword(username, password) {
     const userModel = getDbConnection().model("User", UserSchema);
-    return await userModel.find({"name": name, "job": job});
+    return await userModel.find({"username": username, "password": password});
 }
 
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
 exports.delUser = delUser;
+exports.findUserByUsername = findUserByUsername;

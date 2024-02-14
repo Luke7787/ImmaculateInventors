@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     trim: true,
   },
-  job: {
+  password: {
     type: String,
     required: true,
     trim: true,
