@@ -1,38 +1,66 @@
-.gridContainer {
+.outerContainer {
+    display: flex; /* Using flexbox to align children */
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    position: relative; /* Relative positioning for the absolutely positioned button container */
+  }
+  
+  .addButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4D79CE;
+    color: white;
+    border: 2.5px solid black;
+    cursor: pointer;
+    align-self: flex-start; /* Align button to the start of the flex container */
+    margin-bottom: 20px;
+  }
+  
+  .addButton:hover {
+    background-color: #3a5ba0;
+  }
+  
+  .gridContainer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
     gap: 20px;
-    width: calc(100% - 40px);
+    width: 100%;
     max-width: 600px;
-    margin-top: 150px;
-    padding: 0;
-    box-sizing: border-box;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.gridItem {
-    background-color: #4D79CE;
-    height: 200px; /* Adjusted for content */
-    box-sizing: border-box;
-    border: 2.5px solid black;
-    padding: 10px; /* Add some padding */
+  }
+  
+  .gridItem {
+    background-color: #4D79CE; /* Keeping your original grid item color */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-}
-
-.itemImage {
-    max-width: 100%; /* Ensures the image doesn't overflow the grid item */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 10px; /* Space between the image and the text */
-}
-
-.itemName,
-.itemQuantity {
-    color: white; /* Text color */
-    margin: 5px 0; /* Spacing for text */
-}
+    padding: 10px;
+    border: 2.5px solid black;
+    height: 200px;
+  }
+  
+  .itemImage {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .itemName, .itemQuantity {
+    color: white;
+    margin: 5px 0;
+  }
+  
+  .deleteButton {
+    padding: 5px 10px; /* Smaller padding for a smaller button */
+    margin-top: 10px; /* Space it a bit from the item details */
+    background-color: #D9534F;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem; /* Smaller font size for the button text */
+  }
+  
+  .deleteButton:hover {
+    background-color: #C9302C;
+  }
+  
