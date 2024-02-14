@@ -5,7 +5,7 @@ let dbConnection;
 
 function getDbConnection() {
     if (!dbConnection) {
-        dbConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/users", {
+        dbConnection = mongoose.createConnection("mongodb://127.0.0.1:27017/inventoryUsers", {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -29,6 +29,16 @@ async function getUsers(name, job){
         result = await findUserByNameAndJob(name, job);
     }
     return result;  
+}
+
+
+function findUserByUsername(username) {
+    return users["users_list"].filter((user) => user["username"] === username);
+  }
+
+function usernameUser(username){
+    return users['users_list'].findIndex( (user) => user['username'] === username);
+    
 }
 
 async function findUserById(id){
