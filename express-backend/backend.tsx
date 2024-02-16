@@ -93,4 +93,3 @@ app.delete("/users/:id", async (req, res) => {
     else res.status(404).send("Resource not found.");
   });
   
-  
