@@ -29,14 +29,15 @@
   }
   
   .gridItem {
-    background-color: #4D79CE; /* Keeping your original grid item color */
+    background-color: #4D79CE;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 10px;
     border: 2.5px solid black;
-    height: 200px;
+    min-height: 200px;
+    word-wrap: break-word;
   }
   
   .itemImage {
@@ -48,6 +49,8 @@
   .itemName, .itemQuantity {
     color: white;
     margin: 5px 0;
+    word-wrap: break-word;
+    max-width: 100%;
   }
   
   .deleteButton {
