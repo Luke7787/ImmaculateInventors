@@ -44,6 +44,7 @@ app.get('/users', async (req, res) => {
     const password = req.query['password'];
     try {
         const result = await userServices.getUsers(username, password);
+        // console.log("result", result);
         res.send({users_list: result});         
     } catch (error) {
         console.log(error);
@@ -63,34 +64,20 @@ app.get('/users/:username', async (req, res) => {
 });
 
 
-app.delete('/delete/:username', async (req, res) => {
-    const user = req.params['username'];
-    const savedUser = await userServices.delUser(user);
-    if (savedUser)
-        res.status(201).send(savedUser);
-    else
-        res.status(500).end();
-} )
-
 app.post('/users/', async (req, res) => {
     const user1 = req.body['username'];
     const user = req.body;
     
-    const savedUser = await userServices.addUser(user);
-    
-    if (savedUser)
-        res.status(201).send(savedUser);
-    else
-        res.status(500).end();
     const user2 = await userServices.findUserByUsername(user1);
+    // console.log("user2: ", user2);
     if (user2.length > 0)
-        res.status(500).send("username already taken");
+        res.status(409).send("username already taken");
     else {
         const savedUser = await userServices.addUser(user);
         if (savedUser)
             res.status(201).send(savedUser);
         else
-            res.status(500).end();
+            res.status(409).end();
     }
 });
 
