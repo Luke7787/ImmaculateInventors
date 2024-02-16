@@ -1,75 +1,77 @@
-
-.itemName, .itemQuantity, .deleteButton, .addButton {
+.itemName,
+.itemQuantity,
+.deleteButton,
+.addButton {
   font-family: 'Roboto', sans-serif;
 }
 
 .outerContainer {
-    display: flex; /* Using flexbox to align children */
-    flex-direction: column; /* Stack children vertically */
-    align-items: center; /* Center children horizontally */
-    position: relative; /* Relative positioning for the absolutely positioned button container */
-  }
-  
-  .addButton {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #4D79CE;
-    color: white;
-    border: 2.5px solid black;
-    cursor: pointer;
-    align-self: flex-start; /* Align button to the start of the flex container */
-    margin-bottom: 20px;
-  }
-  
-  .addButton:hover {
-    background-color: #3a5ba0;
-  }
-  
-  .gridContainer {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  .gridItem {
-    background-color: #4D79CE;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    border: 2.5px solid black;
-    min-height: 200px;
-    word-wrap: break-word;
-  }
-  
-  .itemImage {
-    width: 110px; /* Set width to 512 pixels */
-    height: 110px; /* Set height to 512 pixels */
-    object-fit: cover; /* Ensures the image covers the area without stretching */
-    margin-bottom: 10px;
-  }  
-  
-  .itemName, .itemQuantity {
-    color: white;
-    margin: 5px 0;
-    word-wrap: break-word;
-    max-width: 100%;
-  }
-  
-  .deleteButton {
-    padding: 5px 10px; /* Smaller padding for a smaller button */
-    margin-top: 10px; /* Space it a bit from the item details */
-    background-color: #D9534F;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8rem; /* Smaller font size for the button text */
-  }
-  
-  .deleteButton:hover {
-    background-color: #C9302C;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.addButton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4D79CE;
+  color: white;
+  border: 2.5px solid black;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-bottom: 20px;
+}
+
+.addButton:hover {
+  background-color: #3a5ba0;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.gridItem {
+  background-color: #4D79CE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border: 2.5px solid black;
+  min-height: 200px;
+  word-wrap: break-word;
+}
+
+.itemImage {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.itemName,
+.itemQuantity {
+  color: white;
+  margin: 5px 0;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.deleteButton {
+  padding: 5px 10px;
+  margin-top: 10px;
+  background-color: #D9534F;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.deleteButton:hover {
+  background-color: #C9302C;
+}

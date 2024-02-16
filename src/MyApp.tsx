@@ -11,10 +11,9 @@ const MyApp = () => {
     { name: "Golf Club", quantity: 1, image: "/images/golf.jpg" },
     { name: "Basketball", quantity: 1, image: "/images/basketball.jpg" },
     { name: "Rocket", quantity: 1, image: "/images/rocket.jpg" },
-    { name: "Test Diff   Size", quantity: 1, image: "/images/testing.jpg" },
+    { name: "Testing Size", quantity: 1, image: "/images/testing.jpg" },
   ]);
 
-  // Function to handle item deletion
   const handleDelete = itemName => {
     setItemsData(itemsData.filter(item => item.name !== itemName));
   };

@@ -13,7 +13,6 @@ interface ItemBoxProps {
 }
 
 const ItemBox = ({ items, onDelete }: ItemBoxProps) => {
-  // Function to split item names into chunks of 12 characters
   const splitName = (name: string) => {
     const chunkSize = 12;
     const chunks = [];
@@ -34,7 +33,6 @@ const ItemBox = ({ items, onDelete }: ItemBoxProps) => {
         {items.map((item, index) => (
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
-            {/* Render item name with line breaks for every 12 characters */}
             <div className={styles.itemName}>
               {splitName(item.name).map((chunk, index) => (
                 <React.Fragment key={index}>
@@ -43,8 +41,8 @@ const ItemBox = ({ items, onDelete }: ItemBoxProps) => {
               ))}
             </div>
             <p className={styles.itemQuantity}>Qty: {item.quantity}</p>
-            <button 
-              className={styles.deleteButton} 
+            <button
+              className={styles.deleteButton}
               onClick={() => onDelete(item.name)}
             >
               Delete
