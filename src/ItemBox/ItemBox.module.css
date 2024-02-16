@@ -1,3 +1,8 @@
+
+.itemName, .itemQuantity, .deleteButton, .addButton {
+  font-family: 'Roboto', sans-serif;
+}
+
 .outerContainer {
     display: flex; /* Using flexbox to align children */
     flex-direction: column; /* Stack children vertically */
