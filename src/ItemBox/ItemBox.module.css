@@ -46,10 +46,11 @@
   }
   
   .itemImage {
-    max-width: 100%;
-    height: auto;
+    width: 110px; /* Set width to 512 pixels */
+    height: 110px; /* Set height to 512 pixels */
+    object-fit: cover; /* Ensures the image covers the area without stretching */
     margin-bottom: 10px;
-  }
+  }  
   
   .itemName, .itemQuantity {
     color: white;
