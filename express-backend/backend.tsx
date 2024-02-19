@@ -140,3 +140,10 @@ app.listen(port, () => {
 
 
 
+app.delete("/users/:id", async (req, res) => {
+    const id = req.params["id"];
+    if (await userServices.deleteUserById(id)) res.status(204).end();
+    else res.status(404).send("Resource not found.");
+  });
+  
+  
