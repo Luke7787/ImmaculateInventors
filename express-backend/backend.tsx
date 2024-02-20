@@ -36,14 +36,15 @@ const users = {
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+    res.send('Hello World!');
 });
-
+  
 app.get('/users', async (req, res) => {
     const username = req.query['username'];
     const password = req.query['password'];
     try {
         const result = await userServices.getUsers(username, password);
+        // console.log("result", result);
         res.send({users_list: result});         
     } catch (error) {
         console.log(error);
@@ -51,93 +52,39 @@ app.get('/users', async (req, res) => {
     }
 });
 
-// app.get('/users/:id', async (req, res) => {
-//     const id = req.params['id'];
-//     const result = await userServices.findUserById(id);
-//     if (result === undefined || result === null)
-//         res.status(404).send('Resource not found.');
-//     else {
-//         res.send({users_list: result});
-//     }
-// });
 
-// 
-
-app.post('/users', async (req, res) => {
-    const user = req.body;
-    // if ((findUserByUsername(user.username)).length >= 1) {
-    //     return res.status(400).send('Username is already taken. Please choose a different one.');
-    // }
-    const savedUser = await userServices.addUser(user);
-    
-    if (savedUser)
-        res.status(201).send(savedUser);
-    else
-        res.status(500).end();
+app.get('/users/:username', async (req, res) => {
+    const id = req.params['id'];
+    const result = await userServices.findUserById(id);
+    if (result === undefined || result === null)
+        res.status(404).send('Resource not found.');
+    else {
+        res.send({users_list: result});
+    }
 });
+
+
+app.post('/users/', async (req, res) => {
+    const user1 = req.body['username'];
+    const user = req.body;
+    
+    const user2 = await userServices.findUserByUsername(user1);
+    // console.log("user2: ", user2);
+    if (user2.length > 0)
+        res.status(409).send("username already taken");
+    else {
+        const savedUser = await userServices.addUser(user);
+        if (savedUser)
+            res.status(201).send(savedUser);
+        else
+            res.status(409).end();
+    }
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
-
-
-
-
-
-
-//     app.delete("/users/:id", (req, res) => {
-//     const id = req.params["id"];
-//     if (deleteUserById(id)) res.status(204).end();
-//     else res.status(404).send("Resource not found.");
-//   });
-
-//   function deleteUserById(id) {
-//     const userToDel = users["users_list"].find((user) => user["id"] === id);
-//     const index = userToDel ? users["users_list"].indexOf(userToDel) : undefined;
-//     if (index) {
-//       users["users_list"].splice(index, 1);
-//       return true;
-//     }
-//     return false;
-//   }
-
-// app.delete('/users/:username', async (req, res) => {
-//     const user = req.body;
-//     const savedUser = await userServices.delUser(user);
-//     if (savedUser)
-//         res.status(201).send(savedUser);
-//     else
-//         res.status(500).end();
-// } )
-
-
-
-
-
-
-//   app.delete('/users/:id', async (req, res) => {
-    
-//     const id = req.params['id'];
-//     let result = await userServices.findUserById(id);
-//     console.log("delete result:", result);
-//     if (result === undefined){
-//         res.status(404).send('Resource not found.');
-//     }
-//     else {
-//         // const userToDelete = req.body;
-//         // let index = usernameUser(result.id);
-//         let result = await userServices.delUser(id);
-//         if (result === undefined){
-//             res.status(404).send('Delete failed.');
-//         }
-//         // users['users_list'].splice(index, 1);
-//         res.status(204).end();
-
-//     }
-// })
-
-
 
 
 app.delete("/users/:id", async (req, res) => {
@@ -145,5 +92,4 @@ app.delete("/users/:id", async (req, res) => {
     if (await userServices.deleteUserById(id)) res.status(204).end();
     else res.status(404).send("Resource not found.");
   });
-  
   
