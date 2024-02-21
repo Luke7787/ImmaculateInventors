@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import ItemBox from "./ItemBox/ItemBox.tsx";
+import Header from "./Header/Header.tsx";
+import theme from "./theme.tsx";
+import { ThemeProvider } from "@mui/material";
 
 const MyApp = () => {
   const [itemsData, setItemsData] = useState([
@@ -19,9 +22,15 @@ const MyApp = () => {
   };
 
   return (
-    <div>
+
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header />
+      </div>
+      <div>
       <ItemBox items={itemsData} onDelete={handleDelete} />
-    </div>
+     </div>
+    </ThemeProvider>
   );
 };
 
