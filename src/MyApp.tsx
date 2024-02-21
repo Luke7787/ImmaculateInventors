@@ -17,19 +17,18 @@ const MyApp = () => {
     { name: "Testing Size", quantity: 1, image: "/images/testing.jpg" },
   ]);
 
-  const handleDelete = itemName => {
-    setItemsData(itemsData.filter(item => item.name !== itemName));
+  const handleDelete = (itemName) => {
+    setItemsData(itemsData.filter((item) => item.name !== itemName));
   };
 
   return (
-
     <ThemeProvider theme={theme}>
       <div>
         <Header />
       </div>
       <div>
-      <ItemBox items={itemsData} onDelete={handleDelete} />
-     </div>
+        <ItemBox items={itemsData} onDelete={handleDelete} />
+      </div>
     </ThemeProvider>
   );
 };
