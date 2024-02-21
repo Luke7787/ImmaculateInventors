@@ -1,10 +1,15 @@
 import React from "react";
+import Header from "./Header/Header.tsx";
+import theme from "./theme.tsx";
+import { ThemeProvider } from "@mui/material";
 
 const MyApp = () => {
   return (
-    <div>
-      <h1>My React TypeScript App</h1>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header />
+      </div>
+    </ThemeProvider>
   );
 };
 
