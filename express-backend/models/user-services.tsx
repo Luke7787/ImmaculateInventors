@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const UserSchema = require("./user.tsx");
+const ItemSchema = require("./item.tsx")
+
 
 let dbConnection;
 
@@ -56,6 +58,7 @@ async function addUser(user) {
   }
 }
 
+
 async function delUser(user) {
   const userModel = getDbConnection().model("User", UserSchema);
   try {
@@ -65,6 +68,16 @@ async function delUser(user) {
     console.error(err);
     return false;
   }
+}
+
+async function addItemToUser(user_id, item_id) {
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", UserSchema);
+  const itemToAdd = await ItemModel.find({ _id: item_id });
+  const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
+    $push: { items: item_id },
+  });
+  return updatedUser;
 }
 
 async function findUserByUsername(username) {
@@ -96,5 +109,6 @@ exports.deleteUserById = deleteUserById;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
+exports.addItemToUser = addItemToUser;
 exports.delUser = delUser;
 exports.findUserByUsername = findUserByUsername;

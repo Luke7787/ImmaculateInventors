@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const userServices = require("./models/user-services.tsx");
+const itemServices = require("./models/item-services.tsx");
 
 const app = express();
 const port = 8000;
@@ -52,6 +53,23 @@ app.post("/users/", async (req, res) => {
     else res.status(409).end();
   }
 });
+
+app.post("/items/", async (req, res) => {
+  const item = req.body;
+
+    const savedItem = await itemServices.addItem(item);
+    if (savedItem) res.status(201).send(savedItem);
+    else res.status(409).end();
+  }
+);
+
+app.patch("/itemToUser/", async (req, res) => {
+  const uid = req.query["uid"]
+  const id = req.query["id"];
+  const user = await userServices.addItemToUser(uid, id);
+  if (user) res.status(201).send(user);
+  else res.status(409).end();
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
