@@ -74,10 +74,20 @@ app.post('/users/', async (req, res) => {
         res.status(409).send("username already taken");
     else {
         const savedUser = await userServices.addUser(user);
-        if (savedUser)
+        if (savedUser.error){
+            res.status(409).send(savedUser.message);    //password length must be 5... I think
+        }
+        else{
             res.status(201).send(savedUser);
-        else
-            res.status(409).end();
+        }
+        
+        
+        
+        
+        // if (savedUser)
+        //     res.status(201).send(savedUser);
+        // else
+        //     res.status(409).end();
     }
 });
 

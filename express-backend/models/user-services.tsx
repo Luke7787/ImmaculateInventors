@@ -59,8 +59,18 @@ async function addUser(user){
         const savedUser = await userToAdd.save()
         return savedUser;
     }catch(error) {
-        console.log(error);
-        return false;
+        if (error.name == 'ValidationError'){
+            const errorMessage = error.errors.password ? error.errors.password.message : 'Validation failed';   //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
+            console.log(errorMessage); //return the error message to handle it in response
+            return {error: true, message: errorMessage};
+        }
+        else{
+            console.log(error);
+            return {error: true, message: 'An unexpected error occurred'};
+        }
+
+        // console.log(error);
+        // return false;
     }   
 }
 
