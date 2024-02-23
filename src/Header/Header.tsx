@@ -94,7 +94,7 @@ const Header = () => {
                     value={userData.password}
                   />
                 </div>
-                {signInErr && <p className={styles.signInErr}>Your username or password is incorrect.</p>}
+                {signInErr && <p className={styles.signInErr}>Your username or password is incorrect. Please try again.</p>}
                 <button className={styles.button} type="submit">
                   Sign In
                 </button>
