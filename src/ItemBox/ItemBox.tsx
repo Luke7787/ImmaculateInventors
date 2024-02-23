@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
+import AddItemModal from './AddItemModal.tsx';
 
 interface ItemProps {
   name: string;
@@ -10,46 +11,39 @@ interface ItemProps {
 interface ItemBoxProps {
   items: ItemProps[];
   onDelete: (name: string) => void;
+  onAddNewItem: (item: { name: string; image: string; quantity: number }) => void; // Ensure this prop is passed down from the parent component
 }
 
-const ItemBox = ({ items, onDelete }: ItemBoxProps) => {
-  const splitName = (name: string) => {
-    const chunkSize = 12;
-    const chunks = [];
-
-    for (let i = 0; i < name.length; i += chunkSize) {
-      chunks.push(name.substring(i, i + chunkSize));
-    }
-
-    return chunks;
-  };
+const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className={styles.outerContainer}>
       <div className={styles.buttonContainer}>
-        <button className={styles.addButton}>+ New Item</button>
+        {/* Button to toggle modal visibility */}
+        <button className={styles.addButton} onClick={() => setIsModalOpen(true)}>+ New Item</button>
       </div>
       <div className={styles.gridContainer}>
         {items.map((item, index) => (
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
             <div className={styles.itemName}>
-              {splitName(item.name).map((chunk, index) => (
-                <React.Fragment key={index}>
-                  {chunk}<br />
-                </React.Fragment>
-              ))}
+              {/* Item name and other properties */}
             </div>
-            <p className={styles.itemQuantity}>Qty: {item.quantity}</p>
-            <button
-              className={styles.deleteButton}
-              onClick={() => onDelete(item.name)}
-            >
-              Delete
-            </button>
+            {/* Other item details */}
+            <button className={styles.deleteButton} onClick={() => onDelete(item.name)}>Delete</button>
           </div>
         ))}
       </div>
+      {/* Modal for adding a new item */}
+      <AddItemModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={(newItem) => {
+          onAddNewItem(newItem); // Handler to add a new item, ensure implementation in parent component
+          setIsModalOpen(false); // Close modal after adding
+        }}
+      />
     </div>
   );
 }
