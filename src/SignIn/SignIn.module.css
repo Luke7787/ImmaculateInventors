@@ -39,3 +39,10 @@
         cursor: pointer;
     }
 }
+
+.signInErr {
+    color: red;
+    position: absolute;
+    padding: 12px 0px;
+    margin: 0;
+}

@@ -1,5 +1,6 @@
 import styles from "./SignIn.module.css";
 import React, { useState } from "react";
+import axios from 'axios';
 
 interface signInProps {
   setCreateAccountOpen?: (e: boolean) => void;
@@ -13,6 +14,8 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
     username: "",
     password: "",
   });
+  const [signInErr, setSignInErr] = useState<boolean>(false);
+
   const handleUpdate = (e) => {
     const { name, value } = e.target;
     setSignInData((prev) => ({
@@ -21,10 +24,24 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Send to back end
-    console.log(signInData);
+    try {
+      const response = await axios.get("http://localhost:8000/users", {
+        params: signInData,
+      });
+      console.log(response);
+      if (response.status === 200) {
+        setSignInErr(false);
+        // route to profile
+      }
+    } catch (err) {
+      console.error("err", err);
+      if (err.response.status === 404) {
+        setSignInErr(true);
+      }
+    }
     setSignInData({ username: "", password: "" });
   };
   return (
@@ -50,6 +67,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
             value={signInData.password}
           />
         </div>
+        {signInErr && <p className={styles.signInErr}>Your username or password is incorrect. Please try again.</p>}
         <button className={styles.button} type="submit">
           Sign In
         </button>
