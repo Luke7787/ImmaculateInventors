@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
-import AddItemModal from './AddItemModal.tsx'; // Ensure this import path is correct
+import AddItemModal from '../AddItemModal/AddItemModal.tsx'; // Ensure this import path is correct
 
 interface ItemProps {
   name: string;
