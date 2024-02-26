@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
-import AddItemModal from './AddItemModal.tsx';
+import AddItemModal from './AddItemModal.tsx'; // Ensure this import path is correct
 
 interface ItemProps {
   name: string;
@@ -11,7 +11,7 @@ interface ItemProps {
 interface ItemBoxProps {
   items: ItemProps[];
   onDelete: (name: string) => void;
-  onAddNewItem: (item: { name: string; image: string; quantity: number }) => void; // Ensure this prop is passed down from the parent component
+  onAddNewItem: (item: { name: string; image: string; quantity: number }) => void;
 }
 
 const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
@@ -20,27 +20,23 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
   return (
     <div className={styles.outerContainer}>
       <div className={styles.buttonContainer}>
-        {/* Button to toggle modal visibility */}
         <button className={styles.addButton} onClick={() => setIsModalOpen(true)}>+ New Item</button>
       </div>
       <div className={styles.gridContainer}>
         {items.map((item, index) => (
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
-            <div className={styles.itemName}>
-              {/* Item name and other properties */}
-            </div>
-            {/* Other item details */}
+            <div className={styles.itemName}>{item.name}</div> {/* Ensure item name is displayed */}
+            <p className={styles.itemQuantity}>Qty: {item.quantity}</p> {/* Ensure item quantity is displayed */}
             <button className={styles.deleteButton} onClick={() => onDelete(item.name)}>Delete</button>
           </div>
         ))}
       </div>
-      {/* Modal for adding a new item */}
       <AddItemModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={(newItem) => {
-          onAddNewItem(newItem); // Handler to add a new item, ensure implementation in parent component
+          onAddNewItem(newItem); // Ensure this function correctly updates the state with the new item
           setIsModalOpen(false); // Close modal after adding
         }}
       />
