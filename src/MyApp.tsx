@@ -21,13 +21,22 @@ const MyApp = () => {
     setItemsData(itemsData.filter((item) => item.name !== itemName));
   };
 
+  // Function to add a new item
+  const handleAddNewItem = ({ name, image, quantity }) => {
+    // Create an object URL for the uploaded image file
+    const imageUrl = image ? URL.createObjectURL(image) : '';
+    const newItem = { name, quantity, image: imageUrl };
+    setItemsData([...itemsData, newItem]);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div>
         <Header />
       </div>
       <div>
-        <ItemBox items={itemsData} onDelete={handleDelete} />
+        {/* Pass handleAddNewItem as a prop to ItemBox */}
+        <ItemBox items={itemsData} onDelete={handleDelete} onAddNewItem={handleAddNewItem} />
       </div>
     </ThemeProvider>
   );
