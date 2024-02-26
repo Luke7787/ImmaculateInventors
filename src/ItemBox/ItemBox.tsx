@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
-import AddItemModal from '../AddItemModal/AddItemModal.tsx'; // Ensure this import path is correct
+import AddItemModal from '../AddItemModal/AddItemModal.tsx';
 
 interface ItemProps {
   name: string;
@@ -17,6 +17,16 @@ interface ItemBoxProps {
 const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Function to split long names
+  const splitLongName = (name) => {
+    if (name.length <= 12) return name;
+    const parts = [];
+    for (let i = 0; i < name.length; i += 12) {
+      parts.push(name.slice(i, i + 12));
+    }
+    return parts.join('\n'); // Join parts with a newline character
+  };
+
   return (
     <div className={styles.outerContainer}>
       <div className={styles.buttonContainer}>
@@ -26,8 +36,15 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
         {items.map((item, index) => (
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
-            <div className={styles.itemName}>{item.name}</div> {/* Ensure item name is displayed */}
-            <p className={styles.itemQuantity}>Qty: {item.quantity}</p> {/* Ensure item quantity is displayed */}
+            <div className={styles.itemName}>
+              {/* Render name with potential line breaks */}
+              {splitLongName(item.name).split('\n').map((part, index) => (
+                <React.Fragment key={index}>
+                  {part}<br />
+                </React.Fragment>
+              ))}
+            </div>
+            <p className={styles.itemQuantity}>Qty: {item.quantity}</p>
             <button className={styles.deleteButton} onClick={() => onDelete(item.name)}>Delete</button>
           </div>
         ))}
@@ -36,8 +53,8 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={(newItem) => {
-          onAddNewItem(newItem); // Ensure this function correctly updates the state with the new item
-          setIsModalOpen(false); // Close modal after adding
+          onAddNewItem(newItem);
+          setIsModalOpen(false);
         }}
       />
     </div>
