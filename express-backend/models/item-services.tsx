@@ -41,15 +41,10 @@ async function findItemById(id) {
 }
 
 async function addItem(item) {
-    const ItemModel = getDbConnection().model("Item", ItemSchema);
-  // try {
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
   const itemToAdd = new ItemModel(item);
   const savedItem = await itemToAdd.save();
   return savedItem;
-  // } catch (error) {
-  //   console.log(error);
-  //   return false;
-  // }
 }
 
 async function findItemByName(name) {

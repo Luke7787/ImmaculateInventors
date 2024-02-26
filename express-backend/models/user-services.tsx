@@ -75,7 +75,7 @@ async function addItemToUser(user_id, item_id) {
   const UserModel = getDbConnection().model("User", UserSchema);
   const ItemModel = getDbConnection().model("Item", ItemSchema);
   // find user with matching id
-  const user = await UserModel.findById(user_id)
+  const user = await UserModel.findById(user_id);
   // initialize array for user items if it doesnt exist already
   user.items = [];
   if (user) console.log(user.username);
@@ -88,6 +88,17 @@ async function addItemToUser(user_id, item_id) {
   });
   return updatedUser;
 }
+
+async function getItemFromUser(userId, itemId) {
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  const user = await UserModel.findById(userId);
+  if (user) console.log(user.username);
+  const userItem = await UserModel.find({items: itemId});
+  if (userItem) console.log("Item found");
+  return await ItemModel.find({_id: itemId});
+}
+
 
 async function findUserByUsername(username) {
   const userModel = getDbConnection().model("User", UserSchema);
@@ -121,3 +132,4 @@ exports.addUser = addUser;
 exports.addItemToUser = addItemToUser;
 exports.delUser = delUser;
 exports.findUserByUsername = findUserByUsername;
+exports.getItemFromUser = getItemFromUser;

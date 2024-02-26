@@ -74,6 +74,19 @@ app.patch("/itemToUser/", async (req, res) => {
   else res.status(409).end();
 });
 
+app.get("/items/", async (req, res) => {
+  const uid = req.query["uid"];
+  const id = req.query["id"];
+  const result = await userServices.getItemFromUser(uid, id);
+  if (result) {
+    res.status(201).send(result);
+  } else {
+    res.status(404).send("item not found");
+  }
+});
+
+
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

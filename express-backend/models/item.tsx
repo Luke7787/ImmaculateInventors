@@ -4,6 +4,16 @@ const ObjectId = Schema.ObjectId;
 
 const ItemSchema = new mongoose.Schema(
   {
+    _id: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    userId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
