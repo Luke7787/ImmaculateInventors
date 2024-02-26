@@ -2,38 +2,12 @@ import React, { useState } from "react";
 import styles from "./Header.module.css";
 import { Box, Button, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-
-interface signInData {
-  username: string;
-  password: string;
-}
+import CreateAccount from "../CreateAccount/CreateAccount.tsx";
+import SignIn from "../SignIn/SignIn.tsx";
 
 const Header = () => {
   const [signInOpen, setSignInOpen] = useState<boolean>(false);
-  const [userData, setUserData] = useState<signInData>({
-    username: "",
-    password: "",
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Send to back end
-    console.log(userData);
-    setUserData({ username: "", password: "" });
-  };
-
-  const handleUpdate = (e) => {
-    const { name, value } = e.target;
-    setUserData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleModalClose = () => {
-    setUserData({ username: "", password: "" });
-    setSignInOpen(false);
-  };
+  const [createAccountOpen, setCreateAccountOpen] = useState<boolean>(false);
 
   return (
     <nav className={styles.header}>
@@ -47,43 +21,30 @@ const Header = () => {
         >
           Sign In
         </Button>
-        <Modal open={signInOpen} onClose={handleModalClose}>
-          <Box className={styles.signInModal}>
-            <form onSubmit={handleSubmit}>
-              <div className={styles.signInHeader}>
+        <Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
+          {!createAccountOpen ? (
+            <Box className={styles.signInModal}>
+              <div className={styles.modalHeader}>
                 <h1>Sign In</h1>
               </div>
-              <CloseIcon onClick={handleModalClose} className={styles.closeIcon} />
-              <div className={styles.signInBody}>
-                <div className={styles.userName}>
-                  <p>Username</p>
-                  <input
-                    placeholder="Enter username"
-                    onChange={handleUpdate}
-                    type="text"
-                    name="username"
-                    value={userData.username}
-                  />
-                </div>
-                <div className={styles.password}>
-                  <p>Password</p>
-                  <input
-                    placeholder="Enter password"
-                    onChange={handleUpdate}
-                    type="password"
-                    name="password"
-                    value={userData.password}
-                  />
-                </div>
-                <button className={styles.button} type="submit">
-                  Sign In
-                </button>
-                <p>
-                  Not registered? <a href="">Create an account here</a>
-                </p>
+              <CloseIcon
+                onClick={() => setSignInOpen(false)}
+                className={styles.closeIcon}
+              />
+              <SignIn setCreateAccountOpen={setCreateAccountOpen} />
+            </Box>
+          ) : (
+            <Box className={styles.createAccountModal}>
+              <div className={styles.modalHeader}>
+                <h1>Create Account</h1>
               </div>
-            </form>
-          </Box>
+              <CloseIcon
+                onClick={() => setCreateAccountOpen(false)}
+                className={styles.closeIcon}
+              />
+              <CreateAccount />
+            </Box>
+          )}
         </Modal>
       </div>
     </nav>

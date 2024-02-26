@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .header {
@@ -16,7 +17,6 @@ body {
     h1 {
         color: #FFFFFF;
         font-size: 28px;
-        font-family: Arial, Helvetica, sans-serif;
     }
 
 }
@@ -30,7 +30,6 @@ body {
         font-weight: 200;
         color: #FFFFFF;
         font-size: 22px;
-        font-family: Arial, Helvetica, sans-serif;
     }
 
 }
@@ -47,13 +46,13 @@ body {
 
 .closeIcon {
     position: absolute;
-    right: 5%;
-    top: 5.5%;
+    right: 25px;
+    top: 25px;
     cursor: pointer;
     color: white;
 }
 
-.signInHeader {
+.modalHeader {
     position: relative;
     width: 100%;
     height: 76px;
@@ -69,32 +68,6 @@ body {
         padding: 0;
         margin: 0;
         color: #FFFFFF;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-}
-
-
-.signInBody {
-    padding: 12px 42px;
-    
-    & > p {
-
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 16px;
-    }
-}
-
-.userName, .password {
-    
-    font-size: 18px; 
-    font-family: Arial, Helvetica, sans-serif;
-    input {
-        background-color: #e4e4e4;
-        border-radius: 6px;
-        padding-left: 12px;
-        border: 2px #838383 solid;
-        width: 100%;
-        height: 36px;
     }
 }
 
@@ -110,4 +83,15 @@ body {
     &:hover {
         cursor: pointer;
     }
+}
+
+.createAccountModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 738px;
+    height: 768px;
+    background-color: white;
+    border-radius: 40px;
 }
