@@ -71,9 +71,18 @@ async function delUser(user) {
 }
 
 async function addItemToUser(user_id, item_id) {
+  // connect to user collection and item collection databases
   const UserModel = getDbConnection().model("User", UserSchema);
-  const ItemModel = getDbConnection().model("Item", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  // find user with matching id
+  const user = await UserModel.findById(user_id)
+  // initialize array for user items if it doesnt exist already
+  user.items = [];
+  if (user) console.log(user.username);
   const itemToAdd = await ItemModel.find({ _id: item_id });
+  if (itemToAdd) console.log(item_id);
+  //user.items.push({items: item_id});
+  // push id onto item list of user
   const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
     $push: { items: item_id },
   });

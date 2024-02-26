@@ -66,10 +66,13 @@ app.post("/items/", async (req, res) => {
 app.patch("/itemToUser/", async (req, res) => {
   const uid = req.query["uid"]
   const id = req.query["id"];
+  //console.log(id)
   const user = await userServices.addItemToUser(uid, id);
-  if (user) res.status(201).send(user);
+  if (user) {
+    res.status(201).send(user);
+  }
   else res.status(409).end();
-})
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
