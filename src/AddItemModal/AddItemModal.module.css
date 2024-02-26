@@ -8,17 +8,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it's above other content */
+    z-index: 1000;
 }
 
 .modalContent {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 30%; /* Adjust based on your preference */
-    min-width: 300px; /* Ensure it works on smaller screens */
+    width: 30%;
+    min-width: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative; /* For positioning close button or any other absolute elements inside */
+    position: relative;
 }
 
 .formGroup {
@@ -54,12 +54,12 @@
 }
 
 .addButton {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
     color: white;
 }
 
 .closeButton {
-    background-color: #f44336; /* Red */
+    background-color: #f44336;
     color: white;
 }
 

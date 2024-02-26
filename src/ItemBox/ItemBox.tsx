@@ -17,14 +17,13 @@ interface ItemBoxProps {
 const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Function to split long names
   const splitLongName = (name) => {
     if (name.length <= 12) return name;
     const parts = [];
     for (let i = 0; i < name.length; i += 12) {
       parts.push(name.slice(i, i + 12));
     }
-    return parts.join('\n'); // Join parts with a newline character
+    return parts.join('\n');
   };
 
   return (
@@ -37,7 +36,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
             <div className={styles.itemName}>
-              {/* Render name with potential line breaks */}
+              {}
               {splitLongName(item.name).split('\n').map((part, index) => (
                 <React.Fragment key={index}>
                   {part}<br />

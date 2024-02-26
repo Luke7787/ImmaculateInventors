@@ -28,7 +28,7 @@ const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
       return;
     }
     onAdd({ name: itemName, image: imageFile, quantity: parsedQuantity });
-    onClose(); // Close the modal
+    onClose();
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
