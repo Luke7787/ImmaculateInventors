@@ -84,7 +84,7 @@ async function addItemToUser(user_id, item_id) {
   //user.items.push({items: item_id});
   // push id onto item list of user
   const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
-    $push: { items: item_id },
+    $push: { items: mongoose.Types.ObjectId(item_id) },
   });
   return updatedUser;
 }
@@ -97,6 +97,18 @@ async function getItemFromUser(userId, itemId) {
   const userItem = await UserModel.find({items: itemId});
   if (userItem) console.log("Item found");
   return await ItemModel.find({_id: itemId});
+}
+
+async function deleteItemFromUser(userId, itemId) {
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  const user = await UserModel.findById(userId);
+  if (user) console.log(user.username);
+  const userItem = await UserModel.find({items: itemId});
+  if (userItem) console.log("Item found");
+  const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+    $pull: {items: itemId},
+  })
 }
 
 
@@ -133,3 +145,4 @@ exports.addItemToUser = addItemToUser;
 exports.delUser = delUser;
 exports.findUserByUsername = findUserByUsername;
 exports.getItemFromUser = getItemFromUser;
+exports.deleteItemFromUser = deleteItemFromUser;

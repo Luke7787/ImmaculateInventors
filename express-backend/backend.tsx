@@ -65,8 +65,11 @@ app.post("/items/", async (req, res) => {
 
 app.patch("/itemToUser/", async (req, res) => {
   const uid = req.query["uid"]
-  const id = req.query["id"];
-  //console.log(id)
+  //const id = req.query["id"];
+  const item = req.body;
+  const savedItem = await itemServices.addItem(item);
+  const id = item._id;
+  console.log(id)
   const user = await userServices.addItemToUser(uid, id);
   if (user) {
     res.status(201).send(user);
@@ -83,6 +86,13 @@ app.get("/items/", async (req, res) => {
   } else {
     res.status(404).send("item not found");
   }
+});
+
+app.delete("/items/", async (req, res) => {
+  const uid = req.query["uid"];
+  const id = req.query["id"];
+  const result = await userServices.deleteItemFromUser(uid, id);
+  res.status(201).send("item deleted");
 });
 
 
