@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
 import AddItemModal from '../AddItemModal/AddItemModal.tsx';
+import Button from '@mui/material/Button';
 
 interface ItemProps {
   name: string;
@@ -36,7 +37,6 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
           <div className={styles.gridItem} key={index}>
             <img src={item.image} alt={item.name} className={styles.itemImage} />
             <div className={styles.itemName}>
-              {}
               {splitLongName(item.name).split('\n').map((part, index) => (
                 <React.Fragment key={index}>
                   {part}<br />
@@ -44,7 +44,9 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
               ))}
             </div>
             <p className={styles.itemQuantity}>Qty: {item.quantity}</p>
-            <button className={styles.deleteButton} onClick={() => onDelete(item.name)}>Delete</button>
+            <Button variant="contained" color="error" onClick={() => onDelete(item.name)} className={styles.deleteButton}>
+              Delete
+            </Button>
           </div>
         ))}
       </div>
