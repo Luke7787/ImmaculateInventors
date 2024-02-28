@@ -43,19 +43,29 @@ async function findUserById(id) {
   }
 }
 
-async function addUser(user) {
-  // userModel is a Model, a subclass of mongoose.Model
-  const userModel = getDbConnection().model("User", UserSchema);
-  try {
-    // You can use a Model to create new documents using 'new' and
-    // passing the JSON content of the Document:
-    const userToAdd = new userModel(user);
-    const savedUser = await userToAdd.save();
-    return savedUser;
-  } catch (error) {
-    console.log(error);
-    return false;
-  }
+async function addUser(user){
+    // userModel is a Model, a subclass of mongoose.Model
+    const userModel = getDbConnection().model("User", UserSchema);
+    try{
+        // You can use a Model to create new documents using 'new' and 
+        // passing the JSON content of the Document:
+        const userToAdd = new userModel(user);
+        const savedUser = await userToAdd.save()
+        return savedUser;
+    }catch(error) {
+        if (error.name == 'ValidationError'){
+            const errorMessage = error.errors.password ? error.errors.password.message : 'Validation failed';   //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
+            console.log(errorMessage); //return the error message to handle it in response
+            return {error: true, message: errorMessage};
+        }
+        else{
+            console.log(error);
+            return {error: true, message: 'An unexpected error occurred'};
+        }
+
+        // console.log(error);
+        // return false;
+    }   
 }
 
 

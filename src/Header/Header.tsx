@@ -19,22 +19,7 @@ const Header = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Send to back end
-    try {
-      const response = await axios.get("http://localhost:8000/users", {
-        params: userData,
-      });
-      console.log(response);
-      if (response.status == 200) {
-        setSignInErr(false);
-        // route to profile
-      }
-    } catch (err) {
-      console.error("err", err);
-      if (err.response.status == 404) {
-        setSignInErr(true);
-      }
-    }
+    console.log(userData);
     setUserData({ username: "", password: "" });
   };
 

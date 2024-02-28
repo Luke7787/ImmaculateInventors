@@ -41,17 +41,24 @@ app.get("/users/:username", async (req, res) => {
   }
 });
 
-app.post("/users/", async (req, res) => {
-  const user1 = req.body["username"];
-  const user = req.body;
 
-  const user2 = await userServices.findUserByUsername(user1);
-  if (user2.length > 0) res.status(409).send("username already taken");
-  else {
-    const savedUser = await userServices.addUser(user);
-    if (savedUser) res.status(201).send(savedUser);
-    else res.status(409).end();
-  }
+app.post('/users/', async (req, res) => {
+    const user1 = req.body['username'];
+    const user = req.body;
+    
+    const user2 = await userServices.findUserByUsername(user1);
+    // console.log("user2: ", user2);
+    if (user2.length > 0)
+        res.status(409).send("username already taken");
+    else {
+        const savedUser = await userServices.addUser(user);
+        if (savedUser.error){
+            res.status(409).send(savedUser.message);    //password length must be 5... I think
+        }
+        else{
+            res.status(201).send(savedUser);
+        }    
+    }
 });
 
 app.post("/items/", async (req, res) => {
