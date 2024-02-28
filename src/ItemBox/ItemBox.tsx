@@ -29,7 +29,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
   return (
     <div className={styles.outerContainer}>
       <div className={styles.buttonContainer}>
-        <button className={styles.addButton} onClick={() => setIsModalOpen(true)}>+ New Item</button>
+        <button className={styles.addButton} onClick={() => setIsModalOpen(true)}>Add New Item</button>
       </div>
       <div className={styles.gridContainer}>
         {items.map((item, index) => (
