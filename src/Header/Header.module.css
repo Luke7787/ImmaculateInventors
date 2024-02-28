@@ -112,10 +112,17 @@ h1 {
     color: #FFFFFF;
     width: 100px;
     height: 40px;
-    margin-top: 36px;
+    margin-top: 42px;
     margin-bottom: 12px;
     
     &:hover {
         cursor: pointer;
     }
+}
+
+.signInErr {
+    color: red;
+    position: absolute;
+    padding: 12px 0px;
+    margin: 0;
 }

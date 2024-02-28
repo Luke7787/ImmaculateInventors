@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Header.module.css";
 import { Box, Button, Modal } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import axios, { AxiosError } from "axios";
 
 interface signInData {
   username: string;
@@ -14,10 +15,26 @@ const Header = () => {
     username: "",
     password: "",
   });
+  const [signInErr, setSignInErr] = useState<boolean>(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userData);
+    // Send to back end
+    try {
+      const response = await axios.get("http://localhost:8000/users", {
+        params: userData,
+      });
+      console.log(response);
+      if (response.status == 200) {
+        setSignInErr(false);
+        // route to profile
+      }
+    } catch (err) {
+      console.error("err", err);
+      if (err.response.status == 404) {
+        setSignInErr(true);
+      }
+    }
     setUserData({ username: "", password: "" });
   };
 
@@ -50,7 +67,10 @@ const Header = () => {
               <div className={styles.signInHeader}>
                 <h1>Sign In</h1>
               </div>
-              <CloseIcon onClick={handleModalClose} className={styles.closeIcon} />
+              <CloseIcon
+                onClick={handleModalClose}
+                className={styles.closeIcon}
+              />
               <div className={styles.signInBody}>
                 <div className={styles.userName}>
                   <p>Username</p>
@@ -72,6 +92,7 @@ const Header = () => {
                     value={userData.password}
                   />
                 </div>
+                {signInErr && <p className={styles.signInErr}>Your username or password is incorrect. Please try again.</p>}
                 <button className={styles.button} type="submit">
                   Sign In
                 </button>
