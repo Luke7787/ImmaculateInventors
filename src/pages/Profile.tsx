@@ -1,10 +1,17 @@
 import React from "react";
+import theme from "../theme.tsx";
+import { ThemeProvider } from "@mui/material";
+import Header from "../Header/Header.tsx";
+import LeftOptionNav from "../LeftOptionNav/LeftOptionNav.tsx";
 
 const Profile = () => {
   return (
-    <div>
-      <p>Hello World</p>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div>
+        <Header />
+        <LeftOptionNav numRows={4} fieldNames={['hello']}/>
+      </div>
+    </ThemeProvider>
   );
 };
 
