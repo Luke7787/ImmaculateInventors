@@ -61,7 +61,7 @@
 .itemName,
 .itemQuantity {
   color: white;
-  margin: 5px 0;
+  margin: 5px 0 10px;
   word-wrap: break-word;
   max-width: 100%;
 }
