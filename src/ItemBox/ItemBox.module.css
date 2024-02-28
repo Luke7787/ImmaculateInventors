@@ -23,6 +23,7 @@
   margin-bottom: 20px;
   font-size: 18px;
   font-weight: bold;
+  border-radius: 10px;
 }
 
 .addButton:hover {
@@ -47,6 +48,7 @@
   border: 2.5px solid black;
   min-height: 200px;
   word-wrap: break-word;
+  border-radius: 10px;
 }
 
 .itemImage {
