@@ -21,6 +21,13 @@ const Home = () => {
     setItemsData(itemsData.filter(item => item.name !== itemName));
   };
 
+  const handleAddNewItem = ({ name, image, quantity }) => {
+    const imageUrl = image ? URL.createObjectURL(image) : '';
+    const newItem = { name, quantity, image: imageUrl };
+    setItemsData([...itemsData, newItem]);
+  };
+
+
   return (
 
     <ThemeProvider theme={theme}>
@@ -28,8 +35,9 @@ const Home = () => {
         <Header />
       </div>
       <div>
-      <ItemBox items={itemsData} onDelete={handleDelete} />
-     </div>
+
+        <ItemBox items={itemsData} onDelete={handleDelete} onAddNewItem={handleAddNewItem} />
+      </div>
     </ThemeProvider>
   );
 };
