@@ -68,7 +68,7 @@ app.patch("/itemToUser/", async (req, res) => {
   //const id = req.query["id"];
   const item = req.body;
   const savedItem = await itemServices.addItem(item);
-  const id = item._id;
+  const id = savedItem._id;
   console.log(id)
   const user = await userServices.addItemToUser(uid, id);
   if (user) {
@@ -77,10 +77,29 @@ app.patch("/itemToUser/", async (req, res) => {
   else res.status(409).end();
 });
 
-app.get("/items/", async (req, res) => {
+app.patch("/items/", async (req, res) => {
   const uid = req.query["uid"];
   const id = req.query["id"];
-  const result = await userServices.getItemFromUser(uid, id);
+  const option = req.query["option"];
+  const quantity = req.query["quantity"];
+  console.log(option)
+  if (option === "add" || option === "sub") {
+    const result = await userServices.updateItemFromUser(uid, id, quantity, option);
+    res.status(201).send("worked");
+  } else {
+    res.status(404).send("wrong option")
+  }
+});
+
+app.get("/items/", async (req, res) => {
+  let result = null;
+  const uid = req.query["uid"];
+  const id = req.query["id"];
+  if (!id && !uid) {
+    result = await itemServices.getItems(uid, id);
+  } else {
+    result = await userServices.getItemFromUser(uid, id);
+  } 
   if (result) {
     res.status(201).send(result);
   } else {
@@ -92,6 +111,7 @@ app.delete("/items/", async (req, res) => {
   const uid = req.query["uid"];
   const id = req.query["id"];
   const result = await userServices.deleteItemFromUser(uid, id);
+  const result2 = await itemServices.deleteItem(id);
   res.status(201).send("item deleted");
 });
 

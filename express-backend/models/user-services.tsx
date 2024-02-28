@@ -111,6 +111,23 @@ async function deleteItemFromUser(userId, itemId) {
   })
 }
 
+async function updateItemFromUser(userId, itemId, quantity, option) {
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  const user = await UserModel.findById(userId);
+  if (option === "add") {
+    console.log("bye")
+    const incItem = await ItemModel.findByIdAndUpdate(itemId, {
+      $inc: {quantity: quantity}
+    });
+    return incItem.quantity;
+  } else {
+    const decItem = await ItemModel.findByIdAndUpdate(itemId, {
+      $inc: {quantity: -quantity}
+    });
+  }
+}
+
 
 async function findUserByUsername(username) {
   const userModel = getDbConnection().model("User", UserSchema);
@@ -146,3 +163,4 @@ exports.delUser = delUser;
 exports.findUserByUsername = findUserByUsername;
 exports.getItemFromUser = getItemFromUser;
 exports.deleteItemFromUser = deleteItemFromUser;
+exports.updateItemFromUser = updateItemFromUser;

@@ -18,9 +18,10 @@ function getDbConnection() {
 }
 
 async function getItems(name, quantity) {
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
   let result;
   if (name === undefined && quantity === undefined) {
-    result = await itemModel.find();
+    result = await ItemModel.find();
   } else if (name && !quantity) {
     result = await findItemByName(name);
   } else if (quantity && !name) {
@@ -59,7 +60,8 @@ async function findItemByNameAndQuantity(name, quantity) {
 }
 
 async function deleteItem(id) {
-  return await itemModel.findByIdAndDelete(id);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  return await ItemModel.findByIdAndDelete(id);
 }
 
 // async function disconnectDB() {
