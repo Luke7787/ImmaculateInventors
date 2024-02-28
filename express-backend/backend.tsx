@@ -95,8 +95,14 @@ app.get("/items/", async (req, res) => {
   let result = null;
   const uid = req.query["uid"];
   const id = req.query["id"];
-  if (!id && !uid) {
+  const itemName = req.query["itemName"];
+  if (!id && !uid && !itemName) {
     result = await itemServices.getItems(uid, id);
+  } else if (!id && itemName && uid) {
+    const item = await itemServices.findItemByName(itemName);
+    console.log(item);
+    let itemId = item[0]._id.toString();
+    result = await userServices.getItemFromUser(uid, itemId);
   } else {
     result = await userServices.getItemFromUser(uid, id);
   } 

@@ -99,6 +99,16 @@ async function getItemFromUser(userId, itemId) {
   return await ItemModel.find({_id: itemId});
 }
 
+async function getItemFromUserByName(userId, itemName) {
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  const user = await UserModel.findById(userId);
+  const item = ItemModel.findItemByName(itemName);
+  console.log(item.name);
+  const userItem = await UserModel.find({item: item._id});
+  return userItem;
+}
+
 async function deleteItemFromUser(userId, itemId) {
   const UserModel = getDbConnection().model("User", UserSchema);
   const ItemModel = getDbConnection().model("Item", ItemSchema);
@@ -125,6 +135,7 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
     const decItem = await ItemModel.findByIdAndUpdate(itemId, {
       $inc: {quantity: -quantity}
     });
+    return decItem.quantity;
   }
 }
 
@@ -164,3 +175,4 @@ exports.findUserByUsername = findUserByUsername;
 exports.getItemFromUser = getItemFromUser;
 exports.deleteItemFromUser = deleteItemFromUser;
 exports.updateItemFromUser = updateItemFromUser;
+exports.getItemFromUserByName = getItemFromUserByName;

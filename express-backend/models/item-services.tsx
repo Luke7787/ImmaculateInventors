@@ -49,7 +49,8 @@ async function addItem(item) {
 }
 
 async function findItemByName(name) {
-  return await itemModel.find({ name: name });
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  return await ItemModel.find({ name: name });
 }
 
 async function findItemByQuantity(quantity) {
