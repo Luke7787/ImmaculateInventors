@@ -21,8 +21,8 @@ app.get("/users", async (req, res) => {
   const password = req.query["password"];
   try {
     const result = await userServices.getUsers(username, password);
-    if (result.length == 0) {
-      return res.status(404).send("User not found");
+    if (result.length == 0) { 
+      return res.status(404).send("User not found"); 
     }
     return res.send({ users_list: result });
   } catch (error) {
