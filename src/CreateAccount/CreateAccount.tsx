@@ -1,7 +1,7 @@
 import styles from "./CreateAccount.module.css";
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import { FormControl } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 
 interface createAccountData {
   firstName: string;
@@ -90,7 +90,7 @@ const CreateAccount = () => {
             <p>First name</p>
             <FormControl fullWidth>
               <TextField
-                id="outlined-password-input"
+                id="firstName-input"
                 label="First name"
                 type="text"
                 name="firstName"
@@ -98,20 +98,12 @@ const CreateAccount = () => {
                 value={data.firstName}
               />
             </FormControl>
-
-            {/* <input
-              placeholder="Jane"
-              onChange={handleUpdate}
-              type="text"
-              name="firstName"
-              value={data.firstName}
-            /> */}
           </div>
           <div className={styles.last}>
             <p>Last name</p>
             <FormControl fullWidth>
               <TextField
-                id="outlined-password-input"
+                id="lastName-input"
                 label="Last name"
                 type="text"
                 name="lastName"
@@ -119,116 +111,94 @@ const CreateAccount = () => {
                 value={data.lastName}
               />
             </FormControl>
-
-            {/* <input
-              placeholder="Doe"
-              onChange={handleUpdate}
-              type="text"
-              name="lastName"
-              value={data.lastName}
-            /> */}
           </div>
           <div className={styles.email}>
             <p>Email</p>
             <FormControl fullWidth>
               <TextField
-                id="outlined-password-input"
+                id="email-input"
                 label="Email address"
                 type="text"
                 name="email"
                 onChange={handleUpdate}
+                onBlur={handleEmailBlur}
                 value={data.email}
               />
             </FormControl>
-
-            {/* <input
-              placeholder="name@example.com"
-              onChange={handleUpdate}
-              type="text"
-              name="email"
-              onBlur={handleEmailBlur}
-              value={data.email}
-            /> */}
             {emailErr && <p>{emailErr}</p>}
           </div>
           <div className={styles.country}>
             <p>Country</p>
+            <FormControl fullWidth>
+              <Select
+                labelId="country"
+                id="country-input"
+                name="country"
+                value={data.country}
+                label="Country"
+                onChange={handleUpdate}
+              >
+                <MenuItem value="Bangladesh">Bangladesh</MenuItem>
+                <MenuItem value="Brazil">Brazil</MenuItem>
+                <MenuItem value="Canada">Canada</MenuItem>
+                <MenuItem value="China">China</MenuItem>
+                <MenuItem value="India">India</MenuItem>
+                <MenuItem value="Indonesia">Indonesia</MenuItem>
+                <MenuItem value="Pakistan">Pakistan</MenuItem>
+                <MenuItem value="Mexico">Mexico</MenuItem>
+                <MenuItem value="Nigeria">Nigeria</MenuItem>
+                <MenuItem value="Russia">Russia</MenuItem>
+                <MenuItem value="United States">United States</MenuItem>
+              </Select>
+            </FormControl>
 
-            <TextField
+            {/* <TextField
               id="outlined-password-input"
               label="Country"
               type="text"
               name="country"
               onChange={handleUpdate}
               value={data.country}
-            />
-            {/* <input
-              placeholder="United States"
-              onChange={handleUpdate}
-              type="text"
-              name="country"
-              value={data.country}
             /> */}
           </div>
           <div className={styles.state}>
             <p>State</p>
             <TextField
-              id="outlined-password-input"
+              id="state-input"
               label="State"
               type="text"
               name="state"
               onChange={handleUpdate}
               value={data.state}
             />
-            {/* <input
-              placeholder="California"
-              onChange={handleUpdate}
-              type="text"
-              name="state"
-              value={data.state}
-            /> */}
           </div>
           <div className={styles.city}>
             <p>City</p>
             <TextField
-              id="outlined-password-input"
+              id="city-input"
               label="City"
               type="text"
               name="city"
               onChange={handleUpdate}
               value={data.city}
             />
-            {/* <input
-              placeholder="San Luis Obispo"
-              onChange={handleUpdate}
-              type="text"
-              name="city"
-              value={data.city}
-            /> */}
           </div>
           <div className={styles.zip}>
             <p>Zip Code</p>
             <TextField
-              id="outlined-password-input"
+              id="zipcode-input"
               label="Zip code"
               type="text"
               name="zipcode"
               onChange={handleUpdate}
               value={data.zipcode}
             />
-            {/* <input
-              placeholder="11111"
-              onChange={handleUpdate}
-              type="text"
-              name="zipcode"
-              value={data.zipcode}
-            /> */}
           </div>
           <div className={styles.user}>
             <p>Username</p>
             <FormControl fullWidth>
               <TextField
-                id="outlined-password-input"
+                id="username-input"
                 label="Username"
                 type="text"
                 name="username"
@@ -236,14 +206,6 @@ const CreateAccount = () => {
                 value={data.username}
               />
             </FormControl>
-
-            {/* <input
-              placeholder="Enter username"
-              onChange={handleUpdate}
-              type="text"
-              name="username"
-              value={data.username}
-            /> */}
           </div>
           <div className={styles.pass}>
             <p>Password</p>
@@ -251,7 +213,7 @@ const CreateAccount = () => {
               <TextField
                 error={!!passwordErr}
                 helperText={passwordErr ? passwordErr : ""}
-                id="outlined-password-input"
+                id="password-input"
                 label="Password"
                 type="password"
                 name="password"
@@ -260,29 +222,16 @@ const CreateAccount = () => {
                 value={data.password}
               />
             </FormControl>
-
-            {/*<input
-              placeholder="Enter password"
-              onChange={handleUpdate}
-              onBlur={handlePasswordBlur}
-              type="password"
-              name="password"
-              value={data.password}
-            />
-             */}
-            {/* {passwordErr && <p>{passwordErr}</p>} */}
           </div>
           <div className={styles.confirmPass}>
-            <p>Confirm password</p>
+            <p>Confirm Password</p>
             <FormControl fullWidth>
               <TextField
-                id="outlined-password-input"
+                id="confirmPassword-input"
                 label="Confirm password"
                 type="password"
               />
             </FormControl>
-
-            {/* <input placeholder="Confirm password" type="password" /> */}
           </div>
           <button className={styles.button} type="submit">
             Submit
