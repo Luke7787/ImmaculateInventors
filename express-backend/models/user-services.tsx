@@ -132,9 +132,18 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
     });
     return incItem.quantity;
   } else {
-    const decItem = await ItemModel.findByIdAndUpdate(itemId, {
-      $inc: {quantity: -quantity}
-    });
+    const tempItem = await ItemModel.findById(itemId)
+    if (tempItem._id - quantity <= 0) {
+      console.log("item gone")
+      const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+        $pull: {items: itemId},
+      })
+    } else {
+      console.log("item not gone")
+      const decItem = await ItemModel.findByIdAndUpdate(itemId, {
+        $inc: {quantity: -quantity}
+      });
+    }
   }
 }
 
