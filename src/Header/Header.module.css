@@ -11,15 +11,21 @@ body {
 }
 
 .headerLeft {
-    flex: 1;
-    padding: 10px 20px; 
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+}
 
     h1 {
         color: #FFFFFF;
         font-size: 28px;
     }
 
+.logoImage {
+    height: 40px;
+    vertical-align: middle; 
 }
+
 
 .headerRight {
     flex: 1;

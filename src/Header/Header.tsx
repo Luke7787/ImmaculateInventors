@@ -13,12 +13,10 @@ const Header = () => {
     <nav className={styles.header}>
       <div className={styles.headerLeft}>
         <h1>My Inventory</h1>
+        <img src={`${process.env.PUBLIC_URL}/images/box.png`} alt="Logo" className={styles.logoImage} />
       </div>
       <div className={styles.headerRight}>
-        <Button
-          className={styles.signInButton}
-          onClick={() => setSignInOpen(true)}
-        >
+        <Button className={styles.signInButton} onClick={() => setSignInOpen(true)}>
           Sign In
         </Button>
         <Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
