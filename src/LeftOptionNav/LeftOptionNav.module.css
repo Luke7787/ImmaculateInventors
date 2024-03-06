@@ -1,4 +1,25 @@
-.rowName {
-    padding: 24px 48px;
-    width: 50%;
-}
+.leftNav {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 250px; /* Adjusted width for a narrower left nav */
+    height: 100%;
+  }
+  
+  .folderTitle {
+    font-size: 20px; /* Moderate big text */
+    margin-bottom: 20px;
+  }
+  
+  .searchBar {
+    margin-bottom: 20px;
+  }
+  
+  .newFolderButton {
+    margin-bottom: 20px;
+  }
+  
+  .filterButtonContainer {
+    margin-top: auto; /* Places the filter button at the bottom */
+  }
+  

@@ -3,6 +3,7 @@ import ItemBox from "../ItemBox/ItemBox.tsx";
 import Header from "../Header/Header.tsx";
 import theme from "../theme.tsx";
 import { ThemeProvider } from "@mui/material";
+import LeftOptionNav from "../LeftOptionNav/LeftOptionNav.tsx";
 
 const Home = () => {
   const [itemsData, setItemsData] = useState([
@@ -27,16 +28,14 @@ const Home = () => {
     setItemsData([...itemsData, newItem]);
   };
 
-
   return (
-
     <ThemeProvider theme={theme}>
-      <div>
-        <Header />
-      </div>
-      <div>
-
-        <ItemBox items={itemsData} onDelete={handleDelete} onAddNewItem={handleAddNewItem} />
+      <Header />
+      <div style={{ display: "flex", height: '105vh' }}> {/* Ensure full height */}
+        <LeftOptionNav /> {/* Navigation stays on the left */}
+        <div style={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}> {/* Centering ItemBox */}
+          <ItemBox items={itemsData} onDelete={handleDelete} onAddNewItem={handleAddNewItem} />
+        </div>
       </div>
     </ThemeProvider>
   );
