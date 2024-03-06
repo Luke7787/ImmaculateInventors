@@ -56,6 +56,18 @@ app.post('/users/', async (req, res) => {
 			res.status(201).send(savedUser);
 		}
 	}
+<<<<<<< HEAD
+=======
+});
+
+app.get('/uniqueUser/:username', async (req, res) => {
+	const username = req.params.username;
+	const result = await userServices.findUserByUsername(username);
+	if (result.length > 0) res.status(409).send('Username already taken');
+	else {
+		res.status(200).send('Valid username');
+	}
+>>>>>>> e5e58c116625438aeae90706ee3ec7ef7095ee95
 });
 
 app.get('/uniqueUser/:username', async (req, res) => {
