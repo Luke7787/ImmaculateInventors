@@ -8,8 +8,18 @@
 .outerContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
+  align-items: center; /* Keeps items aligned to the center */
+  width: 100%; /* Ensures it takes the full width of its parent */
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px; /* Adjusted to provide more room for items */
+  justify-content: center; /* Centers grid items within the container */
+  margin: 0 auto; /* Centers the grid container itself */
 }
 
 .addButton {
@@ -28,14 +38,6 @@
 
 .addButton:hover {
   background-color: #3a5ba0;
-}
-
-.gridContainer {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 600px;
 }
 
 .gridItem {
