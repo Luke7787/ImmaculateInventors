@@ -4,6 +4,7 @@ import Header from "../Header/Header.tsx";
 import theme from "../theme.tsx";
 import { ThemeProvider } from "@mui/material";
 import LeftOptionNav from "../LeftOptionNav/LeftOptionNav.tsx";
+import styles from "./Home.module.css";
 
 const Home = () => {
   const [itemsData, setItemsData] = useState([
@@ -31,9 +32,9 @@ const Home = () => {
   return (
     <ThemeProvider theme={theme}>
       <Header />
-      <div style={{ display: "flex", height: '105vh' }}> {/* Ensure full height */}
-        <LeftOptionNav /> {/* Navigation stays on the left */}
-        <div style={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}> {/* Centering ItemBox */}
+      <div className={styles.homeContainer}> {/* Apply layout styles */}
+        <LeftOptionNav />
+        <div className={styles.contentContainer}> {/* Centering ItemBox */}
           <ItemBox items={itemsData} onDelete={handleDelete} onAddNewItem={handleAddNewItem} />
         </div>
       </div>
