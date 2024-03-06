@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 interface LeftOptionNavProps {
-  // Props if needed
 }
 
 const LeftOptionNav = () => {
