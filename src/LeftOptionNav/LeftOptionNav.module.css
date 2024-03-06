@@ -1,16 +1,15 @@
-/* LeftOptionNav.module.css */
 .leftNav {
     display: flex;
     flex-direction: column;
     padding: 24px;
-    width: 250px; /* Adjust width as needed */
-    height: 100vh; /* Full height of the viewport */
-    background-color: #f0f0f0; /* Subtle background color */
-    border-right: 2px solid #d0d0d0; /* Right border for visual separation */
+    width: 250px;
+    height: 100vh;
+    background-color: #f0f0f0; 
+    border-right: 2px solid #d0d0d0; 
   }
   
   .folderTitle {
-    font-size: 20px; /* Moderate big text */
+    font-size: 20px;
     margin-bottom: 20px;
   }
   
@@ -23,13 +22,12 @@
   }
   
   .filterButtonContainer {
-    margin-top: auto; /* Places the filter button at the bottom */
+    margin-top: auto;
   }
   
-  /* New class for the flex container in Home.tsx */
   .homeContainer {
     display: flex;
-    height: 105vh; /* Adjusted to match your inline style */
+    height: 10vh;
   }
 
   .contentContainer {
