@@ -2,9 +2,11 @@
     display: flex;
     flex-direction: column;
     padding: 24px;
-    width: 250px; /* Adjusted width for a narrower left nav */
-    height: 100%;
-  }
+    width: 250px; /* Adjust width as needed */
+    height: 100vh; /* Full height of the viewport */
+    background-color: #f0f0f0; /* Subtle background color */
+    border-right: 2px solid #d0d0d0; /* Right border for visual separation */
+  }  
   
   .folderTitle {
     font-size: 20px; /* Moderate big text */
