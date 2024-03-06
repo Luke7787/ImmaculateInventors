@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const UserSchema = require("./user.tsx");
 const ItemSchema = require("./item.tsx")
+const itemServices = require("./item-services.tsx");
 
 
 let dbConnection;
@@ -133,11 +134,12 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
     return incItem.quantity;
   } else {
     const tempItem = await ItemModel.findById(itemId)
-    if (tempItem._id - quantity <= 0) {
+    if (tempItem.quantity - quantity <= 0) {
       console.log("item gone")
       const updatedUser = await UserModel.findByIdAndUpdate(userId, {
         $pull: {items: itemId},
       })
+      const delItem = await itemServices.deleteItem(itemId)
     } else {
       console.log("item not gone")
       const decItem = await ItemModel.findByIdAndUpdate(itemId, {
