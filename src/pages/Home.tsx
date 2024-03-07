@@ -8,19 +8,19 @@ import styles from "./Home.module.css";
 
 const Home = () => {
   // Initialize folders
-  const [folders, setFolders] = useState(['default', 'Groceries', 'School Supplies']);
-  const [currentFolder, setCurrentFolder] = useState('default');
+  const [folders, setFolders] = useState(['Default', 'Groceries', 'School Supplies']);
+  const [currentFolder, setCurrentFolder] = useState('Default');
   const [itemsData, setItemsData] = useState([
     // Initial items, you can assign them to the 'default' folder or specific ones
-    { folder: 'default', name: "Apple", quantity: 5, image: "/images/apple.jpg" },
-    { folder: 'default', name: "Big Pot", quantity: 2, image: "/images/bigPot.jpg" },
-    { folder: 'default', name: "Fish", quantity: 3, image: "/images/fish.jpg" },
-    { folder: 'default', name: "Mini", quantity: 5, image: "/images/mini.jpg" },
-    { folder: 'default', name: "Mushroom", quantity: 10, image: "/images/mushrooom.jpg" },
-    { folder: 'default', name: "Golf Club", quantity: 1, image: "/images/golf.jpg" },
-    { folder: 'default', name: "Basketball", quantity: 1, image: "/images/basketball.jpg" },
-    { folder: 'default', name: "Rocket", quantity: 1, image: "/images/rocket.jpg" },
-    { folder: 'default', name: "Testing Size", quantity: 1, image: "/images/testing.jpg" },
+    { folder: 'Default', name: "Apple", quantity: 5, image: "/images/apple.jpg" },
+    { folder: 'Default', name: "Big Pot", quantity: 2, image: "/images/bigPot.jpg" },
+    { folder: 'Default', name: "Fish", quantity: 3, image: "/images/fish.jpg" },
+    { folder: 'Default', name: "Mini", quantity: 5, image: "/images/mini.jpg" },
+    { folder: 'Default', name: "Mushroom", quantity: 10, image: "/images/mushrooom.jpg" },
+    { folder: 'Default', name: "Golf Club", quantity: 1, image: "/images/golf.jpg" },
+    { folder: 'Default', name: "Basketball", quantity: 1, image: "/images/basketball.jpg" },
+    { folder: 'Default', name: "Rocket", quantity: 1, image: "/images/rocket.jpg" },
+    { folder: 'Default', name: "Testing Size", quantity: 1, image: "/images/testing.jpg" },
   ]);
 
   const handleFolderSelect = (folderName) => {
