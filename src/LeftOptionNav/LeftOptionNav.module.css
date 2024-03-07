@@ -1,39 +1,56 @@
 .leftNav {
-    display: flex;
-    flex-direction: column;
-    padding: 24px;
-    width: 250px;
-    height: 100vh;
-    background-color: #f0f0f0; 
-    border-right: 2px solid #d0d0d0; 
-  }
-  
-  .folderTitle {
-    font-size: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .searchBar {
-    margin-bottom: 20px;
-  }
-  
-  .newFolderButton {
-    margin-bottom: 20px;
-  }
-  
-  .filterButtonContainer {
-    margin-top: auto;
-  }
-  
-  .homeContainer {
-    display: flex;
-    height: 10vh;
-  }
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  width: 250px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  border-right: 2px solid #d0d0d0;
+}
 
-  .contentContainer {
-    flexGrow: 1;
-    display: flex;
-    justifyContent: "center";
-    alignItems: "center";
-  }
-  
+.folderTitle {
+  font-size: 25px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.searchContainer {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.searchBar {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.searchButton {
+  /* Styling for search button if needed */
+}
+
+.newFolderInput {
+  margin-bottom: 20px;
+}
+
+.createFolderButton {
+  margin-bottom: 20px;
+}
+
+.folderList {
+  flex-grow: 1;
+  overflow-y: auto; /* In case of many folders */
+}
+
+.folderName {
+  padding: 10px 0;
+  border-bottom: 1px solid #d0d0d0;
+  /* Add more styles if needed */
+}
+
+.filterButtonContainer {
+  margin-top: auto;
+}
+
+.filterButton {
+  /* Styling for filter button if needed */
+}
