@@ -5,28 +5,24 @@ import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete'; // Import the delete icon
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const LeftOptionNav = () => {
+const LeftOptionNav = ({ onFolderSelect }) => {
   const [newFolderName, setNewFolderName] = useState('');
-  const [folders, setFolders] = useState(['Groceries', 'School Supplies']); // State to track folders
+  const [folders, setFolders] = useState(['Default', 'Groceries', 'School Supplies']);
 
   const handleSearch = () => {
     // Implement your search logic
   };
 
   const handleCreateFolder = () => {
-    // Implement folder creation logic, adding the new folder to the state
-    if(newFolderName.trim() === '') return; // Prevent adding empty names
-    const updatedFolders = [...folders, newFolderName.trim()];
-    setFolders(updatedFolders);
-    setNewFolderName(''); // Reset the input field
+    if(newFolderName.trim() === '') return;
+    setFolders(prevFolders => [...prevFolders, newFolderName.trim()]);
+    setNewFolderName('');
   };
 
   const handleDeleteFolder = (folderName) => {
-    // Filter out the folder to delete and update state
-    const updatedFolders = folders.filter(folder => folder !== folderName);
-    setFolders(updatedFolders);
+    setFolders(prevFolders => prevFolders.filter(folder => folder !== folderName));
   };
 
   return (
@@ -57,7 +53,12 @@ const LeftOptionNav = () => {
       <div className={styles.folderList}>
         {folders.map((folder, index) => (
           <div key={index} className={styles.folderItem}>
-            <div className={styles.folderName}>{folder}</div>
+            <div 
+              className={styles.folderName} 
+              onClick={() => onFolderSelect(folder)} // Clicking folder name calls onFolderSelect
+            >
+              {folder}
+            </div>
             <Button 
               onClick={() => handleDeleteFolder(folder)} 
               className={styles.deleteFolderButton}

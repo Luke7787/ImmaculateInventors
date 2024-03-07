@@ -29,7 +29,7 @@
 }
 
 .newFolderInput {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .createFolderButton {
@@ -38,7 +38,7 @@
 
 .folderList {
   flex-grow: 1;
-  overflow-y: auto; /* Allows scrolling within the folder list if needed */
+  overflow-y: auto;
 }
 
 .folderItem {
@@ -49,6 +49,12 @@
   border-bottom: 1px solid #d0d0d0;
 }
 
+.folderLink {
+  flex-grow: 1;
+  color: inherit; /* Ensures link color is consistent with folder name */
+  text-decoration: none; /* Removes underline from link */
+}
+
 .folderName {
   /* Styles for folder name if needed */
 }
@@ -56,13 +62,13 @@
 .deleteFolderButton {
   min-width: auto;
   padding: 0;
-  margin-left: 8px; /* Space between folder name and delete button */
   color: #d9534f; /* Change the color to match your design */
+  margin-left: 8px; /* Ensures a little space between the folder name and the delete button */
 }
 
 .filterButtonContainer {
   margin-top: auto;
-  padding-bottom: 120px; /* Adjust if needed to prevent the need to scroll */
+  padding-bottom: 120px;
 }
 
 .filterButton {
