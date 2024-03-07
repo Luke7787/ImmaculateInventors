@@ -25,7 +25,7 @@
 }
 
 .searchButton {
-  /* Styling for search button if needed */
+  /* Additional styles for search button if needed */
 }
 
 .newFolderInput {
@@ -38,19 +38,33 @@
 
 .folderList {
   flex-grow: 1;
-  overflow-y: auto; /* In case of many folders */
+  overflow-y: auto; /* Allows scrolling within the folder list if needed */
+}
+
+.folderItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #d0d0d0;
 }
 
 .folderName {
-  padding: 10px 0;
-  border-bottom: 1px solid #d0d0d0;
-  /* Add more styles if needed */
+  /* Styles for folder name if needed */
+}
+
+.deleteFolderButton {
+  min-width: auto;
+  padding: 0;
+  margin-left: 8px; /* Space between folder name and delete button */
+  color: #d9534f; /* Change the color to match your design */
 }
 
 .filterButtonContainer {
   margin-top: auto;
+  padding-bottom: 120px; /* Adjust if needed to prevent the need to scroll */
 }
 
 .filterButton {
-  /* Styling for filter button if needed */
+  /* Additional styles for filter button if needed */
 }
