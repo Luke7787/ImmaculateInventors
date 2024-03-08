@@ -30,10 +30,6 @@ async function getUsers(username, password) {
   return result;
 }
 
-function usernameUser(username) {
-  return users["users_list"].findIndex((user) => user["username"] === username);
-}
-
 async function findUserById(id) {
   const userModel = getDbConnection().model("User", UserSchema);
   try {
@@ -63,9 +59,6 @@ async function addUser(user){
             console.log(error);
             return {error: true, message: 'An unexpected error occurred'};
         }
-
-        // console.log(error);
-        // return false;
     }   
 }
 
@@ -109,6 +102,7 @@ async function getItemFromUser(userId, itemId) {
   if (userItem) console.log("Item found");
   return await ItemModel.find({_id: itemId});
 }
+
 
 async function deleteItemFromUser(userId, itemId) {
   const UserModel = getDbConnection().model("User", UserSchema);

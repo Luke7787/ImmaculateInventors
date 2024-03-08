@@ -56,18 +56,6 @@ app.post('/users/', async (req, res) => {
 			res.status(201).send(savedUser);
 		}
 	}
-<<<<<<< HEAD
-=======
-});
-
-app.get('/uniqueUser/:username', async (req, res) => {
-	const username = req.params.username;
-	const result = await userServices.findUserByUsername(username);
-	if (result.length > 0) res.status(409).send('Username already taken');
-	else {
-		res.status(200).send('Valid username');
-	}
->>>>>>> e5e58c116625438aeae90706ee3ec7ef7095ee95
 });
 
 app.get('/uniqueUser/:username', async (req, res) => {
@@ -120,10 +108,15 @@ app.get("/items/", async (req, res) => {
   let result = null;
   const uid = req.query["uid"];
   const id = req.query["id"];
-  if (!id && !uid) {
-    result = await itemServices.getItems(uid, id);
+  const itemName = req.query["itemName"];
+  if (!id && !uid && !itemName) {
+    result = await itemServices.getItems(); // gets all items from item database
+  } else if (uid && !id) {
+	result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
+  } else if (!uid && !id && itemName) {
+	result = await itemServices.findItemByName(itemName); // get items with the name
   } else {
-    result = await userServices.getItemFromUser(uid, id);
+    result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
   } 
   if (result) {
     res.status(201).send(result);
