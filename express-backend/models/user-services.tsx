@@ -1,8 +1,10 @@
-declare var require: any;
-declare var exports: any;
+// @ts-ignore
 const mongoose = require('mongoose');
+// @ts-ignore
 const UserSchema = require('./user.tsx');
+// @ts-ignore
 const ItemSchema = require('./item.tsx');
+// @ts-ignore
 const itemServices = require('./item-services.tsx');
 
 let dbConnection;
