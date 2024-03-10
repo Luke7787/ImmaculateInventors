@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+const Item = require('./item.tsx');
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -56,6 +59,14 @@ const UserSchema = new mongoose.Schema(
 					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
 			},
 		},
+		items: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Item',
+				required: false,
+				trim: true,
+			},
+		],
 	},
 	{ collection: 'users_list' }
 );

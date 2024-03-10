@@ -32,5 +32,10 @@ module.exports = {
     ],
     "rules": { 
         "no-unused-vars": "off" 
-    }
+    },
+    "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
 }

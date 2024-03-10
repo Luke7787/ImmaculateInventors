@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
+const itemServices = require('./models/item-services.tsx');
 
 const app = express();
 const port = 8000;
@@ -64,6 +65,79 @@ app.get('/uniqueUser/:username', async (req, res) => {
 	else {
 		res.status(200).send('Valid username');
 	}
+});
+
+app.get('/uniqueUser/:username', async (req, res) => {
+	const username = req.params.username;
+	const result = await userServices.findUserByUsername(username);
+	if (result.length > 0) res.status(409).send('Username already taken');
+	else {
+		res.status(200).send('Valid username');
+	}
+});
+
+app.post('/items/', async (req, res) => {
+	const item = req.body;
+
+	const savedItem = await itemServices.addItem(item);
+	if (savedItem) res.status(201).send(savedItem);
+	else res.status(409).end();
+});
+
+app.patch('/itemToUser/', async (req, res) => {
+	const uid = req.query['uid'];
+	//const id = req.query["id"];
+	const item = req.body;
+	const savedItem = await itemServices.addItem(item);
+	const id = savedItem._id;
+	console.log(id);
+	const user = await userServices.addItemToUser(uid, id);
+	if (user) {
+		res.status(201).send(user);
+	} else res.status(409).end();
+});
+
+app.patch('/items/', async (req, res) => {
+	const uid = req.query['uid'];
+	const id = req.query['id'];
+	const option = req.query['option'];
+	const quantity = req.query['quantity'];
+	console.log(option);
+	if (option === 'add' || option === 'sub') {
+		const result = await userServices.updateItemFromUser(
+			uid,
+			id,
+			quantity,
+			option
+		);
+		res.status(201).send('worked');
+	} else {
+		res.status(404).send('wrong option');
+	}
+});
+
+app.get('/items/', async (req, res) => {
+	let result = null;
+	const uid = req.query['uid'];
+	const id = req.query['id'];
+	if (!id && !uid) {
+		result = await itemServices.getItems(uid, id);
+	} else {
+		result = await userServices.getItemFromUser(uid, id);
+	}
+	if (result) {
+		res.status(201).send(result);
+	} else {
+		res.status(404).send('item not found');
+	}
+});
+
+app.delete('/items/', async (req, res) => {
+	const uid = req.query['uid'];
+	const id = req.query['id'];
+	const result = await userServices.deleteItemFromUser(uid, id);
+	const result2 = await itemServices.deleteItem(id);
+	res.status(201).send('item deleted');
 });
 
 app.listen(port, () => {
