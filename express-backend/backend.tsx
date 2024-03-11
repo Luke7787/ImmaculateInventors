@@ -102,48 +102,47 @@ app.patch('/itemToUser/', async (req, res) => {
 	} else res.status(409).end();
 });
 
-app.patch("/items/", async (req, res) => {
-  const uid = req.query["uid"]; 
-  const id = req.query["id"];
-  const option = req.query["option"]; // add or subtract from existing quantity
-  const quantity = req.query["quantity"]; // amount to increment or decrement by
-  if (option === "add" || option === "sub") {
-    const result = await userServices.updateItemFromUser(
-		uid,
-		id, 
-		quantity, 
-		option
-	);
+app.patch('/items/', async (req, res) => {
+	const uid = req.query['uid'];
+	const id = req.query['id'];
+	const option = req.query['option']; // add or subtract from existing quantity
+	const quantity = req.query['quantity']; // amount to increment or decrement by
+	if (option === 'add' || option === 'sub') {
+		const result = await userServices.updateItemFromUser(
+			uid,
+			id,
+			quantity,
+			option
+		);
+		if (result) {
+			res.status(201).send(result);
+		} else {
+			res.status(404).send('function: updateItemFromUser');
+		}
+	} else {
+		res.status(404).send('Wrong Option! (Use add or subtract)');
+	}
+});
+
+app.get('/items/', async (req, res) => {
+	let result = null;
+	const uid = req.query['uid'];
+	const id = req.query['id'];
+	const itemName = req.query['itemName'];
+	if (!id && !uid && !itemName) {
+		result = await itemServices.getItems(); // gets all items from item database
+	} else if (uid && !id) {
+		result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
+	} else if (!uid && !id && itemName) {
+		result = await itemServices.findItemByName(itemName); // get items with the name
+	} else {
+		result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
+	}
 	if (result) {
 		res.status(201).send(result);
 	} else {
-		res.status(404).send("function: updateItemFromUser");
+		res.status(404).send('item not found');
 	}
-  } else {
-    res.status(404).send("Wrong Option! (Use add or subtract)")
-  }
-});
-
-
-app.get("/items/", async (req, res) => {
-  let result = null;
-  const uid = req.query["uid"];
-  const id = req.query["id"];
-  const itemName = req.query["itemName"];
-  if (!id && !uid && !itemName) {
-    result = await itemServices.getItems(); // gets all items from item database
-  } else if (uid && !id) {
-	result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
-  } else if (!uid && !id && itemName) {
-	result = await itemServices.findItemByName(itemName); // get items with the name
-  } else {
-    result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
-  } 
-  if (result) {
-    res.status(201).send(result);
-  } else {
-    res.status(404).send("item not found");
-  }
 });
 
 app.delete('/items/', async (req, res) => {
