@@ -1,4 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const ObjectId = Schema.ObjectId;
+const Item = require("./item.tsx");
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -24,7 +27,14 @@ const UserSchema = new mongoose.Schema({
     //   if (value.length < 5) res.status(409).send("Error: Password must be 5 or more characters long.");
     // },
   },
-  
+  items: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Item",
+      required: false,
+      trim: true,
+    },
+  ],
 }, {collection : 'users_list'});
 
 module.exports = UserSchema;
