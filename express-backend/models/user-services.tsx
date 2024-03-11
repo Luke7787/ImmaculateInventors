@@ -152,6 +152,7 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
   }
 }
 
+
 async function findUserByUsername(username) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	return await userModel.find({ username: username });
