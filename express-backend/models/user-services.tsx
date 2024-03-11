@@ -113,6 +113,7 @@ async function getItemFromUser(userId, itemId) {
 	return await ItemModel.find({ _id: itemId });
 }
 
+
 async function deleteItemFromUser(userId, itemId) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
@@ -126,31 +127,31 @@ async function deleteItemFromUser(userId, itemId) {
 }
 
 async function updateItemFromUser(userId, itemId, quantity, option) {
-	const UserModel = getDbConnection().model('User', UserSchema);
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
-	const user = await UserModel.findById(userId);
-	if (option === 'add') {
-		console.log('bye');
-		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
-			$inc: { quantity: quantity },
-		});
-		return incItem.quantity;
-	} else {
-		const tempItem = await ItemModel.findById(itemId);
-		if (tempItem.quantity - quantity <= 0) {
-			console.log('item gone');
-			const updatedUser = await UserModel.findByIdAndUpdate(userId, {
-				$pull: { items: itemId },
-			});
-			const delItem = await itemServices.deleteItem(itemId);
-		} else {
-			console.log('item not gone');
-			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
-				$inc: { quantity: -quantity },
-			});
-		}
-	}
+  const UserModel = getDbConnection().model("User", UserSchema);
+  const ItemModel = getDbConnection().model("Item", ItemSchema);
+  const user = await UserModel.findById(userId);
+  if (option === "add") {
+    const incItem = await ItemModel.findByIdAndUpdate(itemId, {
+      $inc: {quantity: quantity}
+    });
+    return incItem
+  } else {
+    const tempItem = await ItemModel.findById(itemId)
+    if (tempItem.quantity - quantity <= 0) {
+      const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+        $pull: {items: itemId},
+      })
+      const delItem = await itemServices.deleteItem(itemId)
+      return delItem;
+    } else {
+      const decItem = await ItemModel.findByIdAndUpdate(itemId, {
+        $inc: {quantity: -quantity}
+      });
+      return decItem;
+    }
+  }
 }
+
 
 async function findUserByUsername(username) {
 	const userModel = getDbConnection().model('User', UserSchema);
