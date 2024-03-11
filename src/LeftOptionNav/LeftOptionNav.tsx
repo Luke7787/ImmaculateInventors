@@ -7,7 +7,11 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const LeftOptionNav = ({ onFolderSelect }) => {
+interface LeftOptionNavProps {
+  onFolderSelect: (folderName: string) => void;
+}
+
+const LeftOptionNav: React.FC<LeftOptionNavProps> = ({ onFolderSelect }) => {
   const [newFolderName, setNewFolderName] = useState('');
   const [folders, setFolders] = useState(['Default', 'Groceries', 'School Supplies']);
 
@@ -21,7 +25,7 @@ const LeftOptionNav = ({ onFolderSelect }) => {
     setNewFolderName('');
   };
 
-  const handleDeleteFolder = (folderName) => {
+  const handleDeleteFolder = (folderName: string) => {
     setFolders(prevFolders => prevFolders.filter(folder => folder !== folderName));
   };
 
@@ -55,7 +59,7 @@ const LeftOptionNav = ({ onFolderSelect }) => {
           <div key={index} className={styles.folderItem}>
             <div 
               className={styles.folderName} 
-              onClick={() => onFolderSelect(folder)} // Clicking folder name calls onFolderSelect
+              onClick={() => onFolderSelect(folder)}
             >
               {folder}
             </div>

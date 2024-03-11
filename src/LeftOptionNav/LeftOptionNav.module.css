@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .leftNav {
   display: flex;
   flex-direction: column;
@@ -74,9 +73,4 @@
 
 .filterButton {
   /* Additional styles for filter button if needed */
-=======
-.rowName {
-	padding: 24px 48px;
-	width: 50%;
->>>>>>> dec3f9985ec7b4ee9180778b62bf413fb4f2c84c
 }
