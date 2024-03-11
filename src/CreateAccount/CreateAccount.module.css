@@ -1,0 +1,86 @@
+.button {
+	background-color: #6a4b4b;
+	border-radius: 6px;
+	color: #ffffff;
+	width: 100px;
+	height: 40px;
+	margin-top: 28px;
+	margin-bottom: 12px;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.container {
+	padding: 10px 0px;
+	display: flex;
+	justify-content: center;
+}
+
+.grid {
+	display: grid;
+	grid-template-rows: repeat(5, 75px);
+	grid-template-columns: repeat(4, 130px);
+	grid-template-areas:
+		'first first last last'
+		'email email email email'
+		'country state city zip'
+		'user user user user'
+		'pass pass confirmPass confirmPass';
+	gap: 35px;
+	input {
+		background-color: #e4e4e4;
+		border-radius: 6px;
+	}
+
+	p {
+		font-size: 16px;
+		margin: 5px 0px;
+
+		&:last-child {
+			font-size: 14px;
+			color: red;
+		}
+	}
+}
+
+.first {
+	grid-area: first;
+}
+
+.last {
+	grid-area: last;
+}
+
+.email {
+	grid-area: email;
+}
+
+.country {
+	grid-area: country;
+}
+
+.state {
+	grid-area: state;
+}
+
+.city {
+	grid-area: city;
+}
+
+.zip {
+	grid-area: zip;
+}
+
+.user {
+	grid-area: user;
+}
+
+.pass {
+	grid-area: pass;
+}
+
+.confirmPass {
+	grid-area: confirmPass;
+}

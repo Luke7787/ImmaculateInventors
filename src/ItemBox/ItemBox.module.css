@@ -2,10 +2,11 @@
 .itemQuantity,
 .deleteButton,
 .addButton {
-  font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 .outerContainer {
+<<<<<<< HEAD
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -35,50 +36,88 @@
   font-size: 18px;
   font-weight: bold;
   border-radius: 10px;
+=======
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+.addButton {
+	margin-top: 20px;
+	padding: 10px 20px;
+	background-color: #4d79ce;
+	color: white;
+	border: 2.5px solid black;
+	cursor: pointer;
+	align-self: flex-start;
+	margin-bottom: 20px;
+	font-size: 18px;
+	font-weight: bold;
+	border-radius: 10px;
+>>>>>>> dec3f9985ec7b4ee9180778b62bf413fb4f2c84c
 }
 
 .addButton:hover {
-  background-color: #3a5ba0;
+	background-color: #3a5ba0;
 }
 
+<<<<<<< HEAD
+=======
+.gridContainer {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px;
+	width: 100%;
+	max-width: 600px;
+}
+
+>>>>>>> dec3f9985ec7b4ee9180778b62bf413fb4f2c84c
 .gridItem {
-  background-color: #4D79CE;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border: 2.5px solid black;
-  min-height: 200px;
-  word-wrap: break-word;
-  border-radius: 10px;
+	background-color: #4d79ce;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	border: 2.5px solid black;
+	min-height: 200px;
+	word-wrap: break-word;
+	border-radius: 10px;
 }
 
 .itemImage {
-  width: 110px;
-  height: 110px;
-  object-fit: cover;
-  margin-bottom: 10px;
+	width: 110px;
+	height: 110px;
+	object-fit: cover;
+	margin-bottom: 10px;
 }
 
 .itemName,
 .itemQuantity {
+<<<<<<< HEAD
   color: white;
   margin: 5px 0 10px;
   word-wrap: break-word;
   max-width: 100%;
+=======
+	color: white;
+	margin: 5px 0;
+	word-wrap: break-word;
+	max-width: 100%;
+>>>>>>> dec3f9985ec7b4ee9180778b62bf413fb4f2c84c
 }
 
 .deleteButton {
-  padding: 5px 10px;
-  margin-top: 10px;
-  background-color: #D9534F;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 0.8rem;
+	padding: 5px 10px;
+	margin-top: 10px;
+	background-color: #d9534f;
+	color: white;
+	border: none;
+	cursor: pointer;
+	font-size: 0.8rem;
 }
 
 .deleteButton:hover {
-  background-color: #C9302C;
+	background-color: #c9302c;
 }
