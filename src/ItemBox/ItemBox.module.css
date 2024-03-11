@@ -6,36 +6,39 @@
 }
 
 .outerContainer {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  width: 100%; 
+  padding-top: 0;
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: center;
+  margin: 0 auto; 
 }
 
 .addButton {
-	margin-top: 20px;
-	padding: 10px 20px;
-	background-color: #4d79ce;
-	color: white;
-	border: 2.5px solid black;
-	cursor: pointer;
-	align-self: flex-start;
-	margin-bottom: 20px;
-	font-size: 18px;
-	font-weight: bold;
-	border-radius: 10px;
+  margin-top: 25px;
+  padding: 10px 20px;
+  background-color: #4D79CE;
+  color: white;
+  border: 2.5px solid black;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
 }
 
 .addButton:hover {
 	background-color: #3a5ba0;
-}
-
-.gridContainer {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 20px;
-	width: 100%;
-	max-width: 600px;
 }
 
 .gridItem {
@@ -60,10 +63,10 @@
 
 .itemName,
 .itemQuantity {
-	color: white;
-	margin: 5px 0;
-	word-wrap: break-word;
-	max-width: 100%;
+  color: white;
+  margin: 5px 0 10px;
+  word-wrap: break-word;
+  max-width: 100%;
 }
 
 .deleteButton {

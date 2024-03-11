@@ -1,4 +1,76 @@
-.rowName {
-	padding: 24px 48px;
-	width: 50%;
+.leftNav {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  width: 250px;
+  height: 100vh;
+  background-color: #f0f0f0;
+  border-right: 2px solid #d0d0d0;
+}
+
+.folderTitle {
+  font-size: 25px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.searchContainer {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.searchBar {
+  flex-grow: 1;
+  margin-right: 8px;
+}
+
+.searchButton {
+  /* Additional styles for search button if needed */
+}
+
+.newFolderInput {
+  margin-bottom: 0px;
+}
+
+.createFolderButton {
+  margin-bottom: 20px;
+}
+
+.folderList {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.folderItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.folderLink {
+  flex-grow: 1;
+  color: inherit; /* Ensures link color is consistent with folder name */
+  text-decoration: none; /* Removes underline from link */
+}
+
+.folderName {
+  /* Styles for folder name if needed */
+}
+
+.deleteFolderButton {
+  min-width: auto;
+  padding: 0;
+  color: #d9534f; /* Change the color to match your design */
+  margin-left: 8px; /* Ensures a little space between the folder name and the delete button */
+}
+
+.filterButtonContainer {
+  margin-top: auto;
+  padding-bottom: 120px;
+}
+
+.filterButton {
+  /* Additional styles for filter button if needed */
 }
