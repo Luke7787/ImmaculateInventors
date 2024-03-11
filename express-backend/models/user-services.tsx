@@ -1,10 +1,6 @@
-// @ts-ignore
 const mongoose = require('mongoose');
-// @ts-ignore
 const UserSchema = require('./user.tsx');
-// @ts-ignore
 const ItemSchema = require('./item.tsx');
-// @ts-ignore
 const itemServices = require('./item-services.tsx');
 
 let dbConnection;
@@ -60,7 +56,7 @@ async function addUser(user) {
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
 				? error.errors.password.message
-				: 'Validation failed'; //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
+				: error.errors; //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
 			console.log(errorMessage); //return the error message to handle it in response
 			return { error: true, message: errorMessage };
 		} else {
@@ -176,6 +172,7 @@ async function deleteUserById(id) {
 		return false;
 	}
 }
+
 exports.deleteUserById = deleteUserById;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
