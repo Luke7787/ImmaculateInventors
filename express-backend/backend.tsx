@@ -18,10 +18,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', async (req, res) => {
+	let result;
 	const username = req.query['username'];
 	const password = req.query['password'];
 	try {
-		const result = await userServices.getUsers(username, password);
+		if (username && !password) {
+			result = await userServices.findUserByUsername(username);
+		} else {
+			result = await userServices.getUsers(username, password);
+		}
 		if (result.length == 0) {
 			return res.status(404).send('User not found');
 		}
@@ -100,9 +105,8 @@ app.patch('/itemToUser/', async (req, res) => {
 app.patch('/items/', async (req, res) => {
 	const uid = req.query['uid'];
 	const id = req.query['id'];
-	const option = req.query['option'];
-	const quantity = req.query['quantity'];
-	console.log(option);
+	const option = req.query['option']; // add or subtract from existing quantity
+	const quantity = req.query['quantity']; // amount to increment or decrement by
 	if (option === 'add' || option === 'sub') {
 		const result = await userServices.updateItemFromUser(
 			uid,
@@ -110,9 +114,13 @@ app.patch('/items/', async (req, res) => {
 			quantity,
 			option
 		);
-		res.status(201).send('worked');
+		if (result) {
+			res.status(201).send(result);
+		} else {
+			res.status(404).send('function: updateItemFromUser');
+		}
 	} else {
-		res.status(404).send('wrong option');
+		res.status(404).send('Wrong Option! (Use add or subtract)');
 	}
 });
 
@@ -120,10 +128,15 @@ app.get('/items/', async (req, res) => {
 	let result = null;
 	const uid = req.query['uid'];
 	const id = req.query['id'];
-	if (!id && !uid) {
-		result = await itemServices.getItems(uid, id);
+	const itemName = req.query['itemName'];
+	if (!id && !uid && !itemName) {
+		result = await itemServices.getItems(); // gets all items from item database
+	} else if (uid && !id) {
+		result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
+	} else if (!uid && !id && itemName) {
+		result = await itemServices.findItemByName(itemName); // get items with the name
 	} else {
-		result = await userServices.getItemFromUser(uid, id);
+		result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
 	}
 	if (result) {
 		res.status(201).send(result);

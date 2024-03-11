@@ -130,24 +130,23 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
 	if (option === 'add') {
-		console.log('bye');
 		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
 			$inc: { quantity: quantity },
 		});
-		return incItem.quantity;
+		return incItem;
 	} else {
 		const tempItem = await ItemModel.findById(itemId);
 		if (tempItem.quantity - quantity <= 0) {
-			console.log('item gone');
 			const updatedUser = await UserModel.findByIdAndUpdate(userId, {
 				$pull: { items: itemId },
 			});
 			const delItem = await itemServices.deleteItem(itemId);
+			return delItem;
 		} else {
-			console.log('item not gone');
 			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
 				$inc: { quantity: -quantity },
 			});
+			return decItem;
 		}
 	}
 }
