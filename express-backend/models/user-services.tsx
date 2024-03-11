@@ -1,7 +1,6 @@
-import * as bcrypt from 'bcrypt'
-
 const mongoose = require("mongoose");
 const UserSchema = require("./user.tsx");
+const bcrypt = require('bcrypt');
 
 
 let dbConnection;
@@ -53,6 +52,7 @@ async function addUser(user){
         //hash password before adding into database
         const hashpassword = bcrypt.hashSync(user['password'], 10);
         user['password'] = hashpassword;
+
 
         // You can use a Model to create new documents using 'new' and 
         // passing the JSON content of the Document:
