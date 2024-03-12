@@ -51,8 +51,7 @@ const UserSchema = new mongoose.Schema(
 			trim: true,
 			validate: {
 				validator: function (value) {
-					const passwordPolicy =
-						/^(?=.*\d)(?=.*[?!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{10,}$/;
+					const passwordPolicy = /^(?=.*\d)(?=.*[?!@#$%^&*])(?=.*[A-Z]).{10,}$/;
 					return passwordPolicy.test(value);
 				},
 				message: (props) =>

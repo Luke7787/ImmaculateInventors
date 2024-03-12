@@ -1,5 +1,5 @@
 import styles from './CreateAccount.module.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { FormControl, FormHelperText, MenuItem, Select } from '@mui/material';
 import axios from 'axios';
@@ -39,6 +39,7 @@ const CreateAccount = () => {
 	const [stateErr, setStateErr] = useState<string>('');
 	const [cityErr, setCityErr] = useState<string>('');
 	const [zipErr, setZipErr] = useState<string>('');
+	const [createSubmitted, setCreateSubmitted] = useState<boolean>(false);
 
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
@@ -154,33 +155,50 @@ const CreateAccount = () => {
 		handleUsernameBlur();
 		handlePasswordBlur();
 		handleConfirmPassBlur();
-		if (
-			!firstErr &&
-			!lastErr &&
-			!emailErr &&
-			!countryErr &&
-			!stateErr &&
-			!cityErr &&
-			!zipErr &&
-			!userErr &&
-			!passwordErr &&
-			!confirmPassErr
-		) {
-			console.log(data);
-			setData({
-				firstName: '',
-				lastName: '',
-				email: '',
-				country: '',
-				state: '',
-				city: '',
-				zipcode: '',
-				username: '',
-				password: '',
-			});
-			setConfirmPassData('');
-		}
+		setCreateSubmitted(true);
 	};
+
+	useEffect(() => {
+		(async function () {
+			if (
+				!firstErr &&
+				!lastErr &&
+				!emailErr &&
+				!countryErr &&
+				!stateErr &&
+				!cityErr &&
+				!zipErr &&
+				!userErr &&
+				!passwordErr &&
+				!confirmPassErr &&
+				createSubmitted
+			) {
+				console.log(firstErr);
+				try {
+					const response = await axios.post('http://localhost:8000/users', {
+						params: data,
+					});
+					console.log(response);
+				} catch (err) {
+					console.error('err', err);
+				}
+				setData({
+					firstName: '',
+					lastName: '',
+					email: '',
+					country: '',
+					state: '',
+					city: '',
+					zipcode: '',
+					username: '',
+					password: '',
+				});
+				setConfirmPassData('');
+			}
+			setCreateSubmitted(false);
+		})();
+	}, [createSubmitted]);
+
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className={styles.container}>
@@ -189,6 +207,7 @@ const CreateAccount = () => {
 						<p>First name</p>
 						<FormControl fullWidth>
 							<TextField
+								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
 								label="First name"
@@ -205,6 +224,7 @@ const CreateAccount = () => {
 						<p>Last name</p>
 						<FormControl fullWidth>
 							<TextField
+								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
 								label="Last name"
@@ -221,6 +241,7 @@ const CreateAccount = () => {
 						<p>Email</p>
 						<FormControl fullWidth>
 							<TextField
+								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
 								label="Email address"
@@ -237,6 +258,7 @@ const CreateAccount = () => {
 						<p>Country</p>
 						<FormControl fullWidth>
 							<Select
+								error={!!countryErr}
 								id="country-input"
 								name="country"
 								value={data.country}
@@ -261,6 +283,7 @@ const CreateAccount = () => {
 					<div className={styles.state}>
 						<p>State</p>
 						<TextField
+							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
 							label="State"
@@ -275,6 +298,7 @@ const CreateAccount = () => {
 					<div className={styles.city}>
 						<p>City</p>
 						<TextField
+							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
 							label="City"
@@ -289,6 +313,7 @@ const CreateAccount = () => {
 					<div className={styles.zip}>
 						<p>Zip Code</p>
 						<TextField
+							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
 							label="Zip code"
@@ -304,6 +329,7 @@ const CreateAccount = () => {
 						<p>Username</p>
 						<FormControl fullWidth>
 							<TextField
+								error={!!userErr}
 								id="username-input"
 								label="Username"
 								helperText={userErr ? userErr : ''}
@@ -337,6 +363,7 @@ const CreateAccount = () => {
 						<p>Confirm Password</p>
 						<FormControl fullWidth>
 							<TextField
+								error={!!confirmPassErr}
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"

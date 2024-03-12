@@ -48,8 +48,7 @@ app.get('/users/:username', async (req, res) => {
 
 app.post('/users/', async (req, res) => {
 	const user1 = req.body['username'];
-	const userData = req.body;
-
+	const userData = req.body.params;
 	const user2 = await userServices.findUserByUsername(user1);
 	if (user2.length > 0) {
 		res.status(409).send('username already taken');
@@ -57,7 +56,7 @@ app.post('/users/', async (req, res) => {
 	const savedUser = await userServices.addUser(userData);
 	if (savedUser.error) {
 		// Validation error
-		res.status(409).send(savedUser.message);
+		res.status(400).send(savedUser.message);
 	} else {
 		res.status(201).send(savedUser);
 	}
