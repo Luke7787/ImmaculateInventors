@@ -173,7 +173,6 @@ const CreateAccount = () => {
 				!confirmPassErr &&
 				createSubmitted
 			) {
-				console.log(firstErr);
 				try {
 					const response = await axios.post('http://localhost:8000/users', {
 						firstName: data.firstName,
@@ -187,9 +186,7 @@ const CreateAccount = () => {
 						password: data.password,
 					});
 					console.log(response);
-					console.log(data);
 				} catch (err) {
-					console.log(data);
 					console.error('err', err);
 				}
 				setData({
