@@ -1,10 +1,6 @@
-// @ts-ignore
 const mongoose = require('mongoose');
-// @ts-ignore
 const UserSchema = require('./user.tsx');
-// @ts-ignore
 const ItemSchema = require('./item.tsx');
-// @ts-ignore
 const itemServices = require('./item-services.tsx');
 
 let dbConnection;
@@ -60,7 +56,7 @@ async function addUser(user) {
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
 				? error.errors.password.message
-				: 'Validation failed'; //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
+				: error.errors; //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
 			console.log(errorMessage); //return the error message to handle it in response
 			return { error: true, message: errorMessage };
 		} else {
@@ -113,7 +109,6 @@ async function getItemFromUser(userId, itemId) {
 	return await ItemModel.find({ _id: itemId });
 }
 
-
 async function deleteItemFromUser(userId, itemId) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
@@ -127,31 +122,30 @@ async function deleteItemFromUser(userId, itemId) {
 }
 
 async function updateItemFromUser(userId, itemId, quantity, option) {
-  const UserModel = getDbConnection().model("User", UserSchema);
-  const ItemModel = getDbConnection().model("Item", ItemSchema);
-  const user = await UserModel.findById(userId);
-  if (option === "add") {
-    const incItem = await ItemModel.findByIdAndUpdate(itemId, {
-      $inc: {quantity: quantity}
-    });
-    return incItem
-  } else {
-    const tempItem = await ItemModel.findById(itemId)
-    if (tempItem.quantity - quantity <= 0) {
-      const updatedUser = await UserModel.findByIdAndUpdate(userId, {
-        $pull: {items: itemId},
-      })
-      const delItem = await itemServices.deleteItem(itemId)
-      return delItem;
-    } else {
-      const decItem = await ItemModel.findByIdAndUpdate(itemId, {
-        $inc: {quantity: -quantity}
-      });
-      return decItem;
-    }
-  }
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const user = await UserModel.findById(userId);
+	if (option === 'add') {
+		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
+			$inc: { quantity: quantity },
+		});
+		return incItem;
+	} else {
+		const tempItem = await ItemModel.findById(itemId);
+		if (tempItem.quantity - quantity <= 0) {
+			const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+				$pull: { items: itemId },
+			});
+			const delItem = await itemServices.deleteItem(itemId);
+			return delItem;
+		} else {
+			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
+				$inc: { quantity: -quantity },
+			});
+			return decItem;
+		}
+	}
 }
-
 
 async function findUserByUsername(username) {
 	const userModel = getDbConnection().model('User', UserSchema);
@@ -178,6 +172,7 @@ async function deleteUserById(id) {
 		return false;
 	}
 }
+
 exports.deleteUserById = deleteUserById;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
