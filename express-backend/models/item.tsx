@@ -19,6 +19,11 @@ const ItemSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 		},
+		note: {
+			type: String,
+			required: false,
+			trim: true,
+		},
 	},
 	{ collection: 'items' }
 );

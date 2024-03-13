@@ -161,3 +161,20 @@ app.delete('/users/:id', async (req, res) => {
 	if (await userServices.deleteUserById(id)) res.status(204).end();
 	else res.status(404).send('Resource not found.');
 });
+
+app.patch('/items/:id', async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;   //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
+
+  try {
+    const updatedItem = await itemServices.updateItem(id, updates);
+    if (!updatedItem) {
+      return res.status(404).send('Item not found');  //error check if the item does not exist
+    }
+    res.send(updatedItem);
+  } catch (error) {
+      console.error(error);
+      res.status(400).send('Error updating item');
+  }
+});
+

@@ -45,6 +45,12 @@ async function deleteItem(id) {
 	return await ItemModel.findByIdAndDelete(id);
 }
 
+async function updateItem(id, updates){
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const updatedItem = await ItemModel.findByIdAndUpdate(id, updates, {new: true});
+	return updatedItem;
+}
+
 // async function disconnectDB() {
 //   await mongoose.connection.close();
 //   await mongoose.disconnect();
@@ -55,4 +61,5 @@ exports.findItemByName = findItemByName;
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
+exports.updateItem = updateItem;
 // exports.disconnectDB = disconnectDB;
