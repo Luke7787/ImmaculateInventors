@@ -48,7 +48,7 @@ app.get('/users/:username', async (req, res) => {
 
 app.post('/users/', async (req, res) => {
 	const user1 = req.body['username'];
-	const userData = req.body.params;
+	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
 	if (user2.length > 0) {
 		res.status(409).send('username already taken');
