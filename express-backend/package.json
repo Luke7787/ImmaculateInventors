@@ -10,11 +10,9 @@
   "author": "Dr. da Silva",
   "license": "ISC",
   "dependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^6.12.7"
+    "mongoose": "^6.12.6"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
@@ -22,7 +20,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",
-    "nodemon": "^2.0.22",
+    "nodemon": "^2.0.13",
     "prettier": "2.4.1"
   }
 }
