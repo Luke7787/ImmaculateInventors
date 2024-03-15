@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
+const bcrypt = require('bcrypt');
+
 
 let dbConnection;
 
@@ -24,8 +26,9 @@ async function getUsers(username, password) {
 	if (!username && !password) {
 		result = await userModel.find();
 	} else {
-		result = await findUserByUserAndPass(username, password);
-	}
+ 		//hash password and check if it's identical to actual password
+ 		const hashpassword = bcrypt.hashSync(password, 10);
+ 		result = await findUserByUserAndPass(username, hashpassword);	}
 	return result;
 }
 // TODO: Fix this issue
@@ -47,6 +50,11 @@ async function addUser(user) {
 	// userModel is a Model, a subclass of mongoose.Model
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
+
+		//hash password before adding into database
+        const hashpassword = bcrypt.hashSync(user['password'], 10);
+        user['password'] = hashpassword;
+
 		// You can use a Model to create new documents using 'new' and
 		// passing the JSON content of the Document:
 		const userToAdd = new userModel(user);
@@ -154,12 +162,17 @@ async function findUserByUsername(username) {
 
 async function findUserBypassword(password) {
 	const userModel = getDbConnection().model('User', UserSchema);
-	return await userModel.find({ password: password });
+
+	 //hash password and check if it's identical to actual password
+	 const hashpassword = bcrypt.hashSync(password, 10);
+	 return await userModel.find({ password: hashpassword });
 }
 
 async function findUserByUserAndPass(username, password) {
 	const userModel = getDbConnection().model('User', UserSchema);
-	return await userModel.find({ username: username, password: password });
+	//hash password and check if it's identical to actual password
+	const hashpassword = bcrypt.hashSync(password, 10);
+	return await userModel.find({ username: username, password: hashpassword });
 }
 
 async function deleteUserById(id) {
