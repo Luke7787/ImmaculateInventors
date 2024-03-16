@@ -4,7 +4,6 @@ const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
 const bcrypt = require('bcrypt');
 
-
 let dbConnection;
 
 function getDbConnection() {
@@ -26,9 +25,10 @@ async function getUsers(username, password) {
 	if (!username && !password) {
 		result = await userModel.find();
 	} else {
- 		//hash password and check if it's identical to actual password
- 		const hashpassword = bcrypt.hashSync(password, 10);
- 		result = await findUserByUserAndPass(username, hashpassword);	}
+		//hash password and check if it's identical to actual password
+		const hashpassword = bcrypt.hashSync(password, 10);
+		result = await findUserByUserAndPass(username, hashpassword);
+	}
 	return result;
 }
 // TODO: Fix this issue
@@ -50,10 +50,9 @@ async function addUser(user) {
 	// userModel is a Model, a subclass of mongoose.Model
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
-
 		//hash password before adding into database
-        const hashpassword = bcrypt.hashSync(user['password'], 10);
-        user['password'] = hashpassword;
+		const hashpassword = bcrypt.hashSync(user['password'], 10);
+		user['password'] = hashpassword;
 
 		// You can use a Model to create new documents using 'new' and
 		// passing the JSON content of the Document:
@@ -160,19 +159,9 @@ async function findUserByUsername(username) {
 	return await userModel.find({ username: username });
 }
 
-async function findUserBypassword(password) {
-	const userModel = getDbConnection().model('User', UserSchema);
-
-	 //hash password and check if it's identical to actual password
-	 const hashpassword = bcrypt.hashSync(password, 10);
-	 return await userModel.find({ password: hashpassword });
-}
-
 async function findUserByUserAndPass(username, password) {
 	const userModel = getDbConnection().model('User', UserSchema);
-	//hash password and check if it's identical to actual password
-	const hashpassword = bcrypt.hashSync(password, 10);
-	return await userModel.find({ username: username, password: hashpassword });
+	return await userModel.find({ username: username, password: password });
 }
 
 async function deleteUserById(id) {
@@ -186,13 +175,14 @@ async function deleteUserById(id) {
 	}
 }
 
-exports.deleteUserById = deleteUserById;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
-exports.addItemToUser = addItemToUser;
 exports.delUser = delUser;
-exports.findUserByUsername = findUserByUsername;
+exports.addItemToUser = addItemToUser;
 exports.getItemFromUser = getItemFromUser;
 exports.deleteItemFromUser = deleteItemFromUser;
 exports.updateItemFromUser = updateItemFromUser;
+exports.findUserByUsername = findUserByUsername;
+exports.findUserByUserAndPass = findUserByUserAndPass;
+exports.deleteUserById = deleteUserById;

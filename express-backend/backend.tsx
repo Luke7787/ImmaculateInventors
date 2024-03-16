@@ -18,19 +18,20 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', async (req, res) => {
-	let result;
-	const username = req.query['username'];
-	const password = req.query['password'];
 	try {
-		if (username && !password) {
-			result = await userServices.findUserByUsername(username);
+		const { username, password } = req.query;
+		if (username && password) {
+			const user = await userServices.findUserByUserAndPass(username, password);
+			console.log(user);
+			if (user.length == 0) {
+				return res.status(404).send('User not found');
+			}
+			return res.send({ user });
 		} else {
-			result = await userServices.getUsers(username, password);
+			const users = await userServices.getUsers();
+			console.log(users);
+			return res.send({ users });
 		}
-		if (result.length == 0) {
-			return res.status(404).send('User not found');
-		}
-		return res.send({ users_list: result });
 	} catch (error) {
 		return res.status(500).send('An error occurred in the server.');
 	}
@@ -163,18 +164,17 @@ app.delete('/users/:id', async (req, res) => {
 });
 
 app.patch('/items/:id', async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;   //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
+	const { id } = req.params;
+	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
 
-  try {
-    const updatedItem = await itemServices.updateItem(id, updates);
-    if (!updatedItem) {
-      return res.status(404).send('Item not found');  //error check if the item does not exist
-    }
-    res.send(updatedItem);
-  } catch (error) {
-      console.error(error);
-      res.status(400).send('Error updating item');
-  }
+	try {
+		const updatedItem = await itemServices.updateItem(id, updates);
+		if (!updatedItem) {
+			return res.status(404).send('Item not found'); //error check if the item does not exist
+		}
+		res.send(updatedItem);
+	} catch (error) {
+		console.error(error);
+		res.status(400).send('Error updating item');
+	}
 });
-
