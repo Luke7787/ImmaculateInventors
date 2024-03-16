@@ -22,7 +22,6 @@ app.get('/users', async (req, res) => {
 		const { username, password } = req.query;
 		if (username && password) {
 			const user = await userServices.findUserByUserAndPass(username, password);
-			console.log(user);
 			if (user.length == 0) {
 				return res.status(404).send('User not found');
 			}
