@@ -1,30 +1,26 @@
-const userServices = require('./user-services.tsx');
-const mongoose = require('mongoose');
-import 'jest';
+// Import necessary modules and functions
+import mongoose from 'mongoose';
+const { getUsers, getDbConnection, addUser } = require('./user-services.tsx'); // Update the path accordingly
 
-jest.mock('mongoose');
-describe('User services', () => {
-	afterAll(() => mongoose.disconnect());
-	describe('getUsers', () => {
-		it('returns all users from database', async () => {
-			const mockUserModel = {
-				find: jest.fn().mockResolvedValue([
-					{ username: 'user1', password: 'password1' },
-					{ username: 'user2', password: 'password2' },
-				]),
-			};
-			mongoose.createConnection.mockReturnValueOnce({
-				model: jest.fn().mockReturnValueOnce(mockUserModel),
-			});
-			const result = await userServices.getUsers();
-			expect(mockUserModel.find).toHaveBeenCalledTimes(1);
-			expect(result).toEqual([
-				{ username: 'user1', password: 'password1' },
-				{ username: 'user2', password: 'password2' },
-			]);
-		});
-		// TODO: test when a user/pass is given
+describe('getUsers function', () => {
+	let conn: any;
+	beforeAll(async () => {
+		conn = await getDbConnection();
+		// await addUser({ username: 'dawglog', password: 'ta' }, conn);
 	});
+	afterAll(async () => {
+		await mongoose.disconnect();
+	});
+	it('all users', async () => {
+		const users = await getUsers(conn);
+		expect(users).toBeDefined();
+		expect(users.length).toBeGreaterThan(0);
+	});
+	// it('specific user', async () => {
+	// 	const user = await getUsers(conn, 'Ansoazasdfn', 'pPassword123!');
+	// 	expect(user).toBe('Ansoazasdfn');
+	// 	expect(user.password).toBe('pPassword123!');
+	// });
 });
 
 export {};

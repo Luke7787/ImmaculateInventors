@@ -19,15 +19,20 @@ app.get('/', (req: any, res: any) => {
 
 app.get('/users', async (req: any, res: any) => {
 	try {
+		const conn = await userServices.getDbConnection();
 		const { username, password } = req.query;
 		if (username && password) {
-			const user = await userServices.findUserByUserAndPass(username, password);
+			const user = await userServices.findUserByUserAndPass(
+				conn,
+				username,
+				password
+			);
 			if (user.length == 0) {
 				return res.status(404).send('User not found');
 			}
 			return res.send({ user });
 		} else {
-			const users = await userServices.getUsers();
+			const users = await userServices.getUsers(conn);
 			console.log(users);
 			return res.send({ users });
 		}
@@ -38,7 +43,8 @@ app.get('/users', async (req: any, res: any) => {
 
 app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
-	const result = await userServices.findUserById(id);
+	const conn = await userServices.getDbConnection();
+	const result = await userServices.findUserById(id, conn);
 	if (result === undefined || result === null)
 		res.status(404).send('Resource not found.');
 	else {
@@ -49,11 +55,12 @@ app.get('/users/:username', async (req: any, res: any) => {
 app.post('/users/', async (req: any, res: any) => {
 	const user1 = req.body['username'];
 	const userData = req.body;
-	const user2 = await userServices.findUserByUsername(user1);
+	const conn = await userServices.getDbConnection();
+	const user2 = await userServices.findUserByUsername(user1, conn);
 	if (user2.length > 0) {
 		res.status(409).send('username already taken');
 	}
-	const savedUser = await userServices.addUser(userData);
+	const savedUser = await userServices.addUser(userData, conn);
 	if (savedUser.error) {
 		// Validation error
 		res.status(400).send(savedUser.message);
@@ -64,16 +71,8 @@ app.post('/users/', async (req: any, res: any) => {
 
 app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	const username = req.params.username;
-	const result = await userServices.findUserByUsername(username);
-	if (result.length > 0) res.status(409).send('Username already taken');
-	else {
-		res.status(200).send('Valid username');
-	}
-});
-
-app.get('/uniqueUser/:username', async (req: any, res: any) => {
-	const username = req.params.username;
-	const result = await userServices.findUserByUsername(username);
+	const conn = await userServices.getDbConnection();
+	const result = await userServices.findUserByUsername(username, conn);
 	if (result.length > 0) res.status(409).send('Username already taken');
 	else {
 		res.status(200).send('Valid username');
@@ -91,11 +90,11 @@ app.post('/items/', async (req: any, res: any) => {
 app.patch('/itemToUser/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	//const id = req.query["id"];
+	const conn = await userServices.getDbConnection();
 	const item = req.body;
 	const savedItem = await itemServices.addItem(item);
 	const id = savedItem._id;
-	console.log(id);
-	const user = await userServices.addItemToUser(uid, id);
+	const user = await userServices.addItemToUser(uid, id, conn);
 	if (user) {
 		res.status(201).send(user);
 	} else res.status(409).end();
@@ -107,11 +106,13 @@ app.patch('/items/', async (req: any, res: any) => {
 	const option = req.query['option']; // add or subtract from existing quantity
 	const quantity = req.query['quantity']; // amount to increment or decrement by
 	if (option === 'add' || option === 'sub') {
+		const conn = await userServices.getDbConnection();
 		const result = await userServices.updateItemFromUser(
 			uid,
 			id,
 			quantity,
-			option
+			option,
+			conn
 		);
 		if (result) {
 			res.status(201).send(result);
@@ -128,6 +129,7 @@ app.get('/items/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	const id = req.query['id'];
 	const itemName = req.query['itemName'];
+	const conn = await userServices.getDbConnection();
 	if (!id && !uid && !itemName) {
 		result = await itemServices.getItems(); // gets all items from item database
 	} else if (uid && !id) {
@@ -135,7 +137,7 @@ app.get('/items/', async (req: any, res: any) => {
 	} else if (!uid && !id && itemName) {
 		result = await itemServices.findItemByName(itemName); // get items with the name
 	} else {
-		result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
+		result = await userServices.getItemFromUser(uid, id, conn); // get a specific item from a user
 	}
 	if (result) {
 		res.status(201).send(result);
@@ -147,7 +149,8 @@ app.get('/items/', async (req: any, res: any) => {
 app.delete('/items/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	const id = req.query['id'];
-	const result = await userServices.deleteItemFromUser(uid, id);
+	const conn = await userServices.getDbConnection();
+	const result = await userServices.deleteItemFromUser(uid, id, conn);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send('item deleted');
 });
@@ -158,7 +161,8 @@ app.listen(port, () => {
 
 app.delete('/users/:id', async (req: any, res: any) => {
 	const id = req.params['id'];
-	if (await userServices.deleteUserById(id)) res.status(204).end();
+	const conn = await userServices.getDbConnection();
+	if (await userServices.deleteUserById(id, conn)) res.status(204).end();
 	else res.status(404).send('Resource not found.');
 });
 

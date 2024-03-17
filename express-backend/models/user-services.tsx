@@ -6,9 +6,9 @@ const bcrypt = require('bcrypt');
 
 let dbConnection: any;
 
-function getDbConnection() {
+async function getDbConnection() {
 	if (!dbConnection) {
-		dbConnection = mongoose.createConnection(
+		dbConnection = await mongoose.createConnection(
 			'mongodb://127.0.0.1:27017/inventoryUsers',
 			{
 				useNewUrlParser: true,
@@ -19,14 +19,13 @@ function getDbConnection() {
 	return dbConnection;
 }
 
-async function getUsers(username: any, password: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function getUsers(conn: any, username?: any, password?: any) {
+	const userModel = conn.model('User', UserSchema);
 	let result;
 	if (!username && !password) {
 		result = await userModel.find();
 	} else {
-		//hash password and check if it's identical to actual password
-		result = await findUserByUserAndPass(username, password);
+		result = await findUserByUserAndPass(username, password, conn);
 	}
 	return result;
 }
@@ -35,19 +34,18 @@ async function getUsers(username: any, password: any) {
 //   return users["users_list"].findIndex((user) => user["username"] === username);
 // }
 
-async function findUserById(id: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function findUserById(id: any, conn: any) {
 	try {
-		return await userModel.findUserByUsername(id);
+		return await findUserByUsername(id, conn);
 	} catch (error) {
 		console.log(error);
 		return undefined;
 	}
 }
 
-async function addUser(user: any) {
+async function addUser(user: any, conn: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-	const userModel = getDbConnection().model('User', UserSchema);
+	const userModel = conn.model('User', UserSchema);
 	try {
 		//hash password before adding into database
 		// const hashpassword = bcrypt.hashSync(user['password'], 10);
@@ -75,8 +73,8 @@ async function addUser(user: any) {
 	}
 }
 
-async function delUser(user: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function delUser(user: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
 	try {
 		await userModel.deleteOne(user);
 		return true;
@@ -86,10 +84,10 @@ async function delUser(user: any) {
 	}
 }
 
-async function addItemToUser(user_id: any, item_id: any) {
+async function addItemToUser(user_id: any, item_id: any, conn: any) {
 	// connect to user collection and item collection databases
-	const UserModel = getDbConnection().model('User', UserSchema);
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const UserModel = conn.model('User', UserSchema);
+	const ItemModel = conn.model('Item', ItemSchema);
 	// find user with matching id
 	const user = await UserModel.findById(user_id);
 	// initialize array for user items if it doesnt exist already
@@ -105,9 +103,9 @@ async function addItemToUser(user_id: any, item_id: any) {
 	return updatedUser;
 }
 
-async function getItemFromUser(userId: any, itemId: any) {
-	const UserModel = getDbConnection().model('User', UserSchema);
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function getItemFromUser(userId: any, itemId: any, conn: any) {
+	const UserModel = conn.model('User', UserSchema);
+	const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
 	if (user) console.log(user.username);
 	const userItem = await UserModel.find({ items: itemId });
@@ -115,9 +113,9 @@ async function getItemFromUser(userId: any, itemId: any) {
 	return await ItemModel.find({ _id: itemId });
 }
 
-async function deleteItemFromUser(userId: any, itemId: any) {
-	const UserModel = getDbConnection().model('User', UserSchema);
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function deleteItemFromUser(userId: any, itemId: any, conn: any) {
+	const UserModel = conn.model('User', UserSchema);
+	const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
 	if (user) console.log(user.username);
 	const userItem = await UserModel.find({ items: itemId });
@@ -131,10 +129,11 @@ async function updateItemFromUser(
 	userId: any,
 	itemId: any,
 	quantity: any,
-	option: any
+	option: any,
+	conn: any
 ) {
-	const UserModel = getDbConnection().model('User', UserSchema);
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const UserModel = conn.model('User', UserSchema);
+	const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
 	if (option === 'add') {
 		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
@@ -158,19 +157,19 @@ async function updateItemFromUser(
 	}
 }
 
-async function findUserByUsername(username: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function findUserByUsername(username: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
 	return await userModel.find({ username: username });
 }
 
-async function findUserByUserAndPass(username: any, password: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function findUserByUserAndPass(username: any, password: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
 	return await userModel.find({ username: username, password: password });
 }
 
-async function deleteUserById(id: any) {
+async function deleteUserById(id: any, conn: any) {
 	console.log('delete user by id', id);
-	const userModel = getDbConnection().model('User', UserSchema);
+	const userModel = conn.model('User', UserSchema);
 	try {
 		if (await userModel.findByIdAndDelete(id)) return true;
 	} catch (error) {
@@ -178,7 +177,7 @@ async function deleteUserById(id: any) {
 		return false;
 	}
 }
-
+exports.getDbConnection = getDbConnection;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
