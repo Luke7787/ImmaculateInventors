@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1710697041929" clover="3.2.0">
-  <project timestamp="1710697041929" name="All files">
-    <metrics statements="133" coveredstatements="42" conditionals="21" coveredconditionals="4" methods="21" coveredmethods="2" elements="175" coveredelements="48" complexity="0" loc="133" ncloc="133" packages="1" files="4" classes="4"/>
+<coverage generated="1710698013152" clover="3.2.0">
+  <project timestamp="1710698013152" name="All files">
+    <metrics statements="132" coveredstatements="44" conditionals="21" coveredconditionals="5" methods="21" coveredmethods="3" elements="174" coveredelements="52" complexity="0" loc="132" ncloc="132" packages="1" files="4" classes="4"/>
     <file name="item-services.tsx" path="C:\Users\adamt\OneDrive\Documents\Cal Poly SLO\CSC 308\ImmaculateInventors\express-backend\models\item-services.tsx">
       <metrics statements="27" coveredstatements="8" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="0"/>
       <line num="1" count="1" type="stmt"/>
@@ -41,19 +41,19 @@
       <line num="33" count="1" type="stmt"/>
     </file>
     <file name="user-services.tsx" path="C:\Users\adamt\OneDrive\Documents\Cal Poly SLO\CSC 308\ImmaculateInventors\express-backend\models\user-services.tsx">
-      <metrics statements="92" coveredstatements="23" conditionals="20" coveredconditionals="4" methods="12" coveredmethods="2"/>
+      <metrics statements="91" coveredstatements="25" conditionals="20" coveredconditionals="5" methods="12" coveredmethods="3"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
       <line num="4" count="1" type="stmt"/>
       <line num="5" count="1" type="stmt"/>
-      <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
+      <line num="10" count="2" type="cond" truecount="1" falsecount="0"/>
       <line num="11" count="1" type="stmt"/>
-      <line num="19" count="1" type="stmt"/>
-      <line num="23" count="1" type="stmt"/>
-      <line num="25" count="1" type="cond" truecount="3" falsecount="1"/>
+      <line num="19" count="2" type="stmt"/>
+      <line num="23" count="2" type="stmt"/>
+      <line num="25" count="2" type="cond" truecount="4" falsecount="0"/>
       <line num="26" count="1" type="stmt"/>
-      <line num="29" count="0" type="stmt"/>
+      <line num="29" count="1" type="stmt"/>
       <line num="31" count="1" type="stmt"/>
       <line num="39" count="0" type="stmt"/>
       <line num="40" count="0" type="stmt"/>
@@ -115,14 +115,14 @@
       <line num="156" count="0" type="stmt"/>
       <line num="162" count="0" type="stmt"/>
       <line num="163" count="0" type="stmt"/>
-      <line num="167" count="0" type="stmt"/>
-      <line num="168" count="0" type="stmt"/>
+      <line num="167" count="1" type="stmt"/>
+      <line num="171" count="0" type="stmt"/>
       <line num="172" count="0" type="stmt"/>
       <line num="173" count="0" type="stmt"/>
-      <line num="174" count="0" type="stmt"/>
-      <line num="175" count="0" type="cond" truecount="0" falsecount="1"/>
+      <line num="174" count="0" type="cond" truecount="0" falsecount="1"/>
+      <line num="176" count="0" type="stmt"/>
       <line num="177" count="0" type="stmt"/>
-      <line num="178" count="0" type="stmt"/>
+      <line num="181" count="1" type="stmt"/>
       <line num="182" count="1" type="stmt"/>
       <line num="183" count="1" type="stmt"/>
       <line num="184" count="1" type="stmt"/>
@@ -133,7 +133,6 @@
       <line num="189" count="1" type="stmt"/>
       <line num="190" count="1" type="stmt"/>
       <line num="191" count="1" type="stmt"/>
-      <line num="192" count="1" type="stmt"/>
     </file>
     <file name="user.tsx" path="C:\Users\adamt\OneDrive\Documents\Cal Poly SLO\CSC 308\ImmaculateInventors\express-backend\models\user.tsx">
       <metrics statements="9" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
