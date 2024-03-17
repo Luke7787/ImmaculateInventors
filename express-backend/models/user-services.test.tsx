@@ -6,7 +6,7 @@ describe('getUsers function', () => {
 	let conn: any;
 	beforeAll(async () => {
 		conn = await getDbConnection();
-		// await addUser({ username: 'dawglog', password: 'ta' }, conn);
+		await addUser({ username: 'dawglog', password: 'ta' }, conn);
 	});
 	afterAll(async () => {
 		await mongoose.disconnect();
@@ -16,11 +16,10 @@ describe('getUsers function', () => {
 		expect(users).toBeDefined();
 		expect(users.length).toBeGreaterThan(0);
 	});
-	// it('specific user', async () => {
-	// 	const user = await getUsers(conn, 'Ansoazasdfn', 'pPassword123!');
-	// 	expect(user).toBe('Ansoazasdfn');
-	// 	expect(user.password).toBe('pPassword123!');
-	// });
+	it('specific user', async () => {
+		const user = await getUsers(conn, 'dawglog', 'ta');
+		expect(user).toBe('Ansoazasdfn');
+	});
 });
 
 export {};
