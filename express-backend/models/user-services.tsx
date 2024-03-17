@@ -26,8 +26,7 @@ async function getUsers(username, password) {
 		result = await userModel.find();
 	} else {
 		//hash password and check if it's identical to actual password
-		const hashpassword = bcrypt.hashSync(password, 10);
-		result = await findUserByUserAndPass(username, hashpassword);
+		result = await findUserByUserAndPass(username, password);
 	}
 	return result;
 }
@@ -51,8 +50,8 @@ async function addUser(user) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
 		//hash password before adding into database
-		const hashpassword = bcrypt.hashSync(user['password'], 10);
-		user['password'] = hashpassword;
+		// const hashpassword = bcrypt.hashSync(user['password'], 10);
+		// user['password'] = hashpassword;
 
 		// You can use a Model to create new documents using 'new' and
 		// passing the JSON content of the Document:
