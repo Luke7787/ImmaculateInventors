@@ -28,7 +28,5 @@ const ItemSchema = new mongoose.Schema(
 	{ collection: 'items' }
 );
 
-//onst itemModel = mongoose.model("Item", ItemSchema);
-
 module.exports = ItemSchema;
 export {};
