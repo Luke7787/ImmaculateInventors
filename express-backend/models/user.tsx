@@ -50,11 +50,11 @@ const UserSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 			validate: {
-				validator: function (value) {
+				validator: function (value: any) {
 					const passwordPolicy = /^(?=.*\d)(?=.*[?!@#$%^&*])(?=.*[A-Z]).{10,}$/;
 					return passwordPolicy.test(value);
 				},
-				message: (props) =>
+				message: (props: any) =>
 					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
 			},
 		},

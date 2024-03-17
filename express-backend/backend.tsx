@@ -13,11 +13,11 @@ const users = {
 	users_list: [],
 };
 // test
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: any) => {
 	res.send('Hello World!');
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', async (req: any, res: any) => {
 	try {
 		const { username, password } = req.query;
 		if (username && password) {
@@ -36,7 +36,7 @@ app.get('/users', async (req, res) => {
 	}
 });
 
-app.get('/users/:username', async (req, res) => {
+app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
 	const result = await userServices.findUserById(id);
 	if (result === undefined || result === null)
@@ -46,7 +46,7 @@ app.get('/users/:username', async (req, res) => {
 	}
 });
 
-app.post('/users/', async (req, res) => {
+app.post('/users/', async (req: any, res: any) => {
 	const user1 = req.body['username'];
 	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
@@ -62,7 +62,7 @@ app.post('/users/', async (req, res) => {
 	}
 });
 
-app.get('/uniqueUser/:username', async (req, res) => {
+app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	const username = req.params.username;
 	const result = await userServices.findUserByUsername(username);
 	if (result.length > 0) res.status(409).send('Username already taken');
@@ -71,7 +71,7 @@ app.get('/uniqueUser/:username', async (req, res) => {
 	}
 });
 
-app.get('/uniqueUser/:username', async (req, res) => {
+app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	const username = req.params.username;
 	const result = await userServices.findUserByUsername(username);
 	if (result.length > 0) res.status(409).send('Username already taken');
@@ -80,7 +80,7 @@ app.get('/uniqueUser/:username', async (req, res) => {
 	}
 });
 
-app.post('/items/', async (req, res) => {
+app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
 
 	const savedItem = await itemServices.addItem(item);
@@ -88,7 +88,7 @@ app.post('/items/', async (req, res) => {
 	else res.status(409).end();
 });
 
-app.patch('/itemToUser/', async (req, res) => {
+app.patch('/itemToUser/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	//const id = req.query["id"];
 	const item = req.body;
@@ -101,7 +101,7 @@ app.patch('/itemToUser/', async (req, res) => {
 	} else res.status(409).end();
 });
 
-app.patch('/items/', async (req, res) => {
+app.patch('/items/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	const id = req.query['id'];
 	const option = req.query['option']; // add or subtract from existing quantity
@@ -123,7 +123,7 @@ app.patch('/items/', async (req, res) => {
 	}
 });
 
-app.get('/items/', async (req, res) => {
+app.get('/items/', async (req: any, res: any) => {
 	let result = null;
 	const uid = req.query['uid'];
 	const id = req.query['id'];
@@ -144,7 +144,7 @@ app.get('/items/', async (req, res) => {
 	}
 });
 
-app.delete('/items/', async (req, res) => {
+app.delete('/items/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
 	const id = req.query['id'];
 	const result = await userServices.deleteItemFromUser(uid, id);
@@ -156,13 +156,13 @@ app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 
-app.delete('/users/:id', async (req, res) => {
+app.delete('/users/:id', async (req: any, res: any) => {
 	const id = req.params['id'];
 	if (await userServices.deleteUserById(id)) res.status(204).end();
 	else res.status(404).send('Resource not found.');
 });
 
-app.patch('/items/:id', async (req, res) => {
+app.patch('/items/:id', async (req: any, res: any) => {
 	const { id } = req.params;
 	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
 

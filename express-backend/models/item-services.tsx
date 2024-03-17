@@ -1,7 +1,7 @@
 const ItemSchema = require('./item.tsx');
 const mongoose = require('mongoose');
 
-let dbConnection;
+let dbConnection: any;
 
 function getDbConnection() {
 	if (!dbConnection) {
@@ -21,33 +21,35 @@ async function getItems() {
 	return await ItemModel.find();
 }
 
-async function getItemsFromUser(userId) {
+async function getItemsFromUser(userId: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	let result;
 	result = await ItemModel.find({ userId: userId });
 	return result;
 }
 
-async function addItem(item) {
+async function addItem(item: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const itemToAdd = new ItemModel(item);
 	const savedItem = await itemToAdd.save();
 	return savedItem;
 }
 
-async function findItemByName(name) {
+async function findItemByName(name: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	return await ItemModel.find({ name: name });
 }
 
-async function deleteItem(id) {
+async function deleteItem(id: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	return await ItemModel.findByIdAndDelete(id);
 }
 
-async function updateItem(id, updates){
+async function updateItem(id: any, updates: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
-	const updatedItem = await ItemModel.findByIdAndUpdate(id, updates, {new: true});
+	const updatedItem = await ItemModel.findByIdAndUpdate(id, updates, {
+		new: true,
+	});
 	return updatedItem;
 }
 
@@ -63,3 +65,4 @@ exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
 exports.updateItem = updateItem;
 // exports.disconnectDB = disconnectDB;
+export {};

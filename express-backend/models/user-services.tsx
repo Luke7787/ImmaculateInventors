@@ -4,7 +4,7 @@ const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
 const bcrypt = require('bcrypt');
 
-let dbConnection;
+let dbConnection: any;
 
 function getDbConnection() {
 	if (!dbConnection) {
@@ -19,7 +19,7 @@ function getDbConnection() {
 	return dbConnection;
 }
 
-async function getUsers(username, password) {
+async function getUsers(username: any, password: any) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	let result;
 	if (!username && !password) {
@@ -35,7 +35,7 @@ async function getUsers(username, password) {
 //   return users["users_list"].findIndex((user) => user["username"] === username);
 // }
 
-async function findUserById(id) {
+async function findUserById(id: any) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
 		return await userModel.findUserByUsername(id);
@@ -45,7 +45,7 @@ async function findUserById(id) {
 	}
 }
 
-async function addUser(user) {
+async function addUser(user: any) {
 	// userModel is a Model, a subclass of mongoose.Model
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
@@ -58,7 +58,7 @@ async function addUser(user) {
 		const userToAdd = new userModel(user);
 		const savedUser = await userToAdd.save();
 		return savedUser;
-	} catch (error) {
+	} catch (error: any) {
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
 				? error.errors.password.message
@@ -75,7 +75,7 @@ async function addUser(user) {
 	}
 }
 
-async function delUser(user) {
+async function delUser(user: any) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
 		await userModel.deleteOne(user);
@@ -86,7 +86,7 @@ async function delUser(user) {
 	}
 }
 
-async function addItemToUser(user_id, item_id) {
+async function addItemToUser(user_id: any, item_id: any) {
 	// connect to user collection and item collection databases
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
@@ -105,7 +105,7 @@ async function addItemToUser(user_id, item_id) {
 	return updatedUser;
 }
 
-async function getItemFromUser(userId, itemId) {
+async function getItemFromUser(userId: any, itemId: any) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
@@ -115,7 +115,7 @@ async function getItemFromUser(userId, itemId) {
 	return await ItemModel.find({ _id: itemId });
 }
 
-async function deleteItemFromUser(userId, itemId) {
+async function deleteItemFromUser(userId: any, itemId: any) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
@@ -127,7 +127,12 @@ async function deleteItemFromUser(userId, itemId) {
 	});
 }
 
-async function updateItemFromUser(userId, itemId, quantity, option) {
+async function updateItemFromUser(
+	userId: any,
+	itemId: any,
+	quantity: any,
+	option: any
+) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
@@ -153,17 +158,17 @@ async function updateItemFromUser(userId, itemId, quantity, option) {
 	}
 }
 
-async function findUserByUsername(username) {
+async function findUserByUsername(username: any) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	return await userModel.find({ username: username });
 }
 
-async function findUserByUserAndPass(username, password) {
+async function findUserByUserAndPass(username: any, password: any) {
 	const userModel = getDbConnection().model('User', UserSchema);
 	return await userModel.find({ username: username, password: password });
 }
 
-async function deleteUserById(id) {
+async function deleteUserById(id: any) {
 	console.log('delete user by id', id);
 	const userModel = getDbConnection().model('User', UserSchema);
 	try {
@@ -185,3 +190,4 @@ exports.updateItemFromUser = updateItemFromUser;
 exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
 exports.deleteUserById = deleteUserById;
+export {};
