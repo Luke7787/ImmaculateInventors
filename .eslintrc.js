@@ -11,10 +11,13 @@ module.exports = {
     "overrides": [
         {
             "env": {
-                "node": true
+                "node": true,
+                "jest": true
             },
             "files": [
-                ".eslintrc.{js,cjs}"
+                ".eslintrc.{js,cjs}",
+                "**/*.test.ts",
+                "**/*.test.tsx"
             ],
             "parserOptions": {
                 "sourceType": "script"
@@ -28,7 +31,8 @@ module.exports = {
     },
     "plugins": [
         "@typescript-eslint",
-        "react"
+        "react",
+        "jest"
     ],
     "rules": { 
         "no-unused-vars": "off" 
