@@ -13,7 +13,7 @@ const users = {
 	users_list: [],
 };
 // test
-app.get('/', (req: any, res: any) => {
+app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
 });
 
