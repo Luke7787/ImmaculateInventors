@@ -1,20 +1,23 @@
 module.exports = {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
         "plugin:react/recommended"
     ],
     "overrides": [
         {
             "env": {
-                "node": true
+                "node": true,
+                "jest": true
             },
             "files": [
-                ".eslintrc.{js,cjs}"
+                ".eslintrc.{js,cjs}",
+                "**/*.test.ts",
+                "**/*.test.tsx"
             ],
             "parserOptions": {
                 "sourceType": "script"
@@ -28,8 +31,15 @@ module.exports = {
     },
     "plugins": [
         "@typescript-eslint",
-        "react"
+        "react",
+        "jest"
     ],
-    "rules": {
-    }
+    "rules": { 
+        "no-unused-vars": "off" 
+    },
+    "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
 }
