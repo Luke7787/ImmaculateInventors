@@ -57,7 +57,7 @@ async function addUser(user: any) {
 		// passing the JSON content of the Document:
 		const userToAdd = new userModel(user);
 		const savedUser = await userToAdd.save();
-		return savedUser;
+		return true;
 	} catch (error: any) {
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
