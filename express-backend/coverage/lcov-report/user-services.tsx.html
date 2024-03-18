@@ -247,8 +247,7 @@
 <a name='L189'></a><a href='#L189'>189</a>
 <a name='L190'></a><a href='#L190'>190</a>
 <a name='L191'></a><a href='#L191'>191</a>
-<a name='L192'></a><a href='#L192'>192</a>
-<a name='L193'></a><a href='#L193'>193</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L192'></a><a href='#L192'>192</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -309,14 +308,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -499,6 +497,7 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 		const savedUser = <span class="cstat-no" title="statement not covered" >await userToAdd.save();</span>
 <span class="cstat-no" title="statement not covered" >		return savedUser;</span>
 	} catch (error: any) {
+<span class="cstat-no" title="statement not covered" >		console.log(error);</span>
 <span class="cstat-no" title="statement not covered" >		if (error.name == 'ValidationError') {</span>
 			const errorMessage = <span class="cstat-no" title="statement not covered" >error.errors.password</span>
 				? error.errors.password.message
@@ -506,10 +505,8 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 <span class="cstat-no" title="statement not covered" >			console.log(errorMessage); </span>//return the error message to handle it in response
 <span class="cstat-no" title="statement not covered" >			return { error: true, message: errorMessage };</span>
 		} else {
-<span class="cstat-no" title="statement not covered" >			console.log(error);</span>
 <span class="cstat-no" title="statement not covered" >			return { error: true, message: 'An unexpected error occurred' };</span>
 		}
-&nbsp;
 		// console.log(error);
 		// return false;
 	}
@@ -646,7 +643,7 @@ export {};
 				rel="noopener noreferrer"
 				>istanbul</a
 			>
-			at 2024-03-18T00:20:26.685Z
+			at 2024-03-18T05:11:21.074Z
 		</div>
 		<script src="prettify.js"></script>
 		<script>

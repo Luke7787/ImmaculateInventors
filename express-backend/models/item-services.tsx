@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 
 let dbConnection: any;
 
-function getDbConnection() {
+async function getDbConnection() {
 	if (!dbConnection) {
-		dbConnection = mongoose.createConnection(
+		dbConnection = await mongoose.createConnection(
 			'mongodb://127.0.0.1:27017/inventoryUsers',
 			{
 				useNewUrlParser: true,
@@ -16,37 +16,37 @@ function getDbConnection() {
 	return dbConnection;
 }
 
-async function getItems() {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function getItems(conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemModel.find();
 }
 
-async function getItemsFromUser(userId: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function getItemsFromUser(userId: any, conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	let result;
 	result = await ItemModel.find({ userId: userId });
 	return result;
 }
 
-async function addItem(item: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function addItem(item: any, conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	const itemToAdd = new ItemModel(item);
 	const savedItem = await itemToAdd.save();
 	return savedItem;
 }
 
-async function findItemByName(name: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function findItemByName(name: any, conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemModel.find({ name: name });
 }
 
-async function deleteItem(id: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function deleteItem(id: any, conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemModel.findByIdAndDelete(id);
 }
 
-async function updateItem(id: any, updates: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+async function updateItem(id: any, updates: any, conn: any) {
+	const ItemModel = conn.model('Item', ItemSchema);
 	const updatedItem = await ItemModel.findByIdAndUpdate(id, updates, {
 		new: true,
 	});
@@ -57,7 +57,7 @@ async function updateItem(id: any, updates: any) {
 //   await mongoose.connection.close();
 //   await mongoose.disconnect();
 // }
-
+exports.getDbConnection = getDbConnection;
 exports.getItems = getItems;
 exports.findItemByName = findItemByName;
 exports.addItem = addItem;

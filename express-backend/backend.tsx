@@ -81,8 +81,8 @@ app.get('/uniqueUser/:username', async (req: any, res: any) => {
 
 app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
-
-	const savedItem = await itemServices.addItem(item);
+	const conn = await itemServices.getDbConnection();
+	const savedItem = await itemServices.addItem(item, conn);
 	if (savedItem) res.status(201).send(savedItem);
 	else res.status(409).end();
 });
@@ -92,7 +92,7 @@ app.patch('/itemToUser/', async (req: any, res: any) => {
 	//const id = req.query["id"];
 	const conn = await userServices.getDbConnection();
 	const item = req.body;
-	const savedItem = await itemServices.addItem(item);
+	const savedItem = await itemServices.addItem(item, conn);
 	const id = savedItem._id;
 	const user = await userServices.addItemToUser(uid, id, conn);
 	if (user) {
@@ -131,11 +131,11 @@ app.get('/items/', async (req: any, res: any) => {
 	const itemName = req.query['itemName'];
 	const conn = await userServices.getDbConnection();
 	if (!id && !uid && !itemName) {
-		result = await itemServices.getItems(); // gets all items from item database
+		result = await itemServices.getItems(conn); // gets all items from item database
 	} else if (uid && !id) {
-		result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
+		result = await itemServices.getItemsFromUser(uid, conn); // gets items specific to the user
 	} else if (!uid && !id && itemName) {
-		result = await itemServices.findItemByName(itemName); // get items with the name
+		result = await itemServices.findItemByName(itemName, conn); // get items with the name
 	} else {
 		result = await userServices.getItemFromUser(uid, id, conn); // get a specific item from a user
 	}
@@ -151,7 +151,7 @@ app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
 	const conn = await userServices.getDbConnection();
 	const result = await userServices.deleteItemFromUser(uid, id, conn);
-	const result2 = await itemServices.deleteItem(id);
+	const result2 = await itemServices.deleteItem(id, conn);
 	res.status(201).send('item deleted');
 });
 
@@ -169,9 +169,9 @@ app.delete('/users/:id', async (req: any, res: any) => {
 app.patch('/items/:id', async (req: any, res: any) => {
 	const { id } = req.params;
 	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
-
+	const conn = await itemServices.getDbConnection();
 	try {
-		const updatedItem = await itemServices.updateItem(id, updates);
+		const updatedItem = await itemServices.updateItem(id, updates, conn);
 		if (!updatedItem) {
 			return res.status(404).send('Item not found'); //error check if the item does not exist
 		}
