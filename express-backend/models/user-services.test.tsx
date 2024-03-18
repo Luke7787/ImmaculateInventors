@@ -15,6 +15,7 @@ const {
 } = require('./user-services.tsx');
 const { findItemByName } = require('./item-services.tsx');
 const UserSchema = require('./user.tsx');
+const ItemSchema = require('./item.tsx');
 
 describe('getUsers function', () => {
 	let conn: any;
@@ -56,7 +57,7 @@ describe('getUsers function', () => {
 		const user5 = await addUser(
 			{
 				username: 'bossbaby',
-				password: 'sup',
+				password: 'S1u&',
 				email: 'koalascope@gmail.com',
 				country: 'United States',
 				state: 'California',
@@ -67,8 +68,27 @@ describe('getUsers function', () => {
 			},
 			conn
 		);
+		const user6 = await addUser(
+			{
+				username: 'bossbaby2',
+				password: 'a1234567890!AA',
+				email: 'koalascope@gmail.com',
+				country: 'United States',
+				state: 'California',
+				zipcode: '93410',
+				city: 'SLO',
+				firstName: 'boss',
+			},
+			conn
+		);
 		const user3 = await addUser(undefined, conn);
 		const user4 = await addUser(undefined, undefined);
+		expect(user6).toBeDefined();
+		expect(user5).toEqual({
+			error: true,
+			message:
+				'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
+		});
 		expect(user3).toEqual({
 			error: true,
 			message: 'Path `password` is required.',
@@ -114,7 +134,7 @@ describe('getUsers function', () => {
 	});
 	test('Testing updateItemFromUser (ADD)', async () => {
 		const user = await findUserByUsername('awu98', conn);
-		const item = await findItemByName('ball');
+		const item = await findItemByName('ball', conn);
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
@@ -123,12 +143,12 @@ describe('getUsers function', () => {
 			'add',
 			conn
 		);
-		const result = await findItemByName('ball');
+		const result = await findItemByName('ball', conn);
 		expect(result[0].quantity).toBeGreaterThan(target);
 	});
 	test('Testing updateItemFromUser (SUB)', async () => {
 		const user = await findUserByUsername('awu98', conn);
-		const item = await findItemByName('ball');
+		const item = await findItemByName('ball', conn);
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
@@ -137,10 +157,10 @@ describe('getUsers function', () => {
 			'sub',
 			conn
 		);
-		const result = await findItemByName('ball');
+		const result = await findItemByName('ball', conn);
 		const update2 = await updateItemFromUser(
 			user[0]._id.toString(),
-			'65f7cd6093307c3b2431ac21',
+			'65f7cd6293307c3b2431ac30',
 			3,
 			'sub',
 			conn

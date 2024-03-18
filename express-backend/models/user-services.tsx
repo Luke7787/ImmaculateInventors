@@ -147,7 +147,7 @@ async function updateItemFromUser(
 			const updatedUser = await UserModel.findByIdAndUpdate(userId, {
 				$pull: { items: itemId },
 			});
-			const delItem = await itemServices.deleteItem(itemId);
+			const delItem = await itemServices.deleteItem(itemId, conn);
 			return delItem;
 		} else {
 			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
