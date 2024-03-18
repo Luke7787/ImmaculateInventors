@@ -13,7 +13,7 @@ const {
 	findUserByUserAndPass,
 	findUserByUsername,
 } = require('./user-services.tsx');
-const { findItemByName } = require('./item-services.tsx');
+const { findItemByName, deleteItem } = require('./item-services.tsx');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 
@@ -115,52 +115,85 @@ describe('getUsers function', () => {
 	});
 	test('Testing addItemToUser', async () => {
 		const user = await findUserByUsername('awu98', conn);
-		const result = addItemToUser(
+		const ItemModel = conn.model('Item', ItemSchema);
+		await ItemModel.create({
+			userId: user[0]._id.toString(),
+			name: 'Toe',
+			quantity: 3,
+			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
+		});
+		console.log(user[0]._id.toString())
+		const result = await addItemToUser(
 			user[0]._id.toString(),
-			'65eb97d8b566ba4fa9984f39',
+			'65ef409a0336b57ddfbe9ce3',
 			conn
 		);
 		const updatedUser = await findUserByUsername('awu98', conn);
+		console.log(updatedUser);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
 		expect(updatedUser[0].items.length).toBeGreaterThan(0);
 	});
 	test('Testing getItemFromUser', async () => {
 		const user = await findUserByUsername('awu98', conn);
+		const ItemModel = conn.model('Item', ItemSchema);
+		await ItemModel.create({
+			userId: user[0]._id.toString(),
+			name: 'Toe',
+			quantity: 3,
+			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
+		});
 		const result = getItemFromUser(
 			user[0]._id.toString(),
-			'65eb97d8b566ba4fa9984f39',
+			'65ef409a0336b57ddfbe9ce3',
 			conn
 		);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
 		expect(result).toBeDefined();
 	});
 	test('Testing updateItemFromUser (ADD)', async () => {
 		const user = await findUserByUsername('awu98', conn);
-		const item = await findItemByName('ball', conn);
+		const ItemModel = conn.model('Item', ItemSchema);
+		await ItemModel.create({
+			userId: user[0]._id.toString(),
+			name: 'Toe',
+			quantity: 3,
+			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
+		});
+		const item = await findItemByName('Toe', conn);
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
-			'65eb97d8b566ba4fa9984f39',
+			'65ef409a0336b57ddfbe9ce3',
 			1,
 			'add',
 			conn
 		);
-		const result = await findItemByName('ball', conn);
+		const result = await findItemByName('Toe', conn);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
 		expect(result[0].quantity).toBeGreaterThan(target);
 	});
 	test('Testing updateItemFromUser (SUB)', async () => {
 		const user = await findUserByUsername('awu98', conn);
-		const item = await findItemByName('ball', conn);
+		const ItemModel = conn.model('Item', ItemSchema);
+		await ItemModel.create({
+			userId: user[0]._id.toString(),
+			name: 'Toe',
+			quantity: 3,
+			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
+		});
+		const item = await findItemByName('Toe', conn);
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
-			'65eb97d8b566ba4fa9984f39',
+			'65ef409a0336b57ddfbe9ce3',
 			1,
 			'sub',
 			conn
 		);
-		const result = await findItemByName('ball', conn);
+		const result = await findItemByName('Toe', conn);
 		const update2 = await updateItemFromUser(
 			user[0]._id.toString(),
-			'65f7cd6293307c3b2431ac30',
+			'65ef409a0336b57ddfbe9ce3',
 			3,
 			'sub',
 			conn
@@ -170,13 +203,21 @@ describe('getUsers function', () => {
 	});
 	test('Testing deleteItemFromUser', async () => {
 		const user = await findUserByUsername('awu98', conn);
+		const ItemModel = conn.model('Item', ItemSchema);
+		await ItemModel.create({
+			userId: user[0]._id.toString(),
+			name: 'Toe',
+			quantity: 3,
+			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
+		});
 		const result = await deleteItemFromUser(
 			user[0]._id.toString(),
-			'65eb97d8b566ba4fa9984f39',
+			'65ef409a0336b57ddfbe9ce3',
 			conn
 		);
 		const updatedUser = await findUserByUsername('awu98', conn);
 		console.log(updatedUser);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
 		expect(updatedUser[0].items.length).toEqual(0);
 	});
 	test('Testing findUserByUserAndPass', async () => {

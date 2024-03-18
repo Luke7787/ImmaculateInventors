@@ -45,8 +45,9 @@ async function findUserById(id: any, conn: any) {
 
 async function addUser(user: any, conn: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-	const userModel = conn.model('User', UserSchema);
+	
 	try {
+		const userModel = conn.model('User', UserSchema);
 		//hash password before adding into database
 		// const hashpassword = bcrypt.hashSync(user['password'], 10);
 		// user['password'] = hashpassword;
@@ -55,7 +56,7 @@ async function addUser(user: any, conn: any) {
 		// passing the JSON content of the Document:
 		const userToAdd = new userModel(user);
 		const savedUser = await userToAdd.save();
-		return true;
+		return savedUser;
 	} catch (error: any) {
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
@@ -74,8 +75,9 @@ async function addUser(user: any, conn: any) {
 }
 
 async function delUser(user: any, conn: any) {
-	const userModel = conn.model('User', UserSchema);
+	
 	try {
+		const userModel = conn.model('User', UserSchema);
 		await userModel.deleteOne(user);
 		return true;
 	} catch (err) {
@@ -169,8 +171,9 @@ async function findUserByUserAndPass(username: any, password: any, conn: any) {
 
 async function deleteUserById(id: any, conn: any) {
 	console.log('delete user by id', id);
-	const userModel = conn.model('User', UserSchema);
+	
 	try {
+		const userModel = conn.model('User', UserSchema);
 		if (await userModel.findByIdAndDelete(id)) return true;
 	} catch (error) {
 		console.log(error);
