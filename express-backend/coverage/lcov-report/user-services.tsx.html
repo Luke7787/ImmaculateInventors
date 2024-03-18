@@ -253,14 +253,11 @@
 <a name='L189'></a><a href='#L189'>189</a>
 <a name='L190'></a><a href='#L190'>190</a>
 <a name='L191'></a><a href='#L191'>191</a>
-<<<<<<< HEAD
 <a name='L192'></a><a href='#L192'>192</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-=======
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
 <a name='L194'></a><a href='#L194'>194</a>
 <a name='L195'></a><a href='#L195'>195</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
->>>>>>> db53dd6 (finished testing)
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -282,8 +279,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<<<<<<< HEAD
-=======
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -433,7 +428,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
->>>>>>> db53dd6 (finished testing)
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -442,7 +436,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<<<<<<< HEAD
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -576,9 +569,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-=======
 <span class="cline-any cline-yes">1x</span>
->>>>>>> db53dd6 (finished testing)
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -654,14 +645,11 @@ async function <span class="fstat-no" title="function not covered" >findUserById
 &nbsp;
 async function <span class="fstat-no" title="function not covered" >addUser(</span>user: any, conn: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-<<<<<<< HEAD
 	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	try {</span>
-=======
 &nbsp;
 	try {
 		const userModel = conn.model('User', UserSchema);
->>>>>>> db53dd6 (finished testing)
 		//hash password before adding into database
 		// const hashpassword = bcrypt.hashSync(user['password'], 10);
 		// user['password'] = hashpassword;
@@ -672,7 +660,6 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 		const savedUser = <span class="cstat-no" title="statement not covered" >await userToAdd.save();</span>
 <span class="cstat-no" title="statement not covered" >		return savedUser;</span>
 	} catch (error: any) {
-<<<<<<< HEAD
 <span class="cstat-no" title="statement not covered" >		console.log(error);</span>
 <span class="cstat-no" title="statement not covered" >		if (error.name == 'ValidationError') {</span>
 			const errorMessage = <span class="cstat-no" title="statement not covered" >error.errors.password</span>
@@ -682,7 +669,6 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 <span class="cstat-no" title="statement not covered" >			return { error: true, message: errorMessage };</span>
 		} else {
 <span class="cstat-no" title="statement not covered" >			return { error: true, message: 'An unexpected error occurred' };</span>
-=======
 		if (error.name == 'ValidationError') {
 			const errorMessage = error.errors.password
 				? error.errors.password.message
@@ -692,7 +678,6 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 		} else {
 			console.log(error);
 			return { error: true, message: 'An unexpected error occurred' };
->>>>>>> db53dd6 (finished testing)
 		}
 &nbsp;
 		// console.log(error);
@@ -773,13 +758,10 @@ async function <span class="fstat-no" title="function not covered" >updateItemFr
 			const updatedUser = <span class="cstat-no" title="statement not covered" >await UserModel.findByIdAndUpdate(userId, {</span>
 				$pull: { items: itemId },
 			});
-<<<<<<< HEAD
 			const delItem = <span class="cstat-no" title="statement not covered" >await itemServices.deleteItem(itemId);</span>
 <span class="cstat-no" title="statement not covered" >			return delItem;</span>
-=======
 			const delItem = await itemServices.deleteItem(itemId, conn);
 			return delItem;
->>>>>>> db53dd6 (finished testing)
 		} else {
 			const decItem = <span class="cstat-no" title="statement not covered" >await ItemModel.findByIdAndUpdate(itemId, {</span>
 				$inc: { quantity: -quantity },
@@ -799,20 +781,17 @@ async function findUserByUserAndPass(username: any, password: any, conn: any) {
 	return await userModel.find({ username: username, password: password });
 }
 &nbsp;
-<<<<<<< HEAD
 async function <span class="fstat-no" title="function not covered" >deleteUserById(</span>id: any, conn: any) {
 <span class="cstat-no" title="statement not covered" >	console.log('delete user by id', id);</span>
 	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	try {</span>
 <span class="cstat-no" title="statement not covered" >		<span class="missing-if-branch" title="if path not taken" >I</span>if (await userModel.findByIdAndDelete(id)) <span class="cstat-no" title="statement not covered" >return true;</span></span>
-=======
 async function deleteUserById(id: any, conn: any) {
 	console.log('delete user by id', id);
 &nbsp;
 	try {
 		const userModel = conn.model('User', UserSchema);
 		if (await userModel.findByIdAndDelete(id)) return true;
->>>>>>> db53dd6 (finished testing)
 	} catch (error) {
 <span class="cstat-no" title="statement not covered" >		console.log(error);</span>
 <span class="cstat-no" title="statement not covered" >		return false;</span>
