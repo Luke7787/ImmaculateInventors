@@ -20,9 +20,9 @@
 				<h1><a href="index.html">All files</a> user-services.tsx</h1>
 				<div class="clearfix">
 					<div class="fl pad1y space-right2">
-						<span class="strong">25.51% </span>
+						<span class="strong">27.27% </span>
 						<span class="quiet">Statements</span>
-						<span class="fraction">25/98</span>
+						<span class="fraction">27/99</span>
 					</div>
 
 					<div class="fl pad1y space-right2">
@@ -38,9 +38,9 @@
 					</div>
 
 					<div class="fl pad1y space-right2">
-						<span class="strong">27.47% </span>
+						<span class="strong">29.34% </span>
 						<span class="quiet">Lines</span>
-						<span class="fraction">25/91</span>
+						<span class="fraction">27/92</span>
 					</div>
 				</div>
 				<p class="quiet">
@@ -257,36 +257,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -373,6 +371,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -415,6 +414,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -427,7 +427,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -448,9 +448,9 @@ const bcrypt = require('bcrypt');
 &nbsp;
 let dbConnection: any;
 &nbsp;
-function getDbConnection() {
+async function getDbConnection() {
 	if (!dbConnection) {
-		dbConnection = mongoose.createConnection(
+		dbConnection = await mongoose.createConnection(
 			'mongodb://127.0.0.1:27017/inventoryUsers',
 			{
 				useNewUrlParser: true,
@@ -461,14 +461,13 @@ function getDbConnection() {
 	return dbConnection;
 }
 &nbsp;
-async function getUsers(username: any, password: any) {
-	const userModel = getDbConnection().model('User', UserSchema);
+async function getUsers(conn: any, username?: any, password?: any) {
+	const userModel = conn.model('User', UserSchema);
 	let result;
 	if (!username &amp;&amp; !password) {
 		result = await userModel.find();
 	} else {
-		//hash password and check if it's identical to actual password
-		result = await findUserByUserAndPass(username, password, userModel);
+		result = await findUserByUserAndPass(username, password, conn);
 	}
 	return result;
 }
@@ -477,19 +476,18 @@ async function getUsers(username: any, password: any) {
 //   return users["users_list"].findIndex((user) =&gt; user["username"] === username);
 // }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >findUserById(</span>id: any) {
-	const userModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
+async function <span class="fstat-no" title="function not covered" >findUserById(</span>id: any, conn: any) {
 <span class="cstat-no" title="statement not covered" >	try {</span>
-<span class="cstat-no" title="statement not covered" >		return await userModel.findUserByUsername(id);</span>
+<span class="cstat-no" title="statement not covered" >		return await findUserByUsername(id, conn);</span>
 	} catch (error) {
 <span class="cstat-no" title="statement not covered" >		console.log(error);</span>
 <span class="cstat-no" title="statement not covered" >		return undefined;</span>
 	}
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >addUser(</span>user: any) {
+async function <span class="fstat-no" title="function not covered" >addUser(</span>user: any, conn: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-	const userModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
+	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	try {</span>
 		//hash password before adding into database
 		// const hashpassword = bcrypt.hashSync(user['password'], 10);
@@ -517,8 +515,8 @@ async function <span class="fstat-no" title="function not covered" >addUser(</sp
 	}
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >delUser(</span>user: any) {
-	const userModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
+async function <span class="fstat-no" title="function not covered" >delUser(</span>user: any, conn: any) {
+	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	try {</span>
 <span class="cstat-no" title="statement not covered" >		await userModel.deleteOne(user);</span>
 <span class="cstat-no" title="statement not covered" >		return true;</span>
@@ -528,10 +526,10 @@ async function <span class="fstat-no" title="function not covered" >delUser(</sp
 	}
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >addItemToUser(</span>user_id: any, item_id: any) {
+async function <span class="fstat-no" title="function not covered" >addItemToUser(</span>user_id: any, item_id: any, conn: any) {
 	// connect to user collection and item collection databases
-	const UserModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
-	const ItemModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('Item', ItemSchema);</span>
+	const UserModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
+	const ItemModel = <span class="cstat-no" title="statement not covered" >conn.model('Item', ItemSchema);</span>
 	// find user with matching id
 	const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(user_id);</span>
 	// initialize array for user items if it doesnt exist already
@@ -547,9 +545,9 @@ async function <span class="fstat-no" title="function not covered" >addItemToUse
 <span class="cstat-no" title="statement not covered" >	return updatedUser;</span>
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >getItemFromUser(</span>userId: any, itemId: any) {
-	const UserModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
-	const ItemModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('Item', ItemSchema);</span>
+async function <span class="fstat-no" title="function not covered" >getItemFromUser(</span>userId: any, itemId: any, conn: any) {
+	const UserModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
+	const ItemModel = <span class="cstat-no" title="statement not covered" >conn.model('Item', ItemSchema);</span>
 	const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(userId);</span>
 <span class="cstat-no" title="statement not covered" >	<span class="missing-if-branch" title="if path not taken" >I</span>if (user) <span class="cstat-no" title="statement not covered" >console.log(user.username);</span></span>
 	const userItem = <span class="cstat-no" title="statement not covered" >await UserModel.find({ items: itemId });</span>
@@ -557,9 +555,9 @@ async function <span class="fstat-no" title="function not covered" >getItemFromU
 <span class="cstat-no" title="statement not covered" >	return await ItemModel.find({ _id: itemId });</span>
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >deleteItemFromUser(</span>userId: any, itemId: any) {
-	const UserModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
-	const ItemModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('Item', ItemSchema);</span>
+async function <span class="fstat-no" title="function not covered" >deleteItemFromUser(</span>userId: any, itemId: any, conn: any) {
+	const UserModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
+	const ItemModel = <span class="cstat-no" title="statement not covered" >conn.model('Item', ItemSchema);</span>
 	const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(userId);</span>
 <span class="cstat-no" title="statement not covered" >	<span class="missing-if-branch" title="if path not taken" >I</span>if (user) <span class="cstat-no" title="statement not covered" >console.log(user.username);</span></span>
 	const userItem = <span class="cstat-no" title="statement not covered" >await UserModel.find({ items: itemId });</span>
@@ -573,10 +571,11 @@ async function <span class="fstat-no" title="function not covered" >updateItemFr
 	userId: any,
 	itemId: any,
 	quantity: any,
-	option: any
+	option: any,
+	conn: any
 ) {
-	const UserModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
-	const ItemModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('Item', ItemSchema);</span>
+	const UserModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
+	const ItemModel = <span class="cstat-no" title="statement not covered" >conn.model('Item', ItemSchema);</span>
 	const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(userId);</span>
 <span class="cstat-no" title="statement not covered" >	if (option === 'add') {</span>
 		const incItem = <span class="cstat-no" title="statement not covered" >await ItemModel.findByIdAndUpdate(itemId, {</span>
@@ -600,18 +599,19 @@ async function <span class="fstat-no" title="function not covered" >updateItemFr
 	}
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >findUserByUsername(</span>username: any) {
-	const userModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
+async function <span class="fstat-no" title="function not covered" >findUserByUsername(</span>username: any, conn: any) {
+	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	return await userModel.find({ username: username });</span>
 }
 &nbsp;
-async function findUserByUserAndPass(username: any, password: any, userModel: any) {
+async function findUserByUserAndPass(username: any, password: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
 	return await userModel.find({ username: username, password: password });
 }
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >deleteUserById(</span>id: any) {
+async function <span class="fstat-no" title="function not covered" >deleteUserById(</span>id: any, conn: any) {
 <span class="cstat-no" title="statement not covered" >	console.log('delete user by id', id);</span>
-	const userModel = <span class="cstat-no" title="statement not covered" >getDbConnection().model('User', UserSchema);</span>
+	const userModel = <span class="cstat-no" title="statement not covered" >conn.model('User', UserSchema);</span>
 <span class="cstat-no" title="statement not covered" >	try {</span>
 <span class="cstat-no" title="statement not covered" >		<span class="missing-if-branch" title="if path not taken" >I</span>if (await userModel.findByIdAndDelete(id)) <span class="cstat-no" title="statement not covered" >return true;</span></span>
 	} catch (error) {
@@ -619,7 +619,7 @@ async function <span class="fstat-no" title="function not covered" >deleteUserBy
 <span class="cstat-no" title="statement not covered" >		return false;</span>
 	}
 }
-&nbsp;
+exports.getDbConnection = getDbConnection;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
@@ -646,7 +646,7 @@ export {};
 				rel="noopener noreferrer"
 				>istanbul</a
 			>
-			at 2024-03-17T17:53:33.137Z
+			at 2024-03-18T00:20:26.685Z
 		</div>
 		<script src="prettify.js"></script>
 		<script>
