@@ -15,8 +15,8 @@ Front-end (root):
 
 Back-end (./express-backend):
 
-`npm run dev`
-`npm run test`
+`npm run dev`<br/>
+`npm run test`<br/>
 `npm run test:coverage`
 
 ![coveragecsc308](https://github.com/Luke7787/ImmaculateInventors/assets/121963264/8cfe9e76-89aa-4f96-971c-11f0910db4e6)
