@@ -20,9 +20,9 @@
 				<h1><a href="index.html">All files</a> user.tsx</h1>
 				<div class="clearfix">
 					<div class="fl pad1y space-right2">
-						<span class="strong">66.66% </span>
+						<span class="strong">100% </span>
 						<span class="quiet">Statements</span>
-						<span class="fraction">6/9</span>
+						<span class="fraction">9/9</span>
 					</div>
 
 					<div class="fl pad1y space-right2">
@@ -32,15 +32,15 @@
 					</div>
 
 					<div class="fl pad1y space-right2">
-						<span class="strong">0% </span>
+						<span class="strong">100% </span>
 						<span class="quiet">Functions</span>
-						<span class="fraction">0/2</span>
+						<span class="fraction">2/2</span>
 					</div>
 
 					<div class="fl pad1y space-right2">
-						<span class="strong">66.66% </span>
+						<span class="strong">100% </span>
 						<span class="quiet">Lines</span>
-						<span class="fraction">6/9</span>
+						<span class="fraction">9/9</span>
 					</div>
 				</div>
 				<p class="quiet">
@@ -54,7 +54,7 @@
 					</div>
 				</template>
 			</div>
-			<div class="status-line medium"></div>
+			<div class="status-line high"></div>
 			<pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -182,11 +182,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,12 +254,12 @@ const UserSchema = new mongoose.Schema(
 			required: true,
 			trim: true,
 			validate: {
-				validator: <span class="fstat-no" title="function not covered" >function (v</span>alue: any) {
-					const passwordPolicy = <span class="cstat-no" title="statement not covered" >/^(?=.*\d)(?=.*[?!@#$%^&amp;*])(?=.*[A-Z]).{10,}$/;</span>
-<span class="cstat-no" title="statement not covered" >					return passwordPolicy.test(value);</span>
+				validator: function (value: any) {
+					const passwordPolicy = /^(?=.*\d)(?=.*[?!@#$%^&amp;*])(?=.*[A-Z]).{10,}$/;
+					return passwordPolicy.test(value);
 				},
-				message: <span class="fstat-no" title="function not covered" >(p</span>rops: any) =&gt;
-<span class="cstat-no" title="statement not covered" >					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',</span>
+				message: (props: any) =&gt;
+					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
 			},
 		},
 		items: [
@@ -274,7 +274,7 @@ const UserSchema = new mongoose.Schema(
 	{ collection: 'users_list' }
 );
 &nbsp;
-module.exports = mongoose.model('User', UserSchema);
+module.exports = UserSchema;
 &nbsp;</pre></td></tr></table></pre>
 
 			<div class="push"></div>
@@ -289,7 +289,7 @@ module.exports = mongoose.model('User', UserSchema);
 				rel="noopener noreferrer"
 				>istanbul</a
 			>
-			at 2024-03-17T17:53:33.137Z
+			at 2024-03-18T05:13:33.357Z
 		</div>
 		<script src="prettify.js"></script>
 		<script>
