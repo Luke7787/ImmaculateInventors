@@ -19,4 +19,7 @@ Back-end (./express-backend):
 `npm run test`<br/>
 `npm run test:coverage`
 
-![coveragecsc308](https://github.com/Luke7787/ImmaculateInventors/assets/121963264/8cfe9e76-89aa-4f96-971c-11f0910db4e6)
+
+Code coverage (with date and time):
+![image](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/d837d239-5380-491c-91fb-447fdef2bea3)
+
