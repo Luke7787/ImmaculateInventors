@@ -14,9 +14,9 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage.png"
+          src="/images/homePage2.png"
           alt="Home Page"
-          style={{ width: '100%', display: 'block', filter: 'blur(2px)' }}
+          style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
         <Box className={styles.overlayTextBox}>
           <Box className={styles.decorativeRectangle}></Box>
@@ -37,7 +37,8 @@ const Homepage = () => {
           </Typography>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px' }}
+            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '20',
+            padding: '12px 30px', }}
             onClick={() => navigate('/inventory')}
           >
             TRY NOW
