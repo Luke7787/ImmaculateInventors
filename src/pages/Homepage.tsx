@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '3rem' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '2.7rem' }}
             gutterBottom
           >
             Discover A New Way <br /> To Stay Organized
@@ -31,7 +31,7 @@ const Homepage = () => {
           <Typography
             variant="subtitle1"
             gutterBottom
-            style={{ lineHeight: '1.2', marginBottom: '15px', marginLeft: '25px', fontSize: '1.25rem'}}
+            style={{ lineHeight: '1.2', marginBottom: '15px', marginLeft: '25px', fontSize: '1.20rem'}}
           >
             Optimizing Your Storage: Effortless Inventory <br /> Management
           </Typography>
@@ -50,7 +50,7 @@ const Homepage = () => {
           </Typography>
           <div className={styles.featuresContainer}>
             {[
-              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+              { text: "Easily Add Images to \n Your Inventory", img: "addImage.png" },
               { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
               { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
             ].map((feature, index) => (
@@ -58,7 +58,11 @@ const Homepage = () => {
                 <div className={styles.decorativeRectangleFeature1}></div>
                 <div className={styles.decorativeRectangleFeature2}></div>
                 <div className={styles.decorativeRectangleFeature3}></div>
-                <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.25rem', lineHeight: 1.2, position: 'relative', paddingTop: '50px' }}>
+                <Typography 
+                  variant="h6" 
+                  align="left"
+                  style={{ fontWeight: 'bold', fontSize: '1.5rem', lineHeight: 1.2, position: 'relative', paddingTop: '50px'}}
+                >
                   {feature.text}
                 </Typography>
                 <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
