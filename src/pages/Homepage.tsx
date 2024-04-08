@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '9px', lineHeight: '1', marginTop: '9px' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '9px', lineHeight: '1', marginTop: '25px' }}
             gutterBottom
           >
             Discover A New Way To Stay Organized
@@ -44,35 +44,34 @@ const Homepage = () => {
           </Button>
         </Box>
         <div className={styles.featureSection}>
-        <Typography variant="h4" component="h2" className={styles.featuresTitle} style={{ fontWeight: 'bold' }}>
+          <Typography variant="h4" component="h2" className={styles.featuresTitle} style={{ fontWeight: 'bold' }}>
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
-          {[
-            { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
-            { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
-            { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
+            {[
+              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+              { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
+              { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
             ].map((feature, index) => (
-            <div key={index} className={styles.featureBox}>
+              <div key={index} className={styles.featureBox}>
                 <div className={styles.decorativeRectangleFeature1}></div>
                 <div className={styles.decorativeRectangleFeature2}></div>
                 <div className={styles.decorativeRectangleFeature3}></div>
                 <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.25rem', lineHeight: 1.2, position: 'relative', paddingTop: '50px' }}>
-                {feature.text}
+                  {feature.text}
                 </Typography>
                 <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
-            </div>
+              </div>
             ))}
           </div>
         </div>
       </div>
       <div className={styles.tryOurProductSection}>
-    <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold' }}>
-    Try Our Product
-  </Typography>
-  <div className={styles.placeholderBox}></div>
-</div>
-
+        <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold' }}>
+          Try Our Product
+        </Typography>
+        <div className={styles.placeholderBox}></div>
+      </div>
     </ThemeProvider>
   );
 };

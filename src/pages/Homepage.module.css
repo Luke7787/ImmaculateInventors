@@ -1,104 +1,103 @@
 .homepageContainer {
-    position: relative;
-  }
-  
-  .overlayTextBox {
-    position: absolute;
-    top: 15%;
-    right: 10%;
-    background-color: #FFF4E0;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 350px;
-    height: auto;
-    padding-top: 40px;
-  }
-  
-  .decorativeRectangle {
-    background-color: #E0C224;
-    height: 10px;
-    width: 25%;
-    position: absolute;
-    top: 20px;
-    left: 5.7%;
-  }
+  position: relative;
+}
 
-  .decorativeRectangleFeature1 {
-    background-color: #E0C224;
-    height: 10px;
-    width: 7%;
-    position: absolute;
-    bottom: 300px;
-    left: 200px;
-  }
+.overlayTextBox {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FFF4E0;
+  border-radius: 8px;
+  position: absolute;
+  padding-top: 40px;
+  max-width: 350px;
+  padding: 20px;
+  height: auto;
+  right: 10%;
+  top: 15%;
+}
 
-  .decorativeRectangleFeature2 {
-    background-color: #E0C224;
-    height: 10px;
-    width: 7%;
-    position: absolute;
-    bottom: 300px;
-    left: 610px;
-  }
+.decorativeRectangle {
+  background-color: #E0C224;
+  position: absolute;
+  height: 10px;
+  left: 5.7%;
+  width: 25%;
+  top: 20px;
+}
 
-  .decorativeRectangleFeature3 {
-    background-color: #E0C224;
-    height: 10px;
-    width: 7%;
-    position: absolute;
-    bottom: 300px;
-    left: 1022px;
-  }
-  
-  .featureSection {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .featuresTitle {
-    margin-bottom: 30px;
-    position: relative;
-  }
-  
-  .featuresContainer {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    padding-top: 15px;
-  }
-  
-  .featureBox {
-    background-color: #FBF29C;
-    padding: 40px;
-    border-radius: 8px;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .featureIcon {
-    width: 140px;
-    height: 140px;
-    display: block;
-    margin: 20px auto;
-    object-fit: contain;
-  }
-  
-  .tryOurProductSection {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .tryOurProductTitle {
-    margin-bottom: 20px;
-  }
-  
-  .placeholderBox {
-    background-color: #D3D3D3; /* Light gray color as a placeholder */
-    width: 83%;
-    height: 600px; /* Adjust as needed */
-    margin: 0 auto; /* Center the box */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
+.decorativeRectangleFeature1 {
+  background-color: #E0C224;
+  position: absolute;
+  bottom: 300px;
+  height: 10px;
+  left: 200px;
+  width: 7%;
+}
+
+.decorativeRectangleFeature2 {
+  background-color: #E0C224;
+  position: absolute;
+  bottom: 300px;
+  height: 10px;
+  left: 610px;
+  width: 7%;
+}
+
+.decorativeRectangleFeature3 {
+  background-color: #E0C224;
+  position: absolute;
+  bottom: 300px;
+  height: 10px;
+  left: 1022px;
+  width: 7%;
+}
+
+.featureSection {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.featuresTitle {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.featuresContainer {
+  justify-content: center;
+  padding-top: 15px;
+  display: flex;
+  gap: 40px;
+}
+
+.featureBox {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FBF29C;
+  border-radius: 8px;
+  padding: 40px;
+  width: 300px;
+}
+
+.featureIcon {
+  object-fit: contain;
+  margin: 20px auto;
+  display: block;
+  height: 140px;
+  width: 140px;
+}
+
+.tryOurProductSection {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.tryOurProductTitle {
+  margin-bottom: 20px;
+}
+
+.placeholderBox {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #D3D3D3;
+  border-radius: 8px;
+  margin: 0 auto;
+  height: 600px;
+  width: 83%;
+}
