@@ -8,10 +8,10 @@
   border-radius: 8px;
   position: absolute;
   padding-top: 40px;
-  max-width: 350px;
+  max-width: 560px;
   padding: 20px;
-  height: auto;
-  right: 10%;
+  height: 300px;
+  right: 4%;
   top: 15%;
 }
 
@@ -19,9 +19,9 @@
   background-color: #E0C224;
   position: absolute;
   height: 10px;
-  left: 5.7%;
+  left: 8%;
   width: 25%;
-  top: 20px;
+  top: 50px;
 }
 
 .decorativeRectangleFeature1 {

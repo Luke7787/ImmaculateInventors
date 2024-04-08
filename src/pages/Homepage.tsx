@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '9px', lineHeight: '1', marginTop: '25px' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '3rem' }}
             gutterBottom
           >
             Discover A New Way To Stay Organized
@@ -31,13 +31,13 @@ const Homepage = () => {
           <Typography
             variant="subtitle1"
             gutterBottom
-            style={{ lineHeight: '1.2', marginBottom: '15px' }}
+            style={{ lineHeight: '1.2', marginBottom: '15px', marginLeft: '25px', fontSize: '1.25rem'}}
           >
             Optimizing Your Storage: Effortless Inventory Management
           </Typography>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold' }}
+            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px' }}
             onClick={() => navigate('/inventory')}
           >
             TRY NOW
