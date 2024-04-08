@@ -186,7 +186,7 @@ app.patch('/items/:id', async (req: any, res: any) => {
 });
 
 app.post('/upload', async (req: any, res: any) => {
-	upload.single('imageFile'),
+	upload.single('imageFile');
 	if (!req.file) {
 	  return res.status(400).send('Please upload a file.');
 	}
