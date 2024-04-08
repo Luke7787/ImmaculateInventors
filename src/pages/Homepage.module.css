@@ -4,14 +4,66 @@
   
   .overlayTextBox {
     position: absolute;
-    top: 20%; /* Adjust based on design */
-    right: 10%; /* Adjust based on design */
-    background-color: #FFF4E0; /* Soft peach background */
+    top: 15%;
+    right: 10%;
+    background-color: #FFF4E0;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 350px; /* Keep the box from becoming too wide */
+    max-width: 350px;
+    height: auto;
+    padding-top: 40px;
   }
   
-  /* Add additional styles based on your design requirements */
+  .decorativeRectangle {
+    background-color: #E0C224;
+    height: 10px;
+    width: 25%;
+    position: absolute;
+    top: 20px;
+    left: 5.7%;
+  }
+  
+  .featureSection {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .featuresTitle {
+    margin-bottom: 30px;
+    position: relative;
+  }
+  
+  .featuresTitle::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -15px;
+    height: 4px;
+    width: 50px;
+    background-color: #E0C224;
+    transform: translateX(-50%);
+  }
+  
+  .featuresContainer {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .featureBox {
+    background-color: #FBF29C;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .featureIcon {
+    width: 140px;
+    height: 140px;
+    display: block;
+    margin: 20px auto;
+    object-fit: contain;
+  }
   
