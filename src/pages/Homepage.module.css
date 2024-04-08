@@ -1,0 +1,17 @@
+.homepageContainer {
+    position: relative;
+  }
+  
+  .overlayTextBox {
+    position: absolute;
+    top: 20%; /* Adjust based on design */
+    right: 10%; /* Adjust based on design */
+    background-color: #FFF4E0; /* Soft peach background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 350px; /* Keep the box from becoming too wide */
+  }
+  
+  /* Add additional styles based on your design requirements */
+  
