@@ -84,10 +84,7 @@ app.post('/items/', async (req: any, res: any) => {
 
 app.patch('/itemToUser/', async (req: any, res: any) => {
 	const item = req.body;
-	//const uid = req.query['uid'];
 	const uid = item.userId;
-	//const id = req.query["id"];
-	//const conn = await userServices.getDbConnection();
 	const savedItem = await itemServices.addItem(item);
 	const id = savedItem._id;
 	const user = await userServices.addItemToUser(uid, id);
@@ -142,9 +139,9 @@ app.get('/items/', async (req: any, res: any) => {
 });
 
 app.delete('/items/', async (req: any, res: any) => {
-	const uid = req.query['uid'];
 	const id = req.query['id'];
-	//const conn = await userServices.getDbConnection();
+	
+	const uid = await itemServices.getUserId(id);
 	const result = await userServices.deleteItemFromUser(uid, id);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);

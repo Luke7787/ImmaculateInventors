@@ -14,6 +14,7 @@ async function getUsers() {
 	return await UserSchema.find();
 }
 
+
 async function findUserById(id: any, conn: any) {
 	try {
 		return await findUserByUsername(id);
@@ -75,18 +76,12 @@ async function addItemToUser(user_id: any, item_id: any) {
 }
 
 async function getItemFromUser(userId: any, itemId: any) {
-	//const UserModel = conn.model('User', UserSchema);
-	//const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserSchema.findById(userId);
-	if (user) console.log(user.username);
 	const userItem = await UserSchema.find({ items: itemId });
-	if (userItem) console.log('Item found');
 	return await ItemSchema.find({ _id: itemId });
 }
 
 async function deleteItemFromUser(userId: any, itemId: any) {
-	// const UserModel = conn.model('User', UserSchema);
-	// const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserSchema.findById(userId);
 	if (user) console.log(user.username);
 	const userItem = await UserSchema.find({ items: itemId });
@@ -94,6 +89,7 @@ async function deleteItemFromUser(userId: any, itemId: any) {
 	const updatedUser = await UserSchema.findByIdAndUpdate(userId, {
 		$pull: { items: itemId },
 	});
+	return updatedUser;
 }
 
 async function updateItemFromUser(

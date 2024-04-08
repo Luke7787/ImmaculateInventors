@@ -10,22 +10,14 @@ mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb
     useUnifiedTopology: true,
   });
 
-async function getDbConnection() {
-	if (!dbConnection) {
-		dbConnection = await mongoose.createConnection(
-			'mongodb://127.0.0.1:27017/inventoryUsers',
-			{
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			}
-		);
-	}
-	return dbConnection;
-}
-
 async function getItems() {
 	//const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemSchema.find();
+}
+
+async function getUserId(id: any) {
+	const item = await ItemSchema.findById(id);
+	return item.userId;
 }
 
 async function getItemsFromUser(userId: any) {
@@ -62,12 +54,12 @@ async function updateItem(id: any, updates: any) {
 //   await mongoose.connection.close();
 //   await mongoose.disconnect();
 // }
-exports.getDbConnection = getDbConnection;
 exports.getItems = getItems;
 exports.findItemByName = findItemByName;
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
 exports.updateItem = updateItem;
+exports.getUserId = getUserId;
 // exports.disconnectDB = disconnectDB;
 export {};
