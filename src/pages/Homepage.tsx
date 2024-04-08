@@ -48,17 +48,20 @@ const Homepage = () => {
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
-            {[
-              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
-              { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
-              { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
+          {[
+            { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+            { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
+            { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
             ].map((feature, index) => (
-              <div key={index} className={styles.featureBox}>
-                <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.25rem', lineHeight: 1.2 }}>
-                  {feature.text}
+            <div key={index} className={styles.featureBox}>
+                <div className={styles.decorativeRectangleFeature1}></div>
+                <div className={styles.decorativeRectangleFeature2}></div>
+                <div className={styles.decorativeRectangleFeature3}></div>
+                <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.25rem', lineHeight: 1.2, position: 'relative', paddingTop: '50px' }}>
+                {feature.text}
                 </Typography>
                 <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
-              </div>
+            </div>
             ))}
           </div>
         </div>
