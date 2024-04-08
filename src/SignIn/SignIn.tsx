@@ -30,7 +30,6 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 			const response = await axios.get('http://localhost:8000/users', {
 				params: signInData,
 			});
-			console.log(response);
 			if (response.status === 200) {
 				setSignInErr(false);
 			}
