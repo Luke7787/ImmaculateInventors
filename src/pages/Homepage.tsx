@@ -26,14 +26,14 @@ const Homepage = () => {
             style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '3rem' }}
             gutterBottom
           >
-            Discover A New Way To Stay Organized
+            Discover A New Way <br /> To Stay Organized
           </Typography>
           <Typography
             variant="subtitle1"
             gutterBottom
             style={{ lineHeight: '1.2', marginBottom: '15px', marginLeft: '25px', fontSize: '1.25rem'}}
           >
-            Optimizing Your Storage: Effortless Inventory Management
+            Optimizing Your Storage: Effortless Inventory <br /> Management
           </Typography>
           <Button
             variant="contained"
