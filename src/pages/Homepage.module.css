@@ -84,3 +84,21 @@
     object-fit: contain;
   }
   
+  .tryOurProductSection {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .tryOurProductTitle {
+    margin-bottom: 20px;
+  }
+  
+  .placeholderBox {
+    background-color: #D3D3D3; /* Light gray color as a placeholder */
+    width: 83%;
+    height: 600px; /* Adjust as needed */
+    margin: 0 auto; /* Center the box */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

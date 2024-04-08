@@ -66,6 +66,13 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+      <div className={styles.tryOurProductSection}>
+    <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold' }}>
+    Try Our Product
+  </Typography>
+  <div className={styles.placeholderBox}></div>
+</div>
+
     </ThemeProvider>
   );
 };
