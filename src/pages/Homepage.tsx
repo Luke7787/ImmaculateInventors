@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '8px' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '9px', lineHeight: '1', marginTop: '9px' }}
             gutterBottom
           >
             Discover A New Way To Stay Organized
@@ -31,7 +31,7 @@ const Homepage = () => {
           <Typography
             variant="subtitle1"
             gutterBottom
-            style={{ lineHeight: '1.2' }}
+            style={{ lineHeight: '1.2', marginBottom: '15px' }}
           >
             Optimizing Your Storage: Effortless Inventory Management
           </Typography>
@@ -44,7 +44,7 @@ const Homepage = () => {
           </Button>
         </Box>
         <div className={styles.featureSection}>
-          <Typography variant="h4" component="h2" className={styles.featuresTitle}>
+        <Typography variant="h4" component="h2" className={styles.featuresTitle} style={{ fontWeight: 'bold' }}>
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
