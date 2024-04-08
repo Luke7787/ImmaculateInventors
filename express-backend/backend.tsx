@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
+const upload = require('./models/aws-config');
+
+
 
 const app = express();
 const port = 8000;
@@ -181,3 +184,26 @@ app.patch('/items/:id', async (req: any, res: any) => {
 		res.status(400).send('Error updating item');
 	}
 });
+
+app.post('/upload', async (req: any, res: any) => {
+	upload.single('imageFile'),
+	if (!req.file) {
+	  return res.status(400).send('Please upload a file.');
+	}
+  
+	try {
+	  // `req.file.buffer` contains the file data
+	  const fileName = `uploads/${Date.now().toString()}-${req.file.originalname}`;
+	  await uploadFile(req.file.buffer, fileName);
+  
+	  // Construct the file URL or use the response from `uploadFile` as needed
+	  const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+	  res.status(201).send({
+		message: 'File uploaded successfully',
+		fileUrl: fileUrl,
+	  });
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).send('Error uploading file to S3.');
+	}
+  });

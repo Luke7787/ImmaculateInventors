@@ -1,5 +1,6 @@
 const ItemSchema = require('./item.tsx');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+const { PutObjectCommand } = require("@aws-sdk/client-s3");
 
 let dbConnection: any;
 
@@ -53,6 +54,27 @@ async function updateItem(id: any, updates: any, conn: any) {
 	return updatedItem;
 }
 
+
+
+async function uploadFile(fileStream: any, fileName: any) {
+  const uploadParams = {
+    Bucket: process.env.S3_BUCKET_NAME,
+    Key: fileName,
+    Body: fileStream,
+  };
+
+  try {
+    const data = await s3Client.send(new PutObjectCommand(uploadParams));
+    console.log("Success", data);
+    return data;
+  } catch (err) {
+    console.log("Error", err);
+    throw new Error("File upload failed");
+  }
+}
+
+
+
 // async function disconnectDB() {
 //   await mongoose.connection.close();
 //   await mongoose.disconnect();
@@ -64,5 +86,6 @@ exports.addItem = addItem;
 exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
 exports.updateItem = updateItem;
+exports.uploadFile = uploadFile;
 // exports.disconnectDB = disconnectDB;
-export {};
+
