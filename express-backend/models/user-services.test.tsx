@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mockingoose = require('mockingoose');
 mongoose.set("debug", true);
 mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
     useNewUrlParser: true, //useFindAndModify: false,
@@ -105,23 +106,23 @@ describe('getUsers function', () => {
 		expect(user1.username).toEqual('awu98');
 	});
 	test('Testing getUsers', async () => {
-		const users = await getUsers(conn);
-		const user = await getUsers(conn, 'awu98', 'a1234567890!AA');
+		const users = await getUsers();
+		const user = await getUsers('awu98', 'a1234567890!AA');
 		expect(user[0].username).toEqual('awu98');
 		expect(users).toBeDefined();
 		expect(users.length).toBeGreaterThan(0);
 	});
 	test('Testing findUserById', async () => {
-		const result = await findUserById('awu98', conn);
+		const result = await findUserById('awu98');
 		const target = 'awu98';
 		const result2 = await findUserById(undefined, undefined);
 		expect(result2).toBeUndefined();
 		expect(result[0].username).toEqual(target);
 	});
 	test('Testing addItemToUser', async () => {
-		const user = await findUserByUsername('awu98', conn);
-		const ItemModel = conn.model('Item', ItemSchema);
-		await ItemModel.create({
+		const user = await findUserByUsername('awu98');
+		//const ItemModel = conn.model('Item', ItemSchema);
+		await ItemSchema.create({
 			userId: user[0]._id.toString(),
 			name: 'Toe',
 			quantity: 3,
@@ -130,18 +131,17 @@ describe('getUsers function', () => {
 		console.log(user[0]._id.toString())
 		const result = await addItemToUser(
 			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			conn
+			'65ef409a0336b57ddfbe9ce3'
 		);
-		const updatedUser = await findUserByUsername('awu98', conn);
+		const updatedUser = await findUserByUsername('awu98');
 		console.log(updatedUser);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
 		expect(updatedUser[0].items.length).toBeGreaterThan(0);
 	});
 	test('Testing getItemFromUser', async () => {
-		const user = await findUserByUsername('awu98', conn);
-		const ItemModel = conn.model('Item', ItemSchema);
-		await ItemModel.create({
+		const user = await findUserByUsername('awu98');
+		//const ItemModel = conn.model('Item', ItemSchema);
+		await ItemSchema.create({
 			userId: user[0]._id.toString(),
 			name: 'Toe',
 			quantity: 3,
@@ -149,67 +149,64 @@ describe('getUsers function', () => {
 		});
 		const result = getItemFromUser(
 			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			conn
+			'65ef409a0336b57ddfbe9ce3'
 		);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
 		expect(result).toBeDefined();
 	});
 	test('Testing updateItemFromUser (ADD)', async () => {
-		const user = await findUserByUsername('awu98', conn);
-		const ItemModel = conn.model('Item', ItemSchema);
-		await ItemModel.create({
+		const user = await findUserByUsername('awu98');
+		//const ItemModel = conn.model('Item', ItemSchema);
+		await ItemSchema.create({
 			userId: user[0]._id.toString(),
 			name: 'Toe',
 			quantity: 3,
 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
 		});
-		const item = await findItemByName('Toe', conn);
+		const item = await findItemByName('Toe');
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3',
 			1,
-			'add',
-			conn
+			'add'
 		);
-		const result = await findItemByName('Toe', conn);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
+		const result = await findItemByName('Toe');
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
 		expect(result[0].quantity).toBeGreaterThan(target);
 	});
 	test('Testing updateItemFromUser (SUB)', async () => {
-		const user = await findUserByUsername('awu98', conn);
-		const ItemModel = conn.model('Item', ItemSchema);
-		await ItemModel.create({
+		const user = await findUserByUsername('awu98');
+		//const ItemModel = conn.model('Item', ItemSchema);
+		await ItemSchema.create({
 			userId: user[0]._id.toString(),
 			name: 'Toe',
 			quantity: 3,
 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
 		});
-		const item = await findItemByName('Toe', conn);
+		const item = await findItemByName('Toe');
 		const target = item[0].quantity;
 		const update = await updateItemFromUser(
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3',
 			1,
-			'sub',
-			conn
+			'sub'
 		);
-		const result = await findItemByName('Toe', conn);
+		const result = await findItemByName('Toe');
 		const update2 = await updateItemFromUser(
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3',
 			3,
 			'sub',
-			conn
+			
 		);
 		expect(update2).toBeDefined();
 		expect(result[0].quantity).toBeLessThan(target);
 	});
 	test('Testing deleteItemFromUser', async () => {
-		const user = await findUserByUsername('awu98', conn);
-		const ItemModel = conn.model('Item', ItemSchema);
-		await ItemModel.create({
+		const user = await findUserByUsername('awu98');
+		//const ItemModel = conn.model('Item', ItemSchema);
+		await ItemSchema.create({
 			userId: user[0]._id.toString(),
 			name: 'Toe',
 			quantity: 3,
@@ -218,40 +215,40 @@ describe('getUsers function', () => {
 		const result = await deleteItemFromUser(
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3',
-			conn
+			
 		);
-		const updatedUser = await findUserByUsername('awu98', conn);
+		const updatedUser = await findUserByUsername('awu98');
 		console.log(updatedUser);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
+		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
 		expect(updatedUser[0].items.length).toEqual(0);
 	});
 	test('Testing findUserByUserAndPass', async () => {
-		const result = await findUserByUserAndPass('awu98', 'a1234567890!AA', conn);
+		const result = await findUserByUserAndPass('awu98', 'a1234567890!AA');
 		const target = 'awu98';
 		expect(result[0].username).toEqual(target);
 	});
 	test('Testing findUserByUsername', async () => {
-		const result = await findUserByUsername('awu98', conn);
+		const result = await findUserByUsername('awu98');
 		const target = 'awu98';
 		expect(result[0].username).toEqual(target);
 	});
 	test('Testing deleteUserById', async () => {
-		const user = await findUserByUsername('koalascope', conn);
-		const result = await deleteUserById(user[0]._id.toString(), conn);
-		const user2 = await findUserByUsername('koalascope', conn);
+		const user = await findUserByUsername('koalascope');
+		const result = await deleteUserById(user[0]._id.toString());
+		const user2 = await findUserByUsername('koalascope');
 		const result2 = await deleteUserById(undefined, undefined);
 		expect(result2).toEqual(false);
 		expect(user2.length).toEqual(0);
 	});
 	test('Testing delUser', async () => {
 		let user;
-		const users = await getUsers(conn);
+		const users = await getUsers();
 		for (let i = 0; i < users.length; i += 1) {
 			user = users[i];
-			let del = await delUser(user, conn);
+			let del = await delUser(user);
 		}
-		const result = await getUsers(conn);
-		const result2 = await delUser(undefined, undefined);
+		const result = await getUsers();
+		const result2 = await delUser(undefined);
 		expect(result2).toEqual(false);
 		expect(result.length).toEqual(0);
 	});

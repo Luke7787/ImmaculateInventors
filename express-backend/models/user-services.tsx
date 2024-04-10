@@ -14,7 +14,7 @@ async function getUsers() {
 	return await UserSchema.find();
 }
 
-async function findUserById(id: any, conn: any) {
+async function findUserById(id: any) {
 	try {
 		return await findUserByUsername(id);
 	} catch (error) {
@@ -44,10 +44,9 @@ async function addUser(user: any) {
 	}
 }
 
-async function delUser(user: any, conn: any) {
+async function delUser(user: any) {
 	try {
-		const userModel = conn.model('User', UserSchema);
-		await userModel.deleteOne(user);
+		await UserSchema.deleteOne(user);
 		return true;
 	} catch (err) {
 		console.error(err);
@@ -57,8 +56,6 @@ async function delUser(user: any, conn: any) {
 
 async function addItemToUser(user_id: any, item_id: any) {
 	// connect to user collection and item collection databases
-	//const UserModel = conn.model('User', UserSchema);
-	//const ItemModel = conn.model('Item', ItemSchema);
 	// find user with matching id
 	const user = await UserSchema.findById(user_id);
 	// initialize array for user items if it doesnt exist already
@@ -97,8 +94,6 @@ async function updateItemFromUser(
 	quantity: any,
 	option: any,
 ) {
-	//const UserModel = conn.model('User', UserSchema);
-	//const ItemModel = conn.model('Item', ItemSchema);
 	const user = await UserSchema.findById(userId);
 	if (option === 'add') {
 		const incItem = await ItemSchema.findByIdAndUpdate(itemId, {
@@ -122,16 +117,12 @@ async function updateItemFromUser(
 	}
 }
 
-async function findUserByUsername(username: string/*username: any, conn: any*/) {
+async function findUserByUsername(username: string) {
 	return await UserSchema.find({ username: username});
-
-	/*const userModel = conn.model('User', UserSchema);
-	return await userModel.find({ username: username });*/
 }
 
-async function findUserByUserAndPass(username: any, password: any, conn: any) {
-	const userModel = conn.model('User', UserSchema);
-	return await userModel.find({ username: username, password: password });
+async function findUserByUserAndPass(username: any, password: any) {
+	return await UserSchema.find({ username: username, password: password });
 }
 
 async function deleteUserById(id: any) {

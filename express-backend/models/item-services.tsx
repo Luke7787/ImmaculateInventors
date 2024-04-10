@@ -11,7 +11,6 @@ mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb
   });
 
 async function getItems() {
-	//const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemSchema.find();
 }
 
@@ -21,7 +20,6 @@ async function getUserId(id: any) {
 }
 
 async function getItemsFromUser(userId: any) {
-	//const ItemModel = conn.model('Item', ItemSchema);
 	//let result;
 	return ItemSchema.find({ userId: userId });
 	//return result;
@@ -34,7 +32,6 @@ async function addItem(item: any) {
 }
 
 async function findItemByName(name: any) {
-	//const ItemModel = conn.model('Item', ItemSchema);
 	return await ItemSchema.find({ name: name });
 }
 
@@ -43,7 +40,6 @@ async function deleteItem(id: any) {
 }
 
 async function updateItem(id: any, updates: any) {
-	//const ItemModel = conn.model('Item', ItemSchema);
 	const updatedItem = await ItemSchema.findByIdAndUpdate(id, updates, {
 		new: true,
 	});

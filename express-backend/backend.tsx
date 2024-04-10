@@ -4,7 +4,7 @@ const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
 
 const app = express();
-const port = 8001;
+const port = 8000;
 
 app.use(cors());
 app.use(express.json());
@@ -38,8 +38,8 @@ app.get('/users', async (req: any, res: any) => {
 
 app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
-	const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserById(id, conn);
+	//const conn = await userServices.getDbConnection();
+	const result = await userServices.findUserById(id);
 	if (result === undefined || result === null)
 		res.status(404).send('Resource not found.');
 	else {
@@ -66,8 +66,8 @@ app.post('/users/', async (req: any, res: any) => {
 
 app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	const username = req.params.username;
-	const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserByUsername(username, conn);
+	//const conn = await userServices.getDbConnection();
+	const result = await userServices.findUserByUsername(username);
 	if (result.length > 0) res.status(409).send('Username already taken');
 	else {
 		res.status(200).send('Valid username');
