@@ -14,30 +14,31 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage.png"
+          src="/images/homePage2.png"
           alt="Home Page"
-          style={{ width: '100%', display: 'block', filter: 'blur(2px)' }}
+          style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
         <Box className={styles.overlayTextBox}>
           <Box className={styles.decorativeRectangle}></Box>
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '9px', lineHeight: '1', marginTop: '25px' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '2.7rem' }}
             gutterBottom
           >
-            Discover A New Way To Stay Organized
+            Discover A New Way <br /> To Stay Organized
           </Typography>
           <Typography
             variant="subtitle1"
             gutterBottom
-            style={{ lineHeight: '1.2', marginBottom: '15px' }}
+            style={{ lineHeight: '1.2', marginBottom: '15px', marginLeft: '25px', fontSize: '1.20rem'}}
           >
-            Optimizing Your Storage: Effortless Inventory Management
+            Optimizing Your Storage: Effortless Inventory <br /> Management
           </Typography>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold' }}
+            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '20',
+            padding: '12px 30px', }}
             onClick={() => navigate('/inventory')}
           >
             TRY NOW
@@ -48,22 +49,28 @@ const Homepage = () => {
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
-            {[
-              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
-              { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
-              { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
-            ].map((feature, index) => (
-              <div key={index} className={styles.featureBox}>
-                <div className={styles.decorativeRectangleFeature1}></div>
-                <div className={styles.decorativeRectangleFeature2}></div>
-                <div className={styles.decorativeRectangleFeature3}></div>
-                <Typography variant="h6" style={{ fontWeight: 'bold', fontSize: '1.25rem', lineHeight: 1.2, position: 'relative', paddingTop: '50px' }}>
-                  {feature.text}
-                </Typography>
-                <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
-              </div>
-            ))}
-          </div>
+  {[
+    { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+    { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
+    { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
+  ].map((feature, index) => (
+    <div key={index} className={styles.featureBox}>
+      {index === 0 && <div className={styles.decorativeRectangleFeature1}></div>}
+      {index === 1 && <div className={styles.decorativeRectangleFeature2}></div>}
+      {index === 2 && <div className={styles.decorativeRectangleFeature3}></div>}
+      <div style={{paddingTop: '35px', display: 'flex', flexDirection: 'column', height: '90%', justifyContent: 'space-between'}}>
+        <Typography 
+          variant="h6" 
+          align="left"
+          style={{ fontWeight: 'bold', fontSize: '1.38rem', lineHeight: 1.2}}
+        >
+          {feature.text}
+        </Typography>
+        <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </div>
       <div className={styles.tryOurProductSection}>
