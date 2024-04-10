@@ -4,21 +4,21 @@ body {
 }
 
 .header {
-	background-color: #6a6161;
+	background-color: #FFF5F5;
 	display: flex;
-	height: 10vh;
 	align-items: center;
+	border-bottom: 3px #AAA7A7 solid;
+	padding: 10px 20px;
 }
 
 .headerLeft {
-	display: inline-flex;
-	align-items: center;
+	position: absolute;
 	padding: 10px 20px;
 }
 
 h1 {
-	color: #ffffff;
-	font-size: 28px;
+	color: #000000;
+	font-size: 42px;
 }
 
 .logoImage {
@@ -26,15 +26,19 @@ h1 {
 	vertical-align: middle;
 }
 
-.headerRight {
-	flex: 1;
+.headerCenter {
+	width: 100%;
+	display: flex;
+	justify-content: center;
 	text-align: right;
 	padding: 10px 20px;
 
 	.signInButton {
 		font-weight: 200;
-		color: #ffffff;
+		color: #000000;
 		font-size: 22px;
+		padding-left: 50px;
+		padding-right: 50px;
 	}
 }
 .signInModal {
@@ -53,7 +57,7 @@ h1 {
 	right: 25px;
 	top: 25px;
 	cursor: pointer;
-	color: white;
+	color: #000000;
 }
 
 .modalHeader {
