@@ -14,7 +14,6 @@ async function getUsers() {
 	return await UserSchema.find();
 }
 
-
 async function findUserById(id: any, conn: any) {
 	try {
 		return await findUserByUsername(id);
