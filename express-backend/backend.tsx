@@ -12,7 +12,7 @@ app.use(express.json());
 const users = {
 	users_list: [],
 };
-// test
+//test
 app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
 });
@@ -41,6 +41,7 @@ app.get('/users', async (req: any, res: any) => {
 	}
 });
 
+
 app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
 	const conn = await userServices.getDbConnection();
@@ -51,6 +52,19 @@ app.get('/users/:username', async (req: any, res: any) => {
 		res.send({ users_list: result });
 	}
 });
+
+
+app.get('/users/:email', async (req: any, res: any) => {
+	const email = req.params['email'];
+	const conn = await userServices.getDbConnection();
+	const result = await userServices.findUserByEmail(email, conn);
+	if (result === undefined || result === null)
+		res.status(404).send('Resource not found.');
+	else {
+		res.send({ users_list: result });
+	}
+});
+
 
 app.post('/users/', async (req: any, res: any) => {
 	const user1 = req.body['username'];

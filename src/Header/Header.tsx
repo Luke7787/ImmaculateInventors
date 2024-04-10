@@ -29,7 +29,7 @@ const Header = () => {
                 onClick={() => setSignInOpen(false)}
                 className={styles.closeIcon}
               />
-              <SignIn setCreateAccountOpen={setCreateAccountOpen} />
+              <SignIn setCreateAccountOpen={setCreateAccountOpen}/>
             </Box>
           ) : (
             <Box className={styles.createAccountModal}>
@@ -44,6 +44,7 @@ const Header = () => {
             </Box>
           )}
         </Modal>
+
       </div>
     </nav>
   );

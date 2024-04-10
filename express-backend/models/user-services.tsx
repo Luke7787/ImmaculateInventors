@@ -169,6 +169,12 @@ async function findUserByUserAndPass(username: any, password: any, conn: any) {
 	return await userModel.find({ username: username, password: password });
 }
 
+async function findUserByEmail(email: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
+	return await userModel.find({ email: email});
+}
+
+
 async function deleteUserById(id: any, conn: any) {
 	console.log('delete user by id', id);
 	
@@ -191,5 +197,6 @@ exports.deleteItemFromUser = deleteItemFromUser;
 exports.updateItemFromUser = updateItemFromUser;
 exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
+exports.findUserByEmail = findUserByEmail;
 exports.deleteUserById = deleteUserById;
 export {};
