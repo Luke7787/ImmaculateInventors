@@ -13,7 +13,7 @@ const Header = () => {
     <nav className={styles.header}>
       <div className={styles.headerLeft}>
         <h1>My Inventory</h1>
-        {/* <img src={`${process.env.PUBLIC_URL}/images/box.png`} alt="Logo" className={styles.logoImage} /> */}
+        <img src={`${process.env.PUBLIC_URL}/images/box.png`} alt="Logo" className={styles.logoImage} />
       </div>
       <div className={styles.headerCenter}>
         <Button className={styles.signInButton} onClick={() => setSignInOpen(true)}>
