@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ItemBox.module.css';
 import AddItemModal from '../AddItemModal/AddItemModal.tsx';
-import Button from '@mui/material/Button';
+import classNames from 'classnames';
 
 interface ItemProps {
 	name: string;
@@ -34,30 +34,34 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 				</button>
 				<p>Your Folders</p>
 				<button
-					className={styles.addButton}
-					onClick={() => setIsModalOpen(true)}
+					className={classNames(styles.addButton, isEditMode && styles.addButtonActive)}
+					onClick={() => setIsEditMode(!isEditMode)}
 				>
-					<img src="/images/editIcon.png" className={styles.iconImage}/>
+					<img src="/images/editIcon.png" className={styles.iconImage} />
 					Edit Folders
 				</button>
 			</div>
 			<div className={styles.gridContainer}>
 				{items.map((item, index) => (
-					<div className={styles.gridItem} key={index}>
+					<div
+						className={classNames(
+							styles.gridItem,
+							isEditMode && styles.gridItemEditMode
+						)}
+						key={index}
+					>
 						<img
 							src={item.image}
 							alt={item.name}
 							className={styles.itemImage}
 						/>
-						{/* <Button
-							variant="contained"
-							color="error"
-							onClick={() => onDelete(item.name)}
-							className={styles.deleteButton}
+						{isEditMode && <button onClick={() => onDelete(item.name)}className={styles.deleteButton}>Delete Folder</button>}
+						<div
+							className={classNames(
+								styles.folderNameOverlay,
+								isEditMode && styles.folderOverlayEditMode
+							)}
 						>
-							Delete
-						</Button> */}
-						<div className={styles.folderNameOverlay}>
 							<div className={styles.itemName}>
 								<p>{item.name}</p>
 							</div>

@@ -1,3 +1,12 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .itemName,
 .itemQuantity,
 .deleteButton,
@@ -34,13 +43,62 @@
   }
 }
 
+.folderOverlayEditMode {
+  background-color: #FB9C9C !important;
+}
+
+.gridItemEditMode {
+  &:hover > *:not(.deleteButton){
+    filter: blur(2px);
+    cursor: auto !important;
+  }
+
+  &:hover {
+    .deleteButton {
+      visibility: visible;
+      animation: fadeIn 0.15s ease forwards;
+    }
+  }
+}
+
+.deleteButton {
+  visibility: hiden;
+  z-index: 10000;
+  position: absolute;
+  bottom: 50%;
+  height: 8%;
+  width: 34%;
+  font-size: 20px !important;
+  display: flex;
+  justify-content: center;
+  background-color: #d9534f;
+  align-items: center;
+  border-radius: 5px;
+  opacity: 0;
+  border: none;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #c9302c;
+  }
+}
+
+.iconImage {
+  height: 75%;
+  padding-right: 10px;
+}
+
+.addButtonActive {
+  background-color: #FB9C9C !important;
+}
 .addButton {
   padding: 10px 20px;
   background-color: #FBF29C;
   cursor: pointer;
   border: none;
   font-size: 24px;
-  height: 10vh;
+  height: 8vh;
   width: 250px;
   display: flex;
   justify-content: center;
@@ -70,16 +128,11 @@
   }
 }
 
-.iconImage {
-  height: 100%;
-  padding-right: 10px;
-}
-
 .folderNameOverlay {
   width: 100%;
   background-color: #FFF5F5;
   opacity: .97;
-  height: 35%;
+  height: 25%;
   bottom: 0;
   z-index: 1000;
 
@@ -106,18 +159,4 @@
 .itemQuantity {
   word-wrap: break-word;
   max-width: 100%;
-}
-
-.deleteButton {
-	padding: 5px 10px;
-	margin-top: 10px;
-	background-color: #d9534f;
-	color: white;
-	border: none;
-	cursor: pointer;
-	font-size: 0.8rem;
-}
-
-.deleteButton:hover {
-	background-color: #c9302c;
 }
