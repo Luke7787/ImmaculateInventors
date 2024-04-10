@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+const mockingoose = require('mockingoose');
+
 const {
 	getItems,
 	getItemsFromUser,
@@ -11,17 +13,18 @@ const {
 const ItemSchema = require('./item.tsx');
 
 describe('item services', () => {
-	afterEach(() => {
+	beforeEach(() => {
 		jest.clearAllMocks();
+		mockingoose.resetAll();
 	});
 	let conn: any;
-	afterEach(() => {
-		jest.clearAllMocks();
-	});
 	beforeAll(async () => {
 		conn = await getDbConnection();
+		mongoose.model = jest.fn().mockReturnValue(ItemSchema);
 	});
 	afterAll(async () => {
+		jest.clearAllMocks();
+		mockingoose.resetAll();
 		await mongoose.disconnect();
 		await mongoose.connection.close();
 	});
