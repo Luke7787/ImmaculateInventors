@@ -103,3 +103,15 @@ h1 {
 	background-color: white;
 	border-radius: 40px;
 }
+
+.logoImage {
+	height: auto;
+	width: 50px;
+  }
+  
+  .headerLeft {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+  }
+  
