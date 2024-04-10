@@ -19,7 +19,7 @@
   background-color: #E0C224;
   position: absolute;
   height: 10px;
-  left: 8%;
+  left: 9.5%;
   width: 25%;
   top: 50px;
 }
@@ -27,7 +27,7 @@
 .decorativeRectangleFeature1 {
   background-color: #E0C224;
   position: absolute;
-  bottom: 340px;
+  bottom: 300px;
   height: 10px;
   left: 168px;
   width: 7%;
@@ -36,16 +36,16 @@
 .decorativeRectangleFeature2 {
   background-color: #E0C224;
   position: absolute;
-  bottom: 340px;
+  bottom: 300px;
   height: 10px;
-  left: 590px;
+  left: 589px;
   width: 7%;
 }
 
 .decorativeRectangleFeature3 {
   background-color: #E0C224;
   position: absolute;
-  bottom: 340px;
+  bottom: 300px;
   height: 10px;
   left: 1008px;
   width: 7%;
@@ -74,6 +74,11 @@
   border-radius: 8px;
   padding: 40px;
   width: 300px;
+}
+
+.featureTextContainer {
+  margin-bottom: 20px;
+  height: 100px; 
 }
 
 .featureIcon {
