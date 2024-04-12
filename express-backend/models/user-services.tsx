@@ -43,6 +43,16 @@ async function findUserById(id: any, conn: any) {
 	}
 }
 
+async function findUserByEmail(email: any, conn: any) {
+	try {
+		const userModel = conn.model('User', UserSchema);
+		return await userModel.find({ email: email });
+	} catch (error) {
+		console.log(error);
+		return undefined;
+	}
+}
+
 async function addUser(user: any, conn: any) {
 	// userModel is a Model, a subclass of mongoose.Model
 	
@@ -183,6 +193,7 @@ async function deleteUserById(id: any, conn: any) {
 exports.getDbConnection = getDbConnection;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
+exports.findUserByEmail = findUserByEmail;
 exports.addUser = addUser;
 exports.delUser = delUser;
 exports.addItemToUser = addItemToUser;

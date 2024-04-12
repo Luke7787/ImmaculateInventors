@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 const {
 	getUsers,
 	getDbConnection,
@@ -13,9 +12,11 @@ const {
 	findUserByUserAndPass,
 	findUserByUsername,
 } = require('./user-services.tsx');
+const mongoose = require('mongoose');
 const { findItemByName, deleteItem } = require('./item-services.tsx');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
+const mockingoose = require('mockingoose');
 
 describe('getUsers function', () => {
 	let conn: any;

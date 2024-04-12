@@ -1,6 +1,9 @@
 import styles from './SignIn.module.css';
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Box, Modal } from '@mui/material';
+import ForgetPassword from '../ForgetPassword/ForgetPassword';
+import CloseIcon from "@mui/icons-material/Close";
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -10,6 +13,8 @@ interface signInData {
 	password: string;
 }
 const SignIn = ({ setCreateAccountOpen }: signInProps) => {
+	const [forgetPasswordOpen, setForgetPasswordOpen] = useState<boolean>(false);
+
 	const [signInData, setSignInData] = useState<signInData>({
 		username: '',
 		password: '',
@@ -65,6 +70,29 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						value={signInData.password}
 					/>
 				</div>
+				{setForgetPasswordOpen && (
+						<span
+							onClick={() => {
+								setForgetPasswordOpen(true);
+							}}
+						>
+							{' '}
+							<a>Forgot Password</a>
+						</span>
+				)}
+				<Modal open={forgetPasswordOpen} onClose={() => setForgetPasswordOpen(false)}>
+					<Box className={styles.forgotPasswordModal}>
+						<div className={styles.modalHeader}>
+							<h1>Password Recovery</h1>
+						</div>
+						<CloseIcon
+							onClick={() => setForgetPasswordOpen(false)}
+							className={styles.closeIcon}
+						/>
+						<ForgetPassword/>
+					</Box>
+				</Modal>
+				
 				{signInErr && (
 					<p className={styles.signInErr}>
 						Your username or password is incorrect. Please try again.
