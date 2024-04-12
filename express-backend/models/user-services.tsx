@@ -2,59 +2,32 @@ const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
-const bcrypt = require('bcrypt');
 
-let dbConnection: any;
+mongoose.set("debug", true);
 
-async function getDbConnection() {
-	if (!dbConnection) {
-		dbConnection = await mongoose.createConnection(
-			'mongodb://127.0.0.1:27017/inventoryUsers',
-			{
-				useNewUrlParser: true,
-				useUnifiedTopology: true,
-			}
-		);
-	}
-	return dbConnection;
+mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
+    useNewUrlParser: true, //useFindAndModify: false,
+    useUnifiedTopology: true,
+  });
+
+async function getUsers() {	
+	return await UserSchema.find();
 }
 
-async function getUsers(conn: any, username?: any, password?: any) {
-	const userModel = conn.model('User', UserSchema);
-	let result;
-	if (!username && !password) {
-		result = await userModel.find();
-	} else {
-		result = await findUserByUserAndPass(username, password, conn);
-	}
-	return result;
-}
-// TODO: Fix this issue
-// function usernameUser(username) {
-//   return users["users_list"].findIndex((user) => user["username"] === username);
-// }
-
-async function findUserById(id: any, conn: any) {
+async function findUserById(id: any) {
 	try {
-		return await findUserByUsername(id, conn);
+		return await findUserByUsername(id);
 	} catch (error) {
 		console.log(error);
 		return undefined;
 	}
 }
 
-async function addUser(user: any, conn: any) {
+async function addUser(user: any) {
 	// userModel is a Model, a subclass of mongoose.Model
 	
 	try {
-		const userModel = conn.model('User', UserSchema);
-		//hash password before adding into database
-		// const hashpassword = bcrypt.hashSync(user['password'], 10);
-		// user['password'] = hashpassword;
-
-		// You can use a Model to create new documents using 'new' and
-		// passing the JSON content of the Document:
-		const userToAdd = new userModel(user);
+		const userToAdd = new UserSchema(user);
 		const savedUser = await userToAdd.save();
 		return savedUser;
 	} catch (error: any) {
@@ -68,17 +41,12 @@ async function addUser(user: any, conn: any) {
 			console.log(error);
 			return { error: true, message: 'An unexpected error occurred' };
 		}
-
-		// console.log(error);
-		// return false;
 	}
 }
 
-async function delUser(user: any, conn: any) {
-	
+async function delUser(user: any) {
 	try {
-		const userModel = conn.model('User', UserSchema);
-		await userModel.deleteOne(user);
+		await UserSchema.deleteOne(user);
 		return true;
 	} catch (err) {
 		console.error(err);
@@ -86,45 +54,38 @@ async function delUser(user: any, conn: any) {
 	}
 }
 
-async function addItemToUser(user_id: any, item_id: any, conn: any) {
+async function addItemToUser(user_id: any, item_id: any) {
 	// connect to user collection and item collection databases
-	const UserModel = conn.model('User', UserSchema);
-	const ItemModel = conn.model('Item', ItemSchema);
 	// find user with matching id
-	const user = await UserModel.findById(user_id);
+	const user = await UserSchema.findById(user_id);
 	// initialize array for user items if it doesnt exist already
 	user.items = [];
 	if (user) console.log(user.username);
-	const itemToAdd = await ItemModel.find({ _id: item_id });
+	const itemToAdd = await ItemSchema.find({ _id: item_id });
 	if (itemToAdd) console.log(item_id);
 	//user.items.push({items: item_id});
 	// push id onto item list of user
-	const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
+	const updatedUser = await UserSchema.findByIdAndUpdate(user_id, {
 		$push: { items: mongoose.Types.ObjectId(item_id) },
 	});
 	return updatedUser;
 }
 
-async function getItemFromUser(userId: any, itemId: any, conn: any) {
-	const UserModel = conn.model('User', UserSchema);
-	const ItemModel = conn.model('Item', ItemSchema);
-	const user = await UserModel.findById(userId);
-	if (user) console.log(user.username);
-	const userItem = await UserModel.find({ items: itemId });
-	if (userItem) console.log('Item found');
-	return await ItemModel.find({ _id: itemId });
+async function getItemFromUser(userId: any, itemId: any) {
+	const user = await UserSchema.findById(userId);
+	const userItem = await UserSchema.find({ items: itemId });
+	return await ItemSchema.find({ _id: itemId });
 }
 
-async function deleteItemFromUser(userId: any, itemId: any, conn: any) {
-	const UserModel = conn.model('User', UserSchema);
-	const ItemModel = conn.model('Item', ItemSchema);
-	const user = await UserModel.findById(userId);
+async function deleteItemFromUser(userId: any, itemId: any) {
+	const user = await UserSchema.findById(userId);
 	if (user) console.log(user.username);
-	const userItem = await UserModel.find({ items: itemId });
+	const userItem = await UserSchema.find({ items: itemId });
 	if (userItem) console.log('Item found');
-	const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+	const updatedUser = await UserSchema.findByIdAndUpdate(userId, {
 		$pull: { items: itemId },
 	});
+	return updatedUser;
 }
 
 async function updateItemFromUser(
@@ -132,26 +93,23 @@ async function updateItemFromUser(
 	itemId: any,
 	quantity: any,
 	option: any,
-	conn: any
 ) {
-	const UserModel = conn.model('User', UserSchema);
-	const ItemModel = conn.model('Item', ItemSchema);
-	const user = await UserModel.findById(userId);
+	const user = await UserSchema.findById(userId);
 	if (option === 'add') {
-		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
+		const incItem = await ItemSchema.findByIdAndUpdate(itemId, {
 			$inc: { quantity: quantity },
 		});
 		return incItem;
 	} else {
-		const tempItem = await ItemModel.findById(itemId);
+		const tempItem = await ItemSchema.findById(itemId);
 		if (tempItem.quantity - quantity <= 0) {
-			const updatedUser = await UserModel.findByIdAndUpdate(userId, {
+			const updatedUser = await ItemSchema.findByIdAndUpdate(userId, {
 				$pull: { items: itemId },
 			});
-			const delItem = await itemServices.deleteItem(itemId, conn);
+			const delItem = await itemServices.deleteItem(itemId);
 			return delItem;
 		} else {
-			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
+			const decItem = await ItemSchema.findByIdAndUpdate(itemId, {
 				$inc: { quantity: -quantity },
 			});
 			return decItem;
@@ -159,28 +117,23 @@ async function updateItemFromUser(
 	}
 }
 
-async function findUserByUsername(username: any, conn: any) {
-	const userModel = conn.model('User', UserSchema);
-	return await userModel.find({ username: username });
+async function findUserByUsername(username: string) {
+	return await UserSchema.find({ username: username});
 }
 
-async function findUserByUserAndPass(username: any, password: any, conn: any) {
-	const userModel = conn.model('User', UserSchema);
-	return await userModel.find({ username: username, password: password });
+async function findUserByUserAndPass(username: any, password: any) {
+	return await UserSchema.find({ username: username, password: password });
 }
 
-async function deleteUserById(id: any, conn: any) {
-	console.log('delete user by id', id);
-	
+async function deleteUserById(id: any) {
 	try {
-		const userModel = conn.model('User', UserSchema);
-		if (await userModel.findByIdAndDelete(id)) return true;
+		if (await UserSchema.findByIdAndDelete(id)) return true;
 	} catch (error) {
 		console.log(error);
 		return false;
 	}
 }
-exports.getDbConnection = getDbConnection;
+
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
