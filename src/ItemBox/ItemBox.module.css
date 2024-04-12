@@ -124,9 +124,9 @@
   align-items: center;
   padding-right: 5px;
   padding-left: 5px;
+  background-color: #f5e660;  
   &:hover {
     cursor: pointer;
-    background-color: #f5e660;
   }
 }
 
