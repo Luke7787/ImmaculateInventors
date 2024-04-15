@@ -14,7 +14,7 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage2.png"
+          src="/images/homePage3.png"
           alt="Home Page"
           style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: 'px', lineHeight: '1', marginTop: '70px', marginLeft: '23px', fontSize: '2.7rem' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '20px', lineHeight: '1', marginTop: '70px', marginLeft: '23px', fontSize: '2.7rem' }}
             gutterBottom
           >
             Discover A New Way <br /> To Stay Organized
