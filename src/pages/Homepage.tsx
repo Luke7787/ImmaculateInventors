@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '2.7rem' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '23px', fontSize: '2.7rem' }}
             gutterBottom
           >
             Discover A New Way <br /> To Stay Organized
