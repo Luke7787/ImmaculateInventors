@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '2.7rem' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: 'px', lineHeight: '1', marginTop: '70px', marginLeft: '23px', fontSize: '2.7rem' }}
             gutterBottom
           >
             Discover A New Way <br /> To Stay Organized
@@ -37,8 +37,8 @@ const Homepage = () => {
           </Typography>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '20',
-            padding: '12px 30px', }}
+            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '1.20rem',
+            padding: '15px 35px', }}
             onClick={() => navigate('/inventory')}
           >
             TRY NOW
