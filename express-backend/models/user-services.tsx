@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
+const dotenv = require("dotenv").config({ path: '../.env' });
+//dotenv.config();
 
 mongoose.set("debug", true);
 
-mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
+const uri = process.env.MONGODB_URI;
+
+mongoose.connect(uri, {
     useNewUrlParser: true, //useFindAndModify: false,
     useUnifiedTopology: true,
   });
