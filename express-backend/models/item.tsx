@@ -22,6 +22,11 @@ const ItemSchema = new mongoose.Schema(
 			required: false,
 			trim: true,
 		},
+		date: {
+            type: Date,
+            required: true,
+            default: Date.now, // Default to the current date and time
+        },
 	},
 	{ collection: 'items' }
 );
