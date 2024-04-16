@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ItemBox.module.css';
+import styles from './ItemBox.module.scss';
 import AddItemModal from '../AddItemModal/AddItemModal.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Header/Header.tsx';
 import { ThemeProvider } from '@mui/material';
 import theme from '../theme.tsx';
-import styles from './Homepage.module.css';
+import styles from './Homepage.module.scss';
 
 const Homepage = () => {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import styles from './CreateAccount.module.css';
+import styles from './CreateAccount.module.scss';
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { FormControl, FormHelperText, MenuItem, Select } from '@mui/material';

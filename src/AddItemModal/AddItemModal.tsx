@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './AddItemModal.module.css';
+import styles from './AddItemModal.module.scss';
 
 interface AddItemModalProps {
   isOpen: boolean;

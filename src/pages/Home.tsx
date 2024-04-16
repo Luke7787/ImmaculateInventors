@@ -3,11 +3,9 @@ import ItemBox from "../ItemBox/ItemBox.tsx";
 import Header from "../Header/Header.tsx";
 import theme from "../theme.tsx";
 import { ThemeProvider } from "@mui/material";
-import LeftOptionNav from "../LeftOptionNav/LeftOptionNav.tsx";
-import styles from "./Home.module.css";
+import styles from "./Home.module.scss";
 
 const Home = () => {
-  const [folders, setFolders] = useState(['Default', 'Groceries', 'School Supplies']);
   const [currentFolder, setCurrentFolder] = useState('Default');
   const [itemsData, setItemsData] = useState([
     // Preset items assigned to 'Default' folder or others as needed
@@ -16,10 +14,6 @@ const Home = () => {
     { folder: 'Default', name: "Sneakers", quantity: 3, image: "/images/sneakers.jpg" },
     { folder: 'Default', name: "Adam's Crafts", quantity: 5, image: "/images/etsyStore.jpg" },
   ]);
-
-  const handleFolderSelect = (folderName) => {
-    setCurrentFolder(folderName);
-  };
 
   const handleDelete = (itemName) => {
     setItemsData(itemsData.filter(item => item.name !== itemName));
@@ -32,14 +26,6 @@ const Home = () => {
     setItemsData(prevItems => [...prevItems, newItem]);
   };
 
-  const handleCreateFolder = (folderName) => {
-    if (!folders.includes(folderName)) {
-      setFolders(prevFolders => [...prevFolders, folderName]);
-    } else {
-      alert("Folder already exists!");
-    }
-  };
-
   // Filter the items by the selected folder
   const filteredItems = itemsData.filter(item => item.folder === currentFolder);
 
@@ -47,11 +33,6 @@ const Home = () => {
     <ThemeProvider theme={theme}>
       <Header />
       <div className={styles.homeContainer}>
-        {/* <LeftOptionNav 
-          folders={folders}
-          onFolderSelect={handleFolderSelect}
-          onCreateFolder={handleCreateFolder}
-        /> */}
         <div className={styles.contentContainer}>
           <ItemBox 
             items={filteredItems} 
