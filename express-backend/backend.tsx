@@ -176,11 +176,26 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	}
 });
 
-app.patch('/folders/', async (req:any, res: any) => {
+app.post('/folders/', async (req:any, res: any) => {
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
 	try {
 		const updatedUser = await userServices.addFolder(userId, folderName);
+		if (!updatedUser) {
+			return res.status(404).send('User not found');
+		}
+		res.send(updatedUser);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating user');
+	}
+})
+
+app.delete('/folders/', async (req:any, res: any) => {
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	try {
+		const updatedUser = await userServices.deleteFolder(userId, folderName);
 		if (!updatedUser) {
 			return res.status(404).send('User not found');
 		}

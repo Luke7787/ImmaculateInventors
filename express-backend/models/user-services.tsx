@@ -40,11 +40,13 @@ async function addFolder(userId: any, folderName: any) {
 
 async function deleteFolder(userId: any, folderName: any) {
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToDel = FolderSchema.find({name: folderName});
+	const folderToDel = await FolderSchema.find({name: folderName});
+	console.log(folderName);
+	console.log(folderToDel);
 	const user = await UserSchema.findByIdAndUpdate(userId, {
-		$pull: {folders: mongoose.Types.ObjectId(folderToDel._id)}
+		$pull: {folders: mongoose.Types.ObjectId(folderToDel[0]._id)}
 	});
-	await FolderSchema.findByIdAndDelete(folderToDel._id);
+	await FolderSchema.findByIdAndDelete(folderToDel[0]._id);
 	return user;
 }
 
@@ -177,4 +179,5 @@ exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
 exports.deleteUserById = deleteUserById;
 exports.addFolder = addFolder;
+exports.deleteFolder = deleteFolder;
 export {};
