@@ -38,6 +38,22 @@ async function addFolder(userId: any, folderName: any) {
 	return user;
 }
 
+async function deleteFolder(userId: any, folderName: any) {
+	const objUID = mongoose.Types.ObjectId(userId);
+	const folderToDel = FolderSchema.find({name: folderName});
+	const user = await UserSchema.findByIdAndUpdate(userId, {
+		$pull: {folders: mongoose.Types.ObjectId(folderToDel._id)}
+	});
+	await FolderSchema.findByIdAndDelete(folderToDel._id);
+	return user;
+}
+
+async function updateFolder(userId: any, folderName: any) {
+	const objUID = mongoose.Types.ObjectId(userId);
+	const folderToUpdate = FolderSchema.find({name: folderName});
+	return
+}
+
 async function addUser(user: any) {
 	// userModel is a Model, a subclass of mongoose.Model
 	
