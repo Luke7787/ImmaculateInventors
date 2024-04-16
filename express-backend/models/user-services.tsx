@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
+const FolderSchema = require('./folder.tsx');
 const itemServices = require('./item-services.tsx');
 const dotenv = require("dotenv").config({ path: '../.env' });
 //dotenv.config();
@@ -25,6 +26,16 @@ async function findUserById(id: any) {
 		console.log(error);
 		return undefined;
 	}
+}
+
+async function addFolder(userId: any, folderName: any) {
+	const objUID = mongoose.Types.ObjectId(userId);
+	const folderToAdd = new FolderSchema({name: folderName, userId: objUID});
+	const savedFolder = await folderToAdd.save();
+	const user = await UserSchema.findByIdAndUpdate(userId, {
+		$push: {folders: mongoose.Types.ObjectId(folderToAdd._id)},
+	});
+	return user;
 }
 
 async function addUser(user: any) {
@@ -149,4 +160,5 @@ exports.updateItemFromUser = updateItemFromUser;
 exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
 exports.deleteUserById = deleteUserById;
+exports.addFolder = addFolder;
 export {};
