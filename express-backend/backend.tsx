@@ -189,7 +189,7 @@ app.post('/folders/', async (req:any, res: any) => {
 		console.log(error);
 		res.status(400).send('Error updating user');
 	}
-})
+});
 
 app.delete('/folders/', async (req:any, res: any) => {
 	const folderName = req.query['folderName'];
@@ -204,4 +204,26 @@ app.delete('/folders/', async (req:any, res: any) => {
 		console.log(error);
 		res.status(400).send('Error updating user');
 	}
-})
+});
+
+
+app.patch('/folders/', async (req:any, res: any) => {
+	const option = req.query['option'];
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	const item = req.body;
+	try {
+		if (option === 'add') {
+			const updatedFolder = await userServices.addItemToFolder(userId, folderName, item);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
+		} else if (option === 'delete') {
+			console.log("IDK");
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating folder');
+	}
+});
