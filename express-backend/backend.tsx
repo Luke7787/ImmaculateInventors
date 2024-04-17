@@ -210,11 +210,11 @@ app.delete('/folders/', async (req:any, res: any) => {
 app.patch('/folders/', async (req:any, res: any) => {
 	const option = req.query['option'];
 	const folderName = req.query['folderName'];
-	const userId = req.query['userId'];
 	const itemId = req.query['itemId'];
+	console.log(folderName);
 	try {
 		if (option === 'add') {
-			const updatedFolder = await userServices.addItemToFolder(userId, folderName, itemId);
+			const updatedFolder = await userServices.addItemToFolder(folderName, itemId);
 			if (!updatedFolder) {
 				return res.status(404).send('Folder not found');
 			}
