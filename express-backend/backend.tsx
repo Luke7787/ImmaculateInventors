@@ -211,16 +211,20 @@ app.patch('/folders/', async (req:any, res: any) => {
 	const option = req.query['option'];
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
-	const item = req.body;
+	const itemId = req.query['itemId'];
 	try {
 		if (option === 'add') {
-			const updatedFolder = await userServices.addItemToFolder(userId, folderName, item);
+			const updatedFolder = await userServices.addItemToFolder(userId, folderName, itemId);
 			if (!updatedFolder) {
 				return res.status(404).send('Folder not found');
 			}
 			res.send(updatedFolder);
 		} else if (option === 'delete') {
-			console.log("IDK");
+			const updatedFolder = await userServices.deleteItemFromFolder(folderName, itemId);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
 		}
 	} catch (error) {
 		console.log(error);
