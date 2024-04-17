@@ -1,6 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+import mongoose from 'mongoose';
 
 const ItemSchema = new mongoose.Schema(
 	{
@@ -24,9 +22,15 @@ const ItemSchema = new mongoose.Schema(
 			required: false,
 			trim: true,
 		},
+		date: {
+            type: Date,
+            required: true,
+            default: Date.now, // Default to the current date and time
+        },
 	},
 	{ collection: 'items' }
 );
 
-module.exports = ItemSchema;
-export {};
+const Item = mongoose.model("Item", ItemSchema);
+
+module.exports = Item;

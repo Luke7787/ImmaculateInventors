@@ -1,7 +1,9 @@
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
-const Item = require('./item.tsx');
+const ObjectId = mongoose.Types.ObjectId;
+//const Item = require('./item.tsx');
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -67,7 +69,9 @@ const UserSchema = new mongoose.Schema(
 			},
 		],
 	},
-	{ collection: 'users_list' }
+	{ collection: 'users' }
 );
 
-module.exports = UserSchema;
+const User = mongoose.model("User", UserSchema);
+
+module.exports = User;
