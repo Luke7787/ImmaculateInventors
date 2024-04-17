@@ -68,6 +68,12 @@ const UserSchema = new mongoose.Schema(
 				trim: true,
 			},
 		],
+		folders: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Folder',
+			}
+		]
 	},
 	{ collection: 'users' }
 );

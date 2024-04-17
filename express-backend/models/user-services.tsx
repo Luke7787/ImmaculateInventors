@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
+const FolderSchema = require('./folder.tsx');
 const itemServices = require('./item-services.tsx');
 const dotenv = require("dotenv").config({ path: '../.env' });
 //dotenv.config();
@@ -25,6 +26,54 @@ async function findUserById(id: any) {
 		console.log(error);
 		return undefined;
 	}
+}
+
+async function addFolder(userId: any, folderName: any) {
+	const objUID = mongoose.Types.ObjectId(userId);
+	const folderToAdd = new FolderSchema({name: folderName, userId: objUID});
+	const savedFolder = await folderToAdd.save();
+	const user = await UserSchema.findByIdAndUpdate(userId, {
+		$push: {folders: mongoose.Types.ObjectId(folderToAdd._id)},
+	});
+	return user;
+}
+
+async function deleteFolder(userId: any, folderName: any) {
+	const objUID = mongoose.Types.ObjectId(userId);
+	const folderToDel = await FolderSchema.find({name: folderName});
+	const user = await UserSchema.findByIdAndUpdate(userId, {
+		$pull: {folders: mongoose.Types.ObjectId(folderToDel[0]._id)}
+	});
+	await FolderSchema.findByIdAndDelete(folderToDel[0]._id);
+	return user;
+}
+
+async function addItemToFolder(folderName: any, itemId: any) {
+	//const objUID = mongoose.Types.ObjectId(userId);
+	//let f2;
+	const folderToUpdate = await FolderSchema.find({name: folderName});
+	console.log(folderName);
+	console.log(folderToUpdate);
+	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
+		$push: {items: mongoose.Types.ObjectId(itemId)}
+	})
+	const itemToUpdate = await ItemSchema.findByIdAndUpdate(itemId,
+		{folder: folderToUpdate[0]._id},
+		{new: true},
+	)
+	return true;
+}
+
+async function deleteItemFromFolder(folderName: any, itemId: any) {
+	const folderToUpdate = await FolderSchema.find({name: folderName});
+	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
+		$pull: {items: mongoose.Types.ObjectId(itemId)}
+	});
+	const itemToUpdate = await ItemSchema.findByIdAndUpdate(itemId,
+		{folder: null},
+		{new: true},
+	)
+	return true;
 }
 
 async function addUser(user: any) {
@@ -149,4 +198,8 @@ exports.updateItemFromUser = updateItemFromUser;
 exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
 exports.deleteUserById = deleteUserById;
+exports.addFolder = addFolder;
+exports.deleteFolder = deleteFolder;
+exports.addItemToFolder = addItemToFolder;
+exports.deleteItemFromFolder = deleteItemFromFolder;
 export {};

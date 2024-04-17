@@ -175,3 +175,59 @@ app.patch('/items/:id', async (req: any, res: any) => {
 		res.status(400).send('Error updating item');
 	}
 });
+
+app.post('/folders/', async (req:any, res: any) => {
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	try {
+		const updatedUser = await userServices.addFolder(userId, folderName);
+		if (!updatedUser) {
+			return res.status(404).send('User not found');
+		}
+		res.send(updatedUser);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating user');
+	}
+});
+
+app.delete('/folders/', async (req:any, res: any) => {
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	try {
+		const updatedUser = await userServices.deleteFolder(userId, folderName);
+		if (!updatedUser) {
+			return res.status(404).send('User not found');
+		}
+		res.send(updatedUser);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating user');
+	}
+});
+
+
+app.patch('/folders/', async (req:any, res: any) => {
+	const option = req.query['option'];
+	const folderName = req.query['folderName'];
+	const itemId = req.query['itemId'];
+	console.log(folderName);
+	try {
+		if (option === 'add') {
+			const updatedFolder = await userServices.addItemToFolder(folderName, itemId);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
+		} else if (option === 'delete') {
+			const updatedFolder = await userServices.deleteItemFromFolder(folderName, itemId);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating folder');
+	}
+});
