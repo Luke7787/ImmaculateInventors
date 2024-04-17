@@ -50,14 +50,24 @@ async function deleteFolder(userId: any, folderName: any) {
 
 async function addItemToFolder(userId: any, folderName: any, itemId: any) {
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToUpdate = await FolderSchema.find({name: folderName});
+	let f2;
+	//const folderToUpdate = await FolderSchema.find({name: folderName});
+	const user = await UserSchema.find({_id: objUID});
+	for (let i = 0; i < user.folders.length(); i++) {
+		let f1 = user.folders[i];
+		f2 = await FolderSchema.findById({_id: f1});
+		if (f2.name == folderName) {
+			break;
+		}
+	}
+	console.log(user);
 	console.log(folderName);
-	console.log(folderToUpdate);
-	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
+	//console.log(folderToUpdate);
+	const folder = await FolderSchema.findByIdAndUpdate(f2._id, {
 		$push: {items: mongoose.Types.ObjectId(itemId)}
 	})
 	const itemToUpdate = await ItemSchema.findByIdAndUpdate(itemId,
-		{folder: folderToUpdate[0]._id},
+		{folder: f2._id},
 		{new: true},
 	)
 	return true;
