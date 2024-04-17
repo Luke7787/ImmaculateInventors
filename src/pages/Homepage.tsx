@@ -14,7 +14,7 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage2.png"
+          src="/images/homePage3.png"
           alt="Home Page"
           style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
