@@ -1,4 +1,6 @@
 const ItemSchema = require('./item.tsx');
+const UserSchema = require('./user.tsx');
+const FolderSchema = require('./folder.tsx');
 const mongoose = require('mongoose');
 
 
@@ -25,9 +27,17 @@ async function getItemsFromUser(userId: any) {
 	//return result;
 }
 
-async function addItem(item: any) {
+async function addItem(item: any, folderId : any) {
 	const itemToAdd = new ItemSchema(item);
 	const savedItem = await itemToAdd.save();
+	const folder = await FolderSchema.findByIdAndUpdate(folderId, 
+		{$push: {items: mongoose.Types.ObjectId(savedItem._id)}}
+	)
+	await ItemSchema.findByIdAndUpdate(savedItem._id, 
+		{folder: mongoose.Types.ObjectId(folderId),
+			userId: folder.userId.toString()},
+		{new: true},
+	)
 	return savedItem;
 }
 

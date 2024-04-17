@@ -76,8 +76,8 @@ app.get('/uniqueUser/:username', async (req: any, res: any) => {
 
 app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
-	//const conn = await itemServices.getDbConnection();
-	const savedItem = await itemServices.addItem(item);
+	const folderId = req.query['folderId'];
+	const savedItem = await itemServices.addItem(item, folderId);
 	if (savedItem) res.status(201).send(savedItem);
 	else res.status(409).end();
 });
@@ -177,14 +177,15 @@ app.patch('/items/:id', async (req: any, res: any) => {
 });
 
 app.post('/folders/', async (req:any, res: any) => {
+	// when making a folder return the id
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
 	try {
-		const updatedUser = await userServices.addFolder(userId, folderName);
-		if (!updatedUser) {
+		const folderId = await userServices.addFolder(userId, folderName);
+		if (!folderId) {
 			return res.status(404).send('User not found');
 		}
-		res.send(updatedUser);
+		res.send(folderId);
 	} catch (error) {
 		console.log(error);
 		res.status(400).send('Error updating user');
@@ -226,6 +227,18 @@ app.patch('/folders/', async (req:any, res: any) => {
 			}
 			res.send(updatedFolder);
 		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating folder');
+	}
+});
+
+app.patch('/folderName/', async (req:any, res: any) => {
+	const folderId = req.query['folderId'];
+	const newFolderName = req.query['newName'];
+	try {
+		const updatedFolder = await userServices.updateFolderName(folderId, newFolderName);
+		res.status(201).send(updatedFolder)
 	} catch (error) {
 		console.log(error);
 		res.status(400).send('Error updating folder');
