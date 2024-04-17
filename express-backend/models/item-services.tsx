@@ -28,17 +28,20 @@ async function getItemsFromUser(userId: any) {
 }
 
 async function addItem(item: any, folderId : any) {
-	const itemToAdd = new ItemSchema(item);
-	const savedItem = await itemToAdd.save();
+	const itemToAdd = new ItemSchema(item); // creates a new item
+	const savedItem = await itemToAdd.save(); // saves to db
+	// adds the item to the folder
 	const folder = await FolderSchema.findByIdAndUpdate(folderId, 
 		{$push: {items: mongoose.Types.ObjectId(savedItem._id)}}
-	)
+	);
+	// adds the folderid and userid to the item 
 	await ItemSchema.findByIdAndUpdate(savedItem._id, 
 		{folder: mongoose.Types.ObjectId(folderId),
 			userId: folder.userId.toString()},
 		{new: true},
-	)
-	return savedItem;
+	);
+	const newItem = await ItemSchema.findById(savedItem._id);
+	return newItem;
 }
 
 async function findItemByName(name: any) {
