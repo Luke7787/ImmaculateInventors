@@ -56,22 +56,22 @@ async function updateItem(id: any, updates: any, conn: any) {
 
 
 
-async function uploadFile(fileStream: any, fileName: any) {
-  const uploadParams = {
-    Bucket: process.env.S3_BUCKET_NAME,
-    Key: fileName,
-    Body: fileStream,
-  };
+// async function uploadFile(fileStream: any, fileName: any) {
+//   const uploadParams = {
+//     Bucket: process.env.S3_BUCKET_NAME,
+//     Key: fileName,
+//     Body: fileStream,
+//   };
 
-  try {
-    const data = await s3Client.send(new PutObjectCommand(uploadParams));
-    console.log("Success", data);
-    return data;
-  } catch (err) {
-    console.log("Error", err);
-    throw new Error("File upload failed");
-  }
-}
+//   try {
+//     const data = await S3Client.send(new PutObjectCommand(uploadParams));
+//     console.log("Success", data);
+//     return data;
+//   } catch (err) {
+//     console.log("Error", err);
+//     throw new Error("File upload failed");
+//   }
+// }
 
 
 
@@ -86,6 +86,6 @@ exports.addItem = addItem;
 exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
 exports.updateItem = updateItem;
-exports.uploadFile = uploadFile;
+	// exports.uploadFile = uploadFile;
 // exports.disconnectDB = disconnectDB;
 
