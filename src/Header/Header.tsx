@@ -23,7 +23,6 @@ const Header = () => {
           {!createAccountOpen ? (
             <Box className={styles.signInModal}>
               <div className={styles.modalHeader}>
-                <h1>Sign In</h1>
               </div>
               <CloseIcon
                 onClick={() => setSignInOpen(false)}

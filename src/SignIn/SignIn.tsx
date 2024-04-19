@@ -46,9 +46,9 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		<form onSubmit={handleSubmit}>
 			<div className={styles.body}>
 				<div className={styles.username}>
-					<p>Username</p>
+					<p>Sign In</p>
 					<input
-						placeholder="Enter username"
+						placeholder="Username"
 						onChange={handleUpdate}
 						type="text"
 						name="username"
@@ -56,9 +56,9 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					/>
 				</div>
 				<div className={styles.password}>
-					<p>Password</p>
+					<p> </p>
 					<input
-						placeholder="Enter password"
+						placeholder="Password"
 						onChange={handleUpdate}
 						type="password"
 						name="password"
@@ -71,18 +71,19 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					</p>
 				)}
 				<button className={styles.button} type="submit">
-					Sign In
+					Login
 				</button>
 				{setCreateAccountOpen && (
 					<p>
-						Not registered?
+						Hey, new friend!
+						New to the Village? Sign Up and start your journey
 						<span
 							onClick={() => {
 								setCreateAccountOpen(true);
 							}}
 						>
 							{' '}
-							<a>Create an account here</a>
+							<a>Sign Up</a>
 						</span>
 					</p>
 				)}
