@@ -35,7 +35,7 @@ app.get('/users', async (req: any, res: any) => {
 	}
 	
 });
-
+ 
 app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
 	//const conn = await userServices.getDbConnection();

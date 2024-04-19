@@ -7,8 +7,9 @@ body {
 	background-color: #FFF5F5;
 	display: flex;
 	align-items: center;
-	border-bottom: 3px #AAA7A7 solid;
+	box-shadow: 0px 2px 10px rgba(0, 0, 0, .15); 
 	padding: 10px 20px;
+	z-index: 100;
 }
 
 .headerLeft {
