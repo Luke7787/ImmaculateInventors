@@ -14,7 +14,7 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage2.png"
+          src="/images/homePage3.png"
           alt="Home Page"
           style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
@@ -49,32 +49,32 @@ const Homepage = () => {
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
-  {[
-    { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
-    { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
-    { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
-  ].map((feature, index) => (
-    <div key={index} className={styles.featureBox}>
-      {index === 0 && <div className={styles.decorativeRectangleFeature1}></div>}
-      {index === 1 && <div className={styles.decorativeRectangleFeature2}></div>}
-      {index === 2 && <div className={styles.decorativeRectangleFeature3}></div>}
-      <div style={{paddingTop: '35px', display: 'flex', flexDirection: 'column', height: '90%', justifyContent: 'space-between'}}>
-        <Typography 
-          variant="h6" 
-          align="left"
-          style={{ fontWeight: 'bold', fontSize: '1.38rem', lineHeight: 1.2}}
-        >
-          {feature.text}
-        </Typography>
-        <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
-      </div>
-    </div>
-  ))}
-</div>
+            {[
+              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+              { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
+              { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
+            ].map((feature, index) => (
+              <div key={index} className={styles.featureBox}>
+                {index === 0 && <div className={styles.decorativeRectangleFeature1}></div>}
+                {index === 1 && <div className={styles.decorativeRectangleFeature2}></div>}
+                {index === 2 && <div className={styles.decorativeRectangleFeature3}></div>}
+                <div style={{paddingTop: '35px', display: 'flex', flexDirection: 'column', height: '90%', justifyContent: 'space-between'}}>
+                  <Typography 
+                    variant="h6" 
+                    align="left"
+                    style={{ fontWeight: 'bold', fontSize: '1.38rem', lineHeight: 1.2}}
+                  >
+                    {feature.text}
+                  </Typography>
+                  <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.tryOurProductSection}>
-        <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold' }}>
+        <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold', marginBottom: '15px'}}>
           Try Our Product
         </Typography>
         <div className={styles.placeholderBox}></div>
