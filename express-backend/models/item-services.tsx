@@ -32,6 +32,7 @@ async function addItem(item: any) {
 }
 
 async function findItemByName(name: any) {
+	console.log("name: ", name);
 	return await ItemSchema.find({ name: name });
 }
 

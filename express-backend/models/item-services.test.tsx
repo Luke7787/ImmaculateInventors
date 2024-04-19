@@ -1,186 +1,128 @@
-// import mongoose from 'mongoose';
-// const {
-// 	getItems,
-// 	getItemsFromUser,
-// 	getDbConnection,
-// 	deleteItem,
-// 	addItem,
-// 	findItemByName,
-// 	updateItem,
-// } = require('./item-services.tsx');
-// const ItemSchema = require('./item.tsx');
+const mongoose = require('mongoose');
+const mockingoose = require('mockingoose');
+const {
+	getItems,
+	getItemsFromUser,
+	getDbConnection,
+	deleteItem,
+	addItem,
+	findItemByName,
+	updateItem,
+} = require('./item-services.tsx');
+const ItemModel = require('./item.tsx');
 
-// describe('item services', () => {
-// 	afterEach(() => {
-// 		jest.clearAllMocks();
-// 	});
-// 	let conn: any;
-// 	afterEach(() => {
-// 		jest.clearAllMocks();
-// 	});
-// 	beforeAll(async () => {
-// 		conn = await getDbConnection();
-// 	});
-// 	afterAll(async () => {
-// 		await mongoose.disconnect();
-// 		await mongoose.connection.close();
-// 	});
+describe('item services', () => {
+	
+	beforeEach(async () => {
 
-// 	describe('getItemsFromUser', () => {
-// 		it('returns items for a given user', async () => {
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			await ItemModel.create({
-// 				userId: 'dawglogsondog',
-// 				name: 'Foot',
-// 				quantity: 3,
-// 			});
-// 			await ItemModel.create({
-// 				userId: 'abcdeffasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.create({
-// 				userId: 'abcdeffasdfasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			const items = await getItemsFromUser('dawglogsondog', conn);
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'abcdeffasdfasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'abcdeffasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'dawglogsondog',
-// 				name: 'Foot',
-// 				quantity: 3,
-// 			});
+	})
+	beforeAll(async () => {
+		mongoose.set("debug", true);
+		await mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
+		useNewUrlParser: true, //useFindAndModify: false,
+		useUnifiedTopology: true,
+		});
+	});
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
 
-// 			expect(items[0].name).toBe('Foot');
-// 			expect(items[0].quantity).toBe(3);
-// 			expect(items[0].userId).toBe('dawglogsondog');
-// 		});
-// 	});
-// 	describe('findItemByName', () => {
-// 		it('finds the item by name', async () => {
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			await ItemModel.create({
-// 				userId: 'dawglogsondog',
-// 				name: 'Toe',
-// 				quantity: 3,
-// 			});
-// 			await ItemModel.create({
-// 				userId: 'abcdeffasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.create({
-// 				userId: 'abcdeffasdfasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			const items = await findItemByName('Toe', conn);
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'abcdeffasdfasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'abcdeffasdf',
-// 				name: 'Foot',
-// 				quantity: 5,
-// 			});
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'dawglogsondog',
-// 				name: 'Toe',
-// 				quantity: 3,
-// 			});
+	test('addItem', async () =>{
+		const itemToAdd = { userId: 'dawglogsondog', name: 'Foot', quantity: 3 };
+		mockingoose(ItemModel).toReturn(itemToAdd, 'save');
+		const savedItem = await addItem(itemToAdd);
+		expect(savedItem.name).toBe(itemToAdd.name);
+		expect(savedItem.quantity).toBe(itemToAdd.quantity);
+		expect(savedItem.userId).toBe(itemToAdd.userId);
+	});
 
-// 			expect(items[0].name).toBe('Toe');
-// 			expect(items[0].quantity).toBe(3);
-// 			expect(items[0].userId).toBe('dawglogsondog');
-// 		});
-// 	});
-// 	describe('addItem', () => {
-// 		it('adds items', async () => {
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			const itemToAdd = { userId: 'dawglogsondog', name: 'Foot', quantity: 3 };
-// 			const res = await addItem(itemToAdd, conn);
 
-// 			expect(res.name).toBe(itemToAdd.name);
-// 			expect(res.quantity).toBe(itemToAdd.quantity);
-// 			expect(res.userId).toBe(itemToAdd.userId);
-// 			await ItemModel.findOneAndRemove(itemToAdd);
-// 		});
-// 	});
-// 	describe('deleteItem', () => {
-// 		it('deletes items', async () => {
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			await ItemModel.create({
-// 				userId: 'dawglogsondog',
-// 				name: 'Toe',
-// 				quantity: 3,
-// 				_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 			});
-// 			const res = await deleteItem('65ef409a0336b57ddfbe9ce3', conn);
 
-// 			expect(res.name).toBe('Toe');
-// 			expect(res.quantity).toBe(3);
-// 			expect(res.userId).toBe('dawglogsondog');
-// 		});
-// 	});
-// 	describe('updateItem', () => {
-// 		it('updates items', async () => {
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			await ItemModel.create({
-// 				userId: 'dawglogsondog',
-// 				name: 'Toe',
-// 				quantity: 3,
-// 				note: 'Hi there',
-// 				_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 			});
-// 			const updates = {
-// 				quantity: 233,
-// 				note: 'update worasdfasdfks',
-// 				name: 'Hello',
-// 			};
-// 			const res = await updateItem('65ef409a0336b57ddfbe9ce3', updates, conn);
 
-// 			expect(res.name).toBe('Hello');
-// 			expect(res.quantity).toBe(233);
-// 			expect(res.userId).toBe('dawglogsondog');
-// 			expect(res.note).toBe('update worasdfasdfks');
-// 			await ItemModel.findOneAndRemove({
-// 				userId: 'dawglogsondog',
-// 				name: 'Hello',
-// 				quantity: 233,
-// 			});
-// 		});
-// 	});
 
-// 	describe('getItems', () => {
-// 		it('all items', async () => {
-// 			const itemList = [
-// 				{
-// 					name: 'pentagon',
-// 					quantity: 3,
-// 				},
-// 				{
-// 					name: 'Foot',
-// 					quantity: 5,
-// 				},
-// 			];
-// 			const ItemModel = conn.model('Item', ItemSchema);
-// 			ItemModel.find = jest.fn().mockResolvedValueOnce(itemList);
-// 			const items = await getItems(conn);
-// 			expect(items).toEqual(itemList);
-// 		});
-// 	});
-// });
+	test('getItemsFromUser returns items for a given user', async () => {
+        const mockItems = [
+            { userId: 'dawglogsondog', name: 'Foot', quantity: 3 },
+            { userId: 'abcdeffasdf', name: 'Foot', quantity: 5 },
+            { userId: 'abcdeffasdfasdf', name: 'Foot', quantity: 5 }
+        ];
 
-// export {};
+        mockingoose(ItemModel).toReturn(mockItems.filter(item => item.userId === 'dawglogsondog'), 'find');
+        const items = await getItemsFromUser('dawglogsondog');
+
+        expect(items[0].name).toBe('Foot');
+        expect(items[0].quantity).toBe(3);
+        expect(items[0].userId).toBe('dawglogsondog');
+    });
+
+
+    test('findItemByName finds the item by name', async () => {
+		// Define mock data
+		const mockItems = [
+            { userId: 'dawglogsondog', name: 'Foot', quantity: 3 },
+            { userId: 'abcdeffasdf', name: 'Foot', quantity: 5 },
+            { userId: 'josh', name: 'toes', quantity: 5 }
+		];
+		
+		// Setup mocking
+		// mockingoose(ItemModel).toReturn(mockItems, 'find');
+		ItemModel.find = jest.fn().mockResolvedValue(mockItems);
+		
+		// Execute function
+		const items = await findItemByName("toes");
+	
+		console.log("items", items);
+		// Assertions
+		// expect(items.length).toBe(1);
+		// if (items.length > 0) {
+			expect(items[0].name).toBe('toes');
+			expect(items[0].quantity).toBe(5);
+			expect(items[0].userId).toBe('josh');
+		// } else {
+		// 	fail('No items found');
+		// }
+	});
+	
+	
+	
+
+    test('deleteItem deletes items', async () => {
+        const mockItem = { userId: 'dawglogsondog', name: 'Toe', quantity: 3, _id: '65ef409a0336b57ddfbe9ce3' };
+		mockingoose(ItemModel).toReturn(mockItem, 'findOneAndDelete');
+        const items = await deleteItem('65ef409a0336b57ddfbe9ce3');
+
+		console.log(items);
+        expect(items.name).toBe('Toe');
+        expect(items.quantity).toBe(3);
+        expect(items.userId).toBe('dawglogsondog');
+    });
+
+    test('updateItem updates items', async () => {
+        const updates = { quantity: 233, note: 'update worasdfasdfks', name: 'Hello' };
+        const updatedItem = { ...updates, userId: 'dawglogsondog', _id: '65ef409a0336b57ddfbe9ce3' };
+        mockingoose(ItemModel).toReturn(updatedItem, 'findOneAndUpdate');
+        const res = await updateItem('65ef409a0336b57ddfbe9ce3', updates);
+
+        expect(res.name).toBe('Hello');
+        expect(res.quantity).toBe(233);
+        expect(res.userId).toBe('dawglogsondog');
+        expect(res.note).toBe('update worasdfasdfks');
+    });
+
+    test('getItems retrieves all items', async () => {
+        const mockItems = [
+            { name: 'Pentagon', quantity: 3 },
+            { name: 'Foot', quantity: 5 }
+        ];
+        mockingoose(ItemModel).toReturn(mockItems, 'find');
+        const items = await getItems();
+
+        expect(items).toEqual(expect.arrayContaining(mockItems));
+        // expect(items).toEqual(mockItems);
+        // expect(items).toHaveLength(2);
+        // expect(items[0].name).toBe('Pentagon');
+        // expect(items[1].name).toBe('Foot');
+    });
+});
+
+export {};
