@@ -76,8 +76,7 @@ app.get('/uniqueUser/:username', async (req: any, res: any) => {
 
 app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
-	const folderId = req.query['folderId'];
-	const savedItem = await itemServices.addItem(item, folderId);
+	const savedItem = await itemServices.addItem(item);
 	if (savedItem) res.status(201).send(savedItem);
 	else res.status(409).end();
 });
@@ -140,9 +139,6 @@ app.get('/items/', async (req: any, res: any) => {
 
 app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
-	
-	const uid = await itemServices.getUserId(id);
-	const result = await userServices.deleteItemFromUser(uid, id);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
 });

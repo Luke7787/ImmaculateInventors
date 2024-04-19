@@ -29,6 +29,7 @@ const ItemSchema = new mongoose.Schema(
         },
 		folder: {
 			type: mongoose.Schema.Types.ObjectId,
+			required: true,
 			ref: 'Folder',
 		}
 	},
