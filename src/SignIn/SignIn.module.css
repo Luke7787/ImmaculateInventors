@@ -1,6 +1,11 @@
 /* Importing the Sniglet font - remove if already imported elsewhere in your project */
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
+input::placeholder {
+    color: white; /* Making placeholder text white */
+    font-family: 'Sniglet', cursive; /* Ensuring the font family is Sniglet */
+}
+
 .body {
     padding: 12px 42px;
 
@@ -15,7 +20,6 @@
     }
 }
 
-/* Updated username block with specific styles for the "Sign In" <p> tag */
 .username {
     font-size: 18px;
 
@@ -23,17 +27,24 @@
         font-size: 48px; /* New font size for "Sign In" */
         font-family: 'Sniglet', cursive; /* New font family "Sniglet" */
 		margin-left: 85px;
+        margin-top: 70px;
+        margin-bottom: 50px;
     }
 
     input {
+        background-image: url('../../public/images/User.png');
+        background-position: 27.5px center;
+        background-size: 22px 22px;
+        background-repeat: no-repeat;
         background-color: #CDCDCD;
         border-radius: 90px;
-        padding-left: 12px;
+        padding-top: 7px;
+        padding-left: 65px;
         border: 0px #838383 solid;
 		font-family: 'Sniglet', cursive;
-        width: 300px;
+        width: 250px;
         height: 55px;
-		font-size: 24px;
+		font-size: 25px;
 		color: white;
     }
 }
@@ -41,14 +52,19 @@
 .password {
     font-size: 18px;
     input {
+        background-image: url('../../public/images/lockIcon.png');
+        background-position: 25px center;
+        background-size: 28px 28px;
+        background-repeat: no-repeat;
         background-color: #CDCDCD;
         border-radius: 90px;
-        padding-left: 12px;
+        padding-top: 7px;
+        padding-left: 65px;
         border: 0px #838383 solid;
 		font-family: 'Sniglet', cursive;
-        width: 300px;
+        width: 250px;
         height: 55px;
-		font-size: 24px;
+		font-size: 25px;
 		color: white;
     }
 }
@@ -79,9 +95,9 @@
 
 .forgotPassword {
     color: #797070; /* Adjust color as needed */
-    font-size: 18px;
+    font-size: 16px;
     width: 100%;
     top: 60px;
-    margin-left: 60px;
+    margin-left: 75px;
     font-family: 'Sniglet', cursive;
 }
