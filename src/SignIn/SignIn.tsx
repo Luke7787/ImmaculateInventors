@@ -64,6 +64,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						name="password"
 						value={signInData.password}
 					/>
+					<p className={styles.forgotPassword}>Forgot your password?</p>
 				</div>
 				{signInErr && (
 					<p className={styles.signInErr}>
