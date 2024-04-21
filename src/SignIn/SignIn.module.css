@@ -22,6 +22,8 @@ input::placeholder {
 
 .username {
     font-size: 18px;
+    position: relative;
+    z-index: 2;
 
     p {
         font-size: 48px; /* New font size for "Sign In" */
@@ -52,6 +54,8 @@ input::placeholder {
 
 .password {
     font-size: 18px;
+    position: relative;
+    z-index: 2;
     input {
         background-image: url('../../public/images/lockIcon.png');
         background-position: 25px center;
@@ -72,6 +76,7 @@ input::placeholder {
 
 .button {
     position: relative;
+    z-index: 2;
     background-color: #CDCDCD;
     border-radius: 90px;
 	border: 0px #838383 solid;
@@ -127,6 +132,7 @@ input::placeholder {
 
 .signUpLink {
     position: relative;
+    z-index: 2;
     background-color: #CDCDCD;
     border-radius: 90px;
     border: none; 
