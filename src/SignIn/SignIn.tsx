@@ -71,26 +71,17 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						Your username or password is incorrect. Please try again.
 					</p>
 				)}
-				<button className={styles.button} type="submit">
-					Login
-				</button>
-				{setCreateAccountOpen && (
-					<p>
-						Hey, new friend!
-						New to the Village? Sign Up and start your journey
-						<span
-							onClick={() => {
-								setCreateAccountOpen(true);
-							}}
-						>
-							{' '}
-							<a>Sign Up</a>
-						</span>
-					</p>
-				)}
-			</div>
-		</form>
-	);
+				<button className={styles.button} type="submit">Login</button>
+                <div className={styles.signUpSection}>
+                    <p className={styles.signUpGreeting}>Hey, new friend!</p>
+                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey</p>
+                    <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </form>
+    );
 };
 
 export default SignIn;
