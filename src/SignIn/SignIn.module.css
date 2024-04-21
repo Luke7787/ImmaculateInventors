@@ -45,6 +45,7 @@ input::placeholder {
         width: 250px;
         height: 55px;
 		font-size: 25px;
+        margin-bottom: -5px;
 		color: white;
     }
 }
@@ -70,6 +71,7 @@ input::placeholder {
 }
 
 .button {
+    position: relative;
     background-color: #CDCDCD;
     border-radius: 90px;
 	border: 0px #838383 solid;
@@ -124,6 +126,7 @@ input::placeholder {
 }
 
 .signUpLink {
+    position: relative;
     background-color: #CDCDCD;
     border-radius: 90px;
     border: none; 
@@ -140,4 +143,13 @@ input::placeholder {
 
 .signUpLink:hover {
     background-color: #bfbfbf;
+}
+
+.loginNewImage {
+    width: 400.5px;
+    height: 200;
+    margin-top: -4.12px;
+    margin-left: 358px;
+    z-index: 0;  
+    position: relative;
 }

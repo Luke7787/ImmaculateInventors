@@ -78,6 +78,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
                     <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
                         Sign Up
                     </button>
+					<img src="/images/SunFlower.png" alt="Decorative" className={styles.loginNewImage} />
                 </div>
             </div>
         </form>
