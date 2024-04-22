@@ -216,7 +216,7 @@ const CreateAccount = () => {
 								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
-								label="First Name"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>First Name</span>}
 								type="text"
 								variant="filled"
 								name="firstName"
@@ -238,7 +238,7 @@ const CreateAccount = () => {
 								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
-								label="Last Name"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Last Name</span>}
 								type="text"
 								variant="filled"
 								name="lastName"
@@ -260,7 +260,7 @@ const CreateAccount = () => {
 								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
-								label="Email Address"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Email Address</span>}
 								type="text"
 								variant="filled"
 								name="email"
@@ -313,7 +313,7 @@ const CreateAccount = () => {
 							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
-							label="State"
+							label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>State</span>}
 							type="text"
 							variant="filled"
 							name="state"
@@ -333,7 +333,7 @@ const CreateAccount = () => {
 							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
-							label="City"
+							label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>City</span>}
 							type="text"
 							variant="filled"
 							name="city"
@@ -353,7 +353,7 @@ const CreateAccount = () => {
 							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
-							label="Zip Code"
+							label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Zip Code</span>}
 							type="text"
 							variant="filled"
 							name="zipcode"
@@ -373,7 +373,7 @@ const CreateAccount = () => {
 							<TextField
 								error={!!userErr}
 								id="username-input"
-								label="Username"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Username</span>}
 								helperText={userErr ? userErr : ''}
 								type="text"
 								name="username"
@@ -397,7 +397,7 @@ const CreateAccount = () => {
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label="Password"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
@@ -419,7 +419,7 @@ const CreateAccount = () => {
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label="Confirm Password"
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}
