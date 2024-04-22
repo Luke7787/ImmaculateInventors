@@ -4,6 +4,8 @@ import AddItemModal from '../AddItemModal/AddItemModal.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useNavigate } from 'react-router-dom';
 
 interface ItemProps {
 	name: string;
@@ -19,34 +21,70 @@ interface ItemBoxProps {
 		image: string;
 		quantity: number;
 	}) => void;
+	onClickBox: () => void;
+	type: 'Folder' | 'Item';
+	lowerText: React.ReactNode;
 }
-const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
+const ItemBox = ({
+	items,
+	onDelete,
+	onAddNewItem,
+	onClickBox,
+	lowerText,
+	type,
+}: ItemBoxProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
 	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
+	const navigate = useNavigate();
 
 	return (
 		<>
-			{isFilterMode && (
-				<div className={styles.filterMode}>
-					<LeftOptionNav />
-					<div
-						className={styles.closeSection}
-						onClick={() => setIsFilterMode(!isFilterMode)}
-					>
+			<div
+				className={classNames(
+					styles.filterMode,
+					isFilterMode && styles.expandFilter
+				)}
+			>
+				{isFilterMode && (
+					<>
+						<LeftOptionNav />
+					</>
+				)}
+				<div
+					className={styles.closeSection}
+					onClick={() => setIsFilterMode(!isFilterMode)}
+				>
+					{isFilterMode ? (
 						<KeyboardDoubleArrowLeftIcon />
-					</div>
+					) : (
+						<KeyboardDoubleArrowRightIcon />
+					)}
 				</div>
-			)}
+			</div>
+
 			<div className={styles.outerContainer}>
+				<div className={styles.boxHeader}>
+					{type === 'Item' && (
+						<button
+							className={classNames(styles.goBackButton)}
+							onClick={() => navigate(-1)}
+						>
+							<img
+								src="https://static.thenounproject.com/png/1881199-200.png"
+								height="80%"
+							/>
+						</button>
+					)}
+				</div>
 				<div className={styles.boxHeader}>
 					<button
 						className={styles.addButton}
 						onClick={() => setIsFilterMode(!isFilterMode)}
 					>
-						Filter Folders
+						Filter {type}s
 					</button>
-					<p>Your Folders</p>
+					<p>Your {type}s</p>
 					<button
 						className={classNames(
 							styles.addButton,
@@ -55,7 +93,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 						onClick={() => setIsEditMode(!isEditMode)}
 					>
 						<img src="/images/editIcon.png" className={styles.iconImage} />
-						Edit Folders
+						Edit {type}s
 					</button>
 				</div>
 				<div className={styles.gridContainer}>
@@ -66,6 +104,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 								isEditMode && styles.gridItemEditMode
 							)}
 							key={index}
+							onClick={onClickBox}
 						>
 							<img
 								src={item.image}
@@ -77,7 +116,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 									onClick={() => onDelete(item.name)}
 									className={styles.deleteButton}
 								>
-									Delete Folder
+									Delete {type}
 								</button>
 							)}
 							<div
@@ -89,7 +128,8 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 								<div className={styles.itemName}>
 									<p>{item.name}</p>
 								</div>
-								<p className={styles.itemQuantity}>Qty: {item.quantity}</p>
+								{/* <p className={styles.itemQuantity}>Qty: {item.quantity}</p> */}
+								{lowerText}
 							</div>
 						</div>
 					))}
@@ -98,7 +138,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 							onClick={() => setIsModalOpen(true)}
 							className={classNames(styles.gridItem, styles.addFolderBtn)}
 						>
-							Add New Folder
+							Add New {type}
 						</button>
 					)}
 				</div>

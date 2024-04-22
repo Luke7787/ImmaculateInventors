@@ -13,6 +13,7 @@ const MyApp = () => {
 				<Route path="/inventory" element={<Home />} />
 				<Route path="/profile" element={<Profile />} />
 				<Route path="/folder/:id" element={<Folder />} />
+				<Route path="/inventory/folder/:id" element={<Folder />} />
 			</Routes>
 		</Router>
 	);
