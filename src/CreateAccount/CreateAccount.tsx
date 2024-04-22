@@ -216,13 +216,19 @@ const CreateAccount = () => {
 								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>First Name</span>}
+								label="First Name"
 								type="text"
 								variant="filled"
 								name="firstName"
 								onChange={handleUpdate}
 								onBlur={handleFirstBlur}
 								value={data.firstName}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
@@ -232,13 +238,19 @@ const CreateAccount = () => {
 								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Last Name</span>}
+								label="Last Name"
 								type="text"
 								variant="filled"
 								name="lastName"
 								onBlur={handleLastBlur}
 								onChange={handleUpdate}
 								value={data.lastName}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
@@ -248,13 +260,19 @@ const CreateAccount = () => {
 								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Email Address</span>}
+								label="Email Address"
 								type="text"
 								variant="filled"
 								name="email"
 								onChange={handleUpdate}
 								onBlur={handleEmailBlur}
 								value={data.email}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
@@ -295,13 +313,19 @@ const CreateAccount = () => {
 							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
-							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>State</span>}
+							label="State"
 							type="text"
 							variant="filled"
 							name="state"
 							onBlur={handleStateBlur}
 							onChange={handleUpdate}
 							value={data.state}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.city}>
@@ -309,13 +333,19 @@ const CreateAccount = () => {
 							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
-							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>City</span>}
+							label="City"
 							type="text"
 							variant="filled"
 							name="city"
 							onBlur={handleCityBlur}
 							onChange={handleUpdate}
 							value={data.city}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.zip}>
@@ -323,13 +353,19 @@ const CreateAccount = () => {
 							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
-							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Zip Code</span>}
+							label="Zip Code"
 							type="text"
 							variant="filled"
 							name="zipcode"
 							onBlur={handleZipBlur}
 							onChange={handleUpdate}
 							value={data.zipcode}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.user}>
@@ -337,7 +373,7 @@ const CreateAccount = () => {
 							<TextField
 								error={!!userErr}
 								id="username-input"
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Username</span>}
+								label="Username"
 								helperText={userErr ? userErr : ''}
 								type="text"
 								name="username"
@@ -345,6 +381,12 @@ const CreateAccount = () => {
 								onBlur={handleUsernameBlur}
 								onChange={handleUpdate}
 								value={data.username}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
@@ -355,12 +397,18 @@ const CreateAccount = () => {
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
+								label="Password"
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
 								onChange={handleUpdate}
 								value={data.password}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
@@ -371,15 +419,22 @@ const CreateAccount = () => {
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
+								label="Confirm Password"
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}
 								onBlur={handleConfirmPassBlur}
 								value={confirmPassData}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
+
 					<button className={styles.button} type="submit">
 						Submit
 					</button>

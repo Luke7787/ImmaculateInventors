@@ -110,3 +110,23 @@ label {
     font-family: 'Sniglet', cursive;
 }
 
+.customInput {
+    background-color: #CDCDCD !important;  // Background color for input field
+    border-radius: 90px !important;  // Rounded borders for input field
+    font-family: 'Sniglet', cursive !important;  // Font style for input text
+    color: white !important;  // Text color for input text
+    font-size: 25px !important;  // Text size for input text
+    box-shadow: none !important;  // No shadow for any text field
+	margin-top: 15px;
+	height: 50px;
+	text-indent: 10px;
+}
+
+.customInputLabel {
+    color: white;
+    font-size: 23.4px;
+    font-family: 'Sniglet', cursive;
+	margin-left: 20px;
+	margin-top: 10px; /* Adjust the margin-top value as needed */
+}
+
