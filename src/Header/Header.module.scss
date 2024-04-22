@@ -82,7 +82,7 @@ h1 {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 738px;
-    height: 675px;
+    height: 660px;
     background-color: #EADEDE;
     border-radius: 40px;
 
@@ -90,7 +90,8 @@ h1 {
         font-family: 'Sniglet', cursive; /* Using Sniglet font */
         font-size: 30px; /* Setting font size to 48px */
 		text-align: center;
-		padding-top: 55px; 
+		padding-top: 65px;
+		padding-bottom: 15px; 
     }
 }
 
