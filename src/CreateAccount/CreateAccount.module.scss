@@ -5,7 +5,7 @@
     border-radius: 90px;
     color: black;
     border: 0px #838383 solid;
-    width: 120px;
+    width: 150px;
     height: 55px;
     margin-top: 28px;
     margin-bottom: 12px;
@@ -105,16 +105,6 @@
 
 .country {
     grid-area: country;
-
-    * {
-        border: none !important;
-    }
-
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
 
 }
 
@@ -223,13 +213,13 @@ label {
     box-shadow: none !important;
     margin-top: 7.4px;
     height: 50px;
-    padding-left: 10px;
+    padding-left: 9px;
 }
 
 .customInputLabel {
     color: black;
     font-size: 23.4px;
     font-family: 'Sniglet', cursive;
-    margin-left: 10px;
+    margin-left: 9px;
     margin-top: 0px;
 }
