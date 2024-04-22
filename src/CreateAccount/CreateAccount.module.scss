@@ -10,7 +10,7 @@
     margin-top: 28px;
     margin-bottom: 12px;
     font-family: 'Sniglet', cursive;
-	font-size: 24px;
+    font-size: 24px;
 
     &:hover {
         cursor: pointer;
@@ -35,18 +35,19 @@
         'pass pass confirmPass confirmPass';
     gap: 35px;
 
-    .MuiFormControl-root .MuiInputBase-input, .MuiFormControl-root .MuiInputBase-root {
-        background-color: #CDCDCD !important;  // Background color for input field
-        border-radius: 90px !important;  // Rounded borders for input field
-        font-family: 'Sniglet', cursive !important;  // Font style for input text
-        color: white !important;  // Text color for input text
-        font-size: 25px !important;  // Text size for input text
-        box-shadow: none !important;  // No shadow for any text field
+    .MuiFormControl-root .MuiInputBase-input,
+    .MuiFormControl-root .MuiInputBase-root {
+        background-color: #CDCDCD !important; // Background color for input field
+        border-radius: 90px !important; // Rounded borders for input field
+        font-family: 'Sniglet', cursive !important; // Font style for input text
+        color: white !important; // Text color for input text
+        font-size: 25px !important; // Text size for input text
+        box-shadow: none !important; // No shadow for any text field
     }
 
-    .MuiFormControl-root .MuiInput-underline:before, 
+    .MuiFormControl-root .MuiInput-underline:before,
     .MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
-        box-shadow: none !important;  
+        box-shadow: none !important;
     }
 
     p {
@@ -62,42 +63,143 @@
 
 .first {
     grid-area: first;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .last {
     grid-area: last;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .email {
     grid-area: email;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .country {
     grid-area: country;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
+
 }
 
 .state {
     grid-area: state;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .city {
     grid-area: city;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .zip {
     grid-area: zip;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .user {
     grid-area: user;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .pass {
     grid-area: pass;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 .confirmPass {
     grid-area: confirmPass;
+
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
+
 }
 
 label {
@@ -113,22 +215,21 @@ label {
 }
 
 .customInput {
-    background-color: #CDCDCD !important; 
-    border-radius: 90px !important; 
-    font-family: 'Sniglet', cursive !important; 
-    color: black !important;  
-    font-size: 25px !important; 
-    box-shadow: none !important;  
-	margin-top: 7.4px;
-	height: 50px;
-	padding-left: 10px;
+    background-color: #CDCDCD !important;
+    border-radius: 90px !important;
+    font-family: 'Sniglet', cursive !important;
+    color: black !important;
+    font-size: 25px !important;
+    box-shadow: none !important;
+    margin-top: 7.4px;
+    height: 50px;
+    padding-left: 10px;
 }
 
 .customInputLabel {
     color: black;
     font-size: 23.4px;
     font-family: 'Sniglet', cursive;
-	margin-left: 10px;
-	margin-top: 0px;
+    margin-left: 10px;
+    margin-top: 0px;
 }
-
