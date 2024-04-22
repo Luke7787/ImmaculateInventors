@@ -3,7 +3,8 @@ const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const FolderSchema = require('./folder.tsx');
 const itemServices = require('./item-services.tsx');
-const dotenv = require("dotenv").config({ path: '../.env' });
+const dotenv = require("dotenv")
+dotenv.config();
 //dotenv.config();
 
 mongoose.set("debug", true);
@@ -42,6 +43,11 @@ async function getFolderContents(folderId: any) {
 	console.log(folderId);
 	const items = await ItemSchema.find({folder: folderId});
 	console.log(items);
+	return items;
+}
+
+async function sortByQuantity(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({quantity: 1});
 	return items;
 }
 
@@ -215,4 +221,5 @@ exports.addItemToFolder = addItemToFolder;
 exports.deleteItemFromFolder = deleteItemFromFolder;
 exports.updateFolderName = updateFolderName;
 exports.getFolderContents = getFolderContents;
+exports.sortByQuantity = sortByQuantity;
 export {};

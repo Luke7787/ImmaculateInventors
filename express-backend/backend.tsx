@@ -246,3 +246,9 @@ app.get('/folderGet/', async (req: any, res: any) => {
 	const items = await userServices.getFolderContents(folderId);
 	res.status(201).send(items);
 })
+
+app.patch('/sort/', async (req: any, res: any) => {
+	const folderId = req.query['folderId'];
+	const items = await userServices.sortByQuantity(folderId);
+	res.status(201).send(items);
+})
