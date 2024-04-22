@@ -1,13 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
 .button {
-    background-color: #6a4b4b;
-    border-radius: 6px;
-    color: #ffffff;
-    width: 100px;
-    height: 40px;
+    background-color: #CDCDCD;
+    border-radius: 90px;
+    color: #FBF29C;
+    border: 0px #838383 solid;
+    width: 120px;
+    height: 55px;
     margin-top: 28px;
     margin-bottom: 12px;
+    font-family: 'Sniglet', cursive;
+	font-size: 24px;
 
     &:hover {
         cursor: pointer;
@@ -32,7 +35,6 @@
         'pass pass confirmPass confirmPass';
     gap: 35px;
 
-    // Use more specific selectors
     .MuiFormControl-root .MuiInputBase-input, .MuiFormControl-root .MuiInputBase-root {
         background-color: #CDCDCD !important;  // Background color for input field
         border-radius: 90px !important;  // Rounded borders for input field
@@ -44,7 +46,7 @@
 
     .MuiFormControl-root .MuiInput-underline:before, 
     .MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
-        box-shadow: none !important;  // Ensure underline does not have shadow
+        box-shadow: none !important;  
     }
 
     p {
@@ -111,12 +113,12 @@ label {
 }
 
 .customInput {
-    background-color: #CDCDCD !important;  // Background color for input field
-    border-radius: 90px !important;  // Rounded borders for input field
-    font-family: 'Sniglet', cursive !important;  // Font style for input text
-    color: white !important;  // Text color for input text
-    font-size: 25px !important;  // Text size for input text
-    box-shadow: none !important;  // No shadow for any text field
+    background-color: #CDCDCD !important; 
+    border-radius: 90px !important; 
+    font-family: 'Sniglet', cursive !important; 
+    color: white !important;  
+    font-size: 25px !important; 
+    box-shadow: none !important;  
 	margin-top: 20px;
 	height: 50px;
 	padding-left: 20px;
