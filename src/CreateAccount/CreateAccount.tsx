@@ -355,7 +355,7 @@ const CreateAccount = () => {
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
@@ -371,7 +371,7 @@ const CreateAccount = () => {
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
+								label={<span style={{ color: 'white', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}
