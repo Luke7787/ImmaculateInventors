@@ -436,7 +436,7 @@ const CreateAccount = () => {
 					</div>
 
 					<button className={styles.button} type="submit">
-						Submit
+						Create
 					</button>
 				</div>
 			</div>
