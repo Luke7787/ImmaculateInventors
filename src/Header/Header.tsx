@@ -34,6 +34,7 @@ const Header = () => {
             <Box className={styles.createAccountModal}>
               <div className={styles.modalHeader}>
               <img src="/images/part1.png" alt="Decorative" className={styles.loginNewImage} />
+              <img src="/images/part2.png" alt="Decorative" className={styles.loginNewImage2} />
                 <h1>Create Account</h1>
               </div>
               <CloseIcon
