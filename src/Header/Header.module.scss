@@ -106,3 +106,12 @@ h1 {
 	gap: 10px;
   }
   
+  .loginNewImage {
+    position: absolute;
+    top: 9%;
+    left: 23.3%;
+    transform: translate(-50%, -50%) rotate(55deg);
+    z-index: -1;  // Ensures the image is behind the text
+    width: 260px;  // Adjusts the width to cover the modal header area
+    height: 260px; // Keeps the aspect ratio of the image
+}
