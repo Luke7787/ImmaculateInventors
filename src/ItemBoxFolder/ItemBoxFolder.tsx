@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ItemBox.module.scss';
+import styles from './ItemBoxFolder.module.scss';
 import AddItemModal from '../AddItemModal/AddItemModal.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
@@ -22,7 +22,7 @@ interface ItemBoxProps {
 	type: 'Folder' | 'Item';
 	lowerText: React.ReactNode;
 }
-const ItemBox = ({
+const ItemBoxFolder = ({
 	items,
 	onDelete,
 	onAddNewItem,
@@ -152,4 +152,4 @@ const ItemBox = ({
 	);
 };
 
-export default ItemBox;
+export default ItemBoxFolder;

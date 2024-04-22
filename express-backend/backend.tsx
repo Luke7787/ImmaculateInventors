@@ -19,11 +19,12 @@ app.get('/', async (req: any, res: any) => {
 
 app.get('/users', async (req: any, res: any) => {
 	try {
-		const { username } = req.query;
-		if (username) {
-			const user = await userServices.findUserByUsername(username);
+		const { username, password } = req.query;
+		console.log(username, password);
+		if (username && password) {
+			const user = await userServices.findUserByUserAndPass(username, password);
 			if (user.length == 0) {
-				return res.status(404).send("User not found");
+				return res.status(404).send('User not found');
 			}
 			return res.send({ user });
 		} else {
@@ -31,9 +32,8 @@ app.get('/users', async (req: any, res: any) => {
 			return res.send({ users });
 		}
 	} catch (error) {
-		return res.status(500).send("An error occurred in the server.");
+		return res.status(500).send('An error occurred in the server.');
 	}
-	
 });
 
 app.get('/users/:username', async (req: any, res: any) => {
@@ -103,7 +103,7 @@ app.patch('/items/', async (req: any, res: any) => {
 			uid,
 			id,
 			quantity,
-			option,
+			option
 		);
 		if (result) {
 			res.status(201).send(result);
@@ -172,7 +172,21 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	}
 });
 
-app.post('/folders/', async (req:any, res: any) => {
+app.get('/folders/', async (req: any, res: any) => {
+	const userId = req.query['userId'];
+	if (!userId) {
+		res.status(400).send('error: userid not provided');
+	}
+	try {
+		const c = await userServices.getFolders(userId);
+		res.status(200).send(c);
+	} catch (error) {
+		console.log('error', error);
+		res.status(400).send('error');
+	}
+});
+
+app.post('/folders/', async (req: any, res: any) => {
 	// when making a folder return the id
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
@@ -188,7 +202,7 @@ app.post('/folders/', async (req:any, res: any) => {
 	}
 });
 
-app.delete('/folders/', async (req:any, res: any) => {
+app.delete('/folders/', async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
 	try {
@@ -203,21 +217,26 @@ app.delete('/folders/', async (req:any, res: any) => {
 	}
 });
 
-
-app.patch('/folders/', async (req:any, res: any) => {
+app.patch('/folders/', async (req: any, res: any) => {
 	const option = req.query['option'];
 	const folderName = req.query['folderName'];
 	const itemId = req.query['itemId'];
 	console.log(folderName);
 	try {
 		if (option === 'add') {
-			const updatedFolder = await userServices.addItemToFolder(folderName, itemId);
+			const updatedFolder = await userServices.addItemToFolder(
+				folderName,
+				itemId
+			);
 			if (!updatedFolder) {
 				return res.status(404).send('Folder not found');
 			}
 			res.send(updatedFolder);
 		} else if (option === 'delete') {
-			const updatedFolder = await userServices.deleteItemFromFolder(folderName, itemId);
+			const updatedFolder = await userServices.deleteItemFromFolder(
+				folderName,
+				itemId
+			);
 			if (!updatedFolder) {
 				return res.status(404).send('Folder not found');
 			}
@@ -229,12 +248,15 @@ app.patch('/folders/', async (req:any, res: any) => {
 	}
 });
 
-app.patch('/folderName/', async (req:any, res: any) => {
+app.patch('/folderName/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const newFolderName = req.query['newName'];
 	try {
-		const updatedFolder = await userServices.updateFolderName(folderId, newFolderName);
-		res.status(201).send(updatedFolder)
+		const updatedFolder = await userServices.updateFolderName(
+			folderId,
+			newFolderName
+		);
+		res.status(201).send(updatedFolder);
 	} catch (error) {
 		console.log(error);
 		res.status(400).send('Error updating folder');

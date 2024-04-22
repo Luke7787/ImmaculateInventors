@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../Header/Header.tsx';
 import { useParams } from 'react-router-dom';
 import ItemBox from '../ItemBox/ItemBox.tsx';
 import styles from './Folder.module.scss';
+import { useAuth } from '../hooks/useAuth.ts';
+import axios from 'axios';
 
 interface ItemProps {
 	name: string;
@@ -22,6 +24,7 @@ interface ItemBoxProps {
 }
 const Folder = () => {
 	const { id } = useParams();
+	const { getUser } = useAuth();
 
 	const items: ItemProps[] = [
 		{
@@ -43,6 +46,20 @@ const Folder = () => {
 				'https://plus.unsplash.com/premium_photo-1661870839207-d668a9857cb4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 		},
 	];
+
+	useEffect(() => {
+		fetchFolders(getUser());
+	});
+	const fetchFolders = async (userId: string) => {
+		try {
+			const response = await axios.get(
+				`http://localhost:8000/folders?userId=${userId}`
+			);
+			console.log(response)
+		} catch (err) {
+			console.error('err', err);
+		}
+	};
 
 	return (
 		<>
