@@ -74,7 +74,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				<button className={styles.button} type="submit">Login</button>
                 <div className={styles.signUpSection}>
                     <p className={styles.signUpGreeting}>Hey, new friend!</p>
-                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey</p>
+                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey!</p>
                     <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
                         Sign Up
                     </button>

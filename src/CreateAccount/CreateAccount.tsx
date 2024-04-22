@@ -64,13 +64,13 @@ const CreateAccount = () => {
 	const handleConfirmPassBlur = () => {
 		setConfirmPassErr(
 			validateFilled(confirmPassData) ||
-				validateConfirmPassword(data.password, confirmPassData)
+			validateConfirmPassword(data.password, confirmPassData)
 		);
 	};
 	const handleUsernameBlur = async () => {
 		setUserErr(
 			validateFilled(data.username) ||
-				(await validateUniqueUsername(data.username))
+			(await validateUniqueUsername(data.username))
 		);
 	};
 	const handleFirstBlur = () => {
@@ -211,13 +211,12 @@ const CreateAccount = () => {
 			<div className={styles.container}>
 				<div className={styles.grid}>
 					<div className={styles.first}>
-						<p>First name</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
-								label="First name"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>First Name</span>}
 								type="text"
 								variant="filled"
 								name="firstName"
@@ -228,13 +227,12 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.last}>
-						<p>Last name</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
-								label="Last name"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Last Name</span>}
 								type="text"
 								variant="filled"
 								name="lastName"
@@ -245,13 +243,12 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.email}>
-						<p>Email</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
-								label="Email address"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Email Address</span>}
 								type="text"
 								variant="filled"
 								name="email"
@@ -262,16 +259,22 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.country}>
-						<p>Country</p>
 						<FormControl fullWidth>
 							<Select
-								error={!!countryErr}
-								id="country-input"
-								name="country"
 								value={data.country}
 								onChange={handleUpdate}
-								onBlur={handleCountryBlur}
+								displayEmpty
+								name="country"
+								renderValue={
+									(selected) => {
+										if (!selected) {
+											return <span className={styles.customRenderValue}>Country</span>;
+										}
+										return <span className={styles.customRenderValue}>{selected}</span>;
+									}
+								}
 							>
+								<MenuItem value="" disabled>Country</MenuItem>
 								<MenuItem value="Bangladesh">Bangladesh</MenuItem>
 								<MenuItem value="Brazil">Brazil</MenuItem>
 								<MenuItem value="Canada">Canada</MenuItem>
@@ -288,12 +291,11 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.state}>
-						<p>State</p>
 						<TextField
 							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
-							label="State"
+							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>State</span>}
 							type="text"
 							variant="filled"
 							name="state"
@@ -303,12 +305,11 @@ const CreateAccount = () => {
 						/>
 					</div>
 					<div className={styles.city}>
-						<p>City</p>
 						<TextField
 							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
-							label="City"
+							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>City</span>}
 							type="text"
 							variant="filled"
 							name="city"
@@ -318,12 +319,11 @@ const CreateAccount = () => {
 						/>
 					</div>
 					<div className={styles.zip}>
-						<p>Zip Code</p>
 						<TextField
 							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
-							label="Zip code"
+							label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Zip Code</span>}
 							type="text"
 							variant="filled"
 							name="zipcode"
@@ -333,12 +333,11 @@ const CreateAccount = () => {
 						/>
 					</div>
 					<div className={styles.user}>
-						<p>Username</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!userErr}
 								id="username-input"
-								label="Username"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Username</span>}
 								helperText={userErr ? userErr : ''}
 								type="text"
 								name="username"
@@ -350,14 +349,13 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.pass}>
-						<p>Password</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!passwordErr}
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label="Password"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
@@ -367,14 +365,13 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.confirmPass}>
-						<p>Confirm Password</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!confirmPassErr}
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label="Confirm password"
+								label={<span style={{ color: 'white', fontSize: '23.4px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}

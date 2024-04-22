@@ -1,86 +1,111 @@
-.button {
-	background-color: #6a4b4b;
-	border-radius: 6px;
-	color: #ffffff;
-	width: 100px;
-	height: 40px;
-	margin-top: 28px;
-	margin-bottom: 12px;
+@import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
-	&:hover {
-		cursor: pointer;
-	}
+.button {
+    background-color: #6a4b4b;
+    border-radius: 6px;
+    color: #ffffff;
+    width: 100px;
+    height: 40px;
+    margin-top: 28px;
+    margin-bottom: 12px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .container {
-	padding: 10px 0px;
-	display: flex;
-	justify-content: center;
+    padding: 10px 0px;
+    display: flex;
+    justify-content: center;
 }
 
 .grid {
-	display: grid;
-	grid-template-rows: repeat(5, 75px);
-	grid-template-columns: repeat(4, 130px);
-	grid-template-areas:
-		'first first last last'
-		'email email email email'
-		'country state city zip'
-		'user user user user'
-		'pass pass confirmPass confirmPass';
-	gap: 35px;
-	input {
-		background-color: #e4e4e4;
-		border-radius: 6px;
-	}
+    display: grid;
+    grid-template-rows: repeat(5, 75px);
+    grid-template-columns: repeat(4, 130px);
+    grid-template-areas:
+        'first first last last'
+        'email email email email'
+        'country state city zip'
+        'user user user user'
+        'pass pass confirmPass confirmPass';
+    gap: 35px;
 
-	p {
-		font-size: 16px;
-		margin: 5px 0px;
+    // Use more specific selectors
+    .MuiFormControl-root .MuiInputBase-input, .MuiFormControl-root .MuiInputBase-root {
+        background-color: #CDCDCD !important;  // Background color for input field
+        border-radius: 90px !important;  // Rounded borders for input field
+        font-family: 'Sniglet', cursive !important;  // Font style for input text
+        color: white !important;  // Text color for input text
+        font-size: 25px !important;  // Text size for input text
+        box-shadow: none !important;  // No shadow for any text field
+    }
 
-		&:last-child {
-			font-size: 14px;
-			color: red;
-		}
-	}
+    .MuiFormControl-root .MuiInput-underline:before, 
+    .MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
+        box-shadow: none !important;  // Ensure underline does not have shadow
+    }
+
+    p {
+        font-size: 16px;
+        margin: 5px 0px;
+
+        &:last-child {
+            font-size: 14px;
+            color: red;
+        }
+    }
 }
 
 .first {
-	grid-area: first;
+    grid-area: first;
 }
 
 .last {
-	grid-area: last;
+    grid-area: last;
 }
 
 .email {
-	grid-area: email;
+    grid-area: email;
 }
 
 .country {
-	grid-area: country;
+    grid-area: country;
 }
 
 .state {
-	grid-area: state;
+    grid-area: state;
 }
 
 .city {
-	grid-area: city;
+    grid-area: city;
 }
 
 .zip {
-	grid-area: zip;
+    grid-area: zip;
 }
 
 .user {
-	grid-area: user;
+    grid-area: user;
 }
 
 .pass {
-	grid-area: pass;
+    grid-area: pass;
 }
 
 .confirmPass {
-	grid-area: confirmPass;
+    grid-area: confirmPass;
+}
+
+label {
+    color: white;
+    font-size: 23.4px;
+    font-family: 'Sniglet', cursive;
+}
+
+.customRenderValue {
+    color: white;
+    font-size: 23.4px;
+    font-family: 'Sniglet', cursive;
 }
