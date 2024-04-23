@@ -2,11 +2,13 @@ import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './ContactPage.module.scss';
 import Header from '../Header/Header';
+import contactPicture from '../../../public/images/contactPicture.webp';
 
 const ContactPage = () => {
     return (
         <div>
             <Header />
+            <img src="/images/contactPicture.webp" alt="Decorative Background" className={styles.bgImage} />
             <div className={styles.contactContainer}>
                 <Typography variant="h4" component="h1" className={styles.heading}>
                     Get in Touch
