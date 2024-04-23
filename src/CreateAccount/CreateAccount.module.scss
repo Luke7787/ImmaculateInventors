@@ -107,7 +107,16 @@
 
 .country {
     grid-area: country;
+    margin-top: 4px;
 
+    * {
+        border: none !important;
+    }
+
+    *::before,
+    *::after {
+        border: none !important;
+    }
 }
 
 .state {
@@ -207,7 +216,7 @@ label {
 }
 
 .customRenderValue2 {
-    color: white;
+    color: black;
     font-size: 23.4px;
     font-family: 'Sniglet', cursive;
 }
