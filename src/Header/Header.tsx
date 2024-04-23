@@ -53,7 +53,7 @@ const Header = () => {
         <Button className={styles.signInButton} onClick={() => navigate('/')}>
           Home
         </Button>
-        <Button className={styles.signInButton}>
+        <Button className={styles.signInButton} onClick={() => navigate('/about')}>
           About
         </Button>
         <Button className={styles.signInButton} onClick={() => navigate('/contact')}>
