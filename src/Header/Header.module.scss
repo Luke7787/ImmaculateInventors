@@ -56,6 +56,10 @@ h1 {
 			color: #000;
 			cursor: pointer;
 		}
+
+		&.moveRight {  
+			margin-left: 175px; 
+		}
 	}
 }
 .signInModal {

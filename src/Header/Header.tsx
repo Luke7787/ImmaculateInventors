@@ -21,7 +21,7 @@ const Header = () => {
         <img src={`${process.env.PUBLIC_URL}/images/newlogo.png`} alt="Logo" className={styles.logoImage} />
       </div>
       <div className={styles.headerCenter}>
-        <Button className={styles.signInButton} onClick={() => setSignInOpen(true)}>
+      <Button className={`${styles.signInButton} ${styles.moveRight}`} onClick={() => setSignInOpen(true)}>
           Sign In
         </Button>
         <Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
@@ -50,6 +50,9 @@ const Header = () => {
             </Box>
           )}
         </Modal>
+        <Button className={styles.signInButton} onClick={() => navigate('/')}>
+          Home
+        </Button>
         <Button className={styles.signInButton}>
           About
         </Button>
