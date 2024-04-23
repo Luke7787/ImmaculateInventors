@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './ContactPage.module.scss';
 import Header from '../Header/Header';
-import contactPicture from '../../../public/images/contactPicture.webp';
 
 const ContactPage = () => {
     return (
@@ -15,19 +14,19 @@ const ContactPage = () => {
                 </Typography>
                 <form className={styles.contactForm}>
                     <TextField
-                        label="Name"
+                        label={<span style={{fontSize: '20px'}}>Name</span>}
                         variant="outlined"
                         fullWidth
                         className={styles.inputField}
                     />
                     <TextField
-                        label="Email"
+                        label={<span style={{fontSize: '20px'}}>Email</span>}
                         variant="outlined"
                         fullWidth
                         className={styles.inputField}
                     />
                     <TextField
-                        label="Message"
+                        label={<span style={{fontSize: '20px'}}>Message</span>}
                         variant="outlined"
                         fullWidth
                         multiline
