@@ -4,6 +4,7 @@ import Homepage from './pages/Homepage.tsx';
 import Profile from './pages/Profile.tsx';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Folder from './pages/Folder.tsx';
+import ContactPage from './Header/ContactPage.tsx';
 
 const MyApp = () => {
 	return (
@@ -13,6 +14,7 @@ const MyApp = () => {
 				<Route path="/inventory" element={<Home />} />
 				<Route path="/profile" element={<Profile />} />
 				<Route path="/folder/:id" element={<Folder />} />
+				<Route path="/contact" element={<ContactPage />} />
 			</Routes>
 		</Router>
 	);
