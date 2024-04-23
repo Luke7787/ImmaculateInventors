@@ -209,6 +209,7 @@ const CreateAccount = () => {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className={styles.container}>
+			<img src="/images/backup.png" alt="Decorative Background" className={styles.bgImage} />
 				<div className={styles.grid}>
 					<div className={styles.first}>
 						<FormControl fullWidth>

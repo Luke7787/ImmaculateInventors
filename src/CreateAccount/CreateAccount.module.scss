@@ -45,6 +45,7 @@
         color: white !important; // Text color for input text
         font-size: 25px !important; // Text size for input text
         box-shadow: none !important; // No shadow for any text field
+        overflow: visible;
     }
 
     .MuiFormControl-root .MuiInput-underline:before,
@@ -107,7 +108,7 @@
 
 .country {
     grid-area: country;
-    margin-top: 4px;
+    margin-top: 5px;
 
     * {
         border: none !important;
@@ -216,7 +217,7 @@ label {
 }
 
 .customRenderValue2 {
-    color: black;
+    color: white;
     font-size: 23.4px;
     font-family: 'Sniglet', cursive;
 }
@@ -230,13 +231,30 @@ label {
     box-shadow: none !important;
     margin-top: 7.4px;
     height: 50px;
-    padding-left: 9px;
+    padding-left: 5px;
 }
 
 .customInputLabel {
     color: black;
     font-size: 23.4px;
     font-family: 'Sniglet', cursive;
-    margin-left: 9px;
-    margin-top: 0px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.container {
+    position: relative;  // Essential for absolute positioning context
+    overflow: hidden;  // Ensures nothing spills outside the container
+    padding: 10px 0px;
+    display: flex;
+    justify-content: center;
+
+    .bgImage {
+        position: absolute;
+        top: 168px;  // 168
+        left: 35px;  // Adjust as necessary, e.g., `50px` to move it right
+        width: 170px;  // Full width of the container
+        height: 70px;  // Maintain aspect ratio
+        z-index: -1;  // Behind all other content
+    }
 }
