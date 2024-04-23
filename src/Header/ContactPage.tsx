@@ -12,6 +12,9 @@ const ContactPage = () => {
                 <Typography variant="h4" component="h1" className={styles.heading}>
                     Get in Touch
                 </Typography>
+                <Typography variant="h4" component="h1" className={styles.heading}>
+                &nbsp;
+                </Typography>
                 <form className={styles.contactForm}>
                     <TextField
                         label={<span style={{fontSize: '20px'}}>Name</span>}

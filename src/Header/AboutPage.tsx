@@ -7,6 +7,7 @@ const AboutPage = () => {
     return (
         <div>
             <Header />
+            <img src="/images/RoseGold.jpeg" alt="Decorative Background" className={styles.bgImage} />
             <div className={styles.aboutContainer}>
                 <Typography variant="h4" component="h1" className={styles.heading}>
                     About Us
