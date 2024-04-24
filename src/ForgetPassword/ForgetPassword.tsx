@@ -25,6 +25,7 @@ const ForgetPassword = () => {
 		e.preventDefault();
 		try {
             console.log("enter try block");
+			//need to add email directory to the links in backend.tsx
 			const response = await axios.get('http://localhost:3000/users/email', {
 				params: emailData,
 			});
@@ -37,6 +38,7 @@ const ForgetPassword = () => {
             const email__address = response['email'].toString();
 
             //send email
+			//"hello" is message in place for now
             emailjs.sendForm(email__address, 'template_nh3erqm', "Hello", '8SWejLGvEgMtubpdK')
             .then((result) => {
                 console.log(result.text);
