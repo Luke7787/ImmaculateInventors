@@ -12,13 +12,13 @@ interface ItemProps {
 	name: string;
 	quantity: number;
 	image: string;
+	id: string;
 }
 
 interface ItemBoxProps {
 	items: ItemProps[];
-	onDelete: (name: string) => void;
+	onDelete: (userId: string, folderName: string) => void;
 	onAddNewItem: (userId: string, name: string) => void;
-	onClickBox: () => void;
 	type: 'Folder' | 'Item';
 	lowerText: React.ReactNode;
 }
@@ -26,7 +26,6 @@ const ItemBoxFolder = ({
 	items,
 	onDelete,
 	onAddNewItem,
-	onClickBox,
 	lowerText,
 	type,
 }: ItemBoxProps) => {
@@ -101,7 +100,9 @@ const ItemBoxFolder = ({
 								isEditMode && styles.gridItemEditMode
 							)}
 							key={index}
-							onClick={onClickBox}
+							onClick={() => {
+								navigate(`/inventory/folder/${item.id}`);
+							}}
 						>
 							<img
 								src={item.image}
@@ -110,7 +111,11 @@ const ItemBoxFolder = ({
 							/>
 							{isEditMode && (
 								<button
-									onClick={() => onDelete(item.name)}
+									onClick={(e: any) => {
+										e.preventDefault();
+										e.stopPropagation();
+										onDelete(getUser(), item.name);
+									}}
 									className={styles.deleteButton}
 								>
 									Delete {type}

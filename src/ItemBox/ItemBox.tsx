@@ -12,12 +12,20 @@ interface ItemProps {
 	name: string;
 	quantity: number;
 	image: string;
+	id: string;
+	note: string;
 }
 
 interface ItemBoxProps {
 	items: ItemProps[];
-	onDelete: (name: string) => void;
-	onAddNewItem: (userId: string, name: string) => void;
+	onDelete: (item: ItemProps) => void;
+	onAddNewItem: (item: {
+		name: string;
+		image: string;
+		quantity: number;
+		id: string;
+		note: string;
+	}) => void;
 	onClickBox: () => void;
 	type: 'Folder' | 'Item';
 	lowerText: React.ReactNode;
@@ -110,7 +118,11 @@ const ItemBox = ({
 							/>
 							{isEditMode && (
 								<button
-									onClick={() => onDelete(item.name)}
+									onClick={(e: any) => {
+										e.preventDefault();
+										e.stopPropagation();
+										onDelete(item);
+									}}
 									className={styles.deleteButton}
 								>
 									Delete {type}
@@ -142,8 +154,8 @@ const ItemBox = ({
 				<AddItemModal
 					isOpen={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
-					onAdd={async (newItem) => {
-						await onAddNewItem(getUser(), newItem.name);
+					onAdd={async (newItem: ItemProps) => {
+						await onAddNewItem(newItem);
 						setIsModalOpen(false);
 					}}
 				/>

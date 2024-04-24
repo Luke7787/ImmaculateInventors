@@ -262,3 +262,9 @@ app.patch('/folderName/', async (req: any, res: any) => {
 		res.status(400).send('Error updating folder');
 	}
 });
+
+app.get('/folderGet/', async (req: any, res: any) => {
+	const folderId = req.query['folderId'];
+	const items = await userServices.getFolderContents(folderId);
+	res.status(201).send(items);
+})

@@ -32,6 +32,7 @@ const Home = () => {
 				name: item.name,
 				quantity: 0,
 				image: '/images/etsyStore.jpg',
+				id: item._id,
 			}));
 			setItemsData(formattedArray);
 		} catch (err) {
@@ -39,8 +40,16 @@ const Home = () => {
 		}
 	};
 
-	const handleDelete = (itemName) => {
-		setItemsData(itemsData.filter((item: any) => item.name !== itemName));
+	const handleDelete = async (userId: string, folderName: string) => {
+		try {
+			const response = await axios.delete(
+				`http://localhost:8000/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`
+			);
+			console.log(response);
+			setUpdateFolders(!updateFolders);
+		} catch (err) {
+			console.error('err', err);
+		}
 	};
 
 	// Updated to include the current folder in new items
@@ -65,9 +74,6 @@ const Home = () => {
 	// const filteredItems = itemsData.filter(
 	// 	(item: any) => item.folder === currentFolder
 	// );
-	const onClickBox = () => {
-		navigate('/inventory/folder/:id');
-	};
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -78,7 +84,6 @@ const Home = () => {
 						items={itemsData}
 						onDelete={handleDelete}
 						onAddNewItem={handleAddNewItem}
-						onClickBox={onClickBox}
 						lowerText={<p>13 items</p>}
 						type="Folder"
 					/>
