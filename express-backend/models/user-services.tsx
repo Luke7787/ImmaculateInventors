@@ -2,16 +2,22 @@ const mongoose = require('mongoose');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const itemServices = require('./item-services.tsx');
+const bcrypt = require('bcrypt');
 
+let dbConnection: any;
 
-mongoose.set("debug", true);
-
-
-mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
-    useNewUrlParser: true, //useFindAndModify: false,
-    useUnifiedTopology: true,
-  });
-
+async function getDbConnection() {
+	if (!dbConnection) {
+		dbConnection = await mongoose.createConnection(
+			'mongodb://127.0.0.1:27017/inventoryUsers',
+			{
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			}
+		);
+	}
+	return dbConnection;
+}
 
 async function getUsers() {
     return await UserSchema.find();
@@ -156,6 +162,13 @@ async function findUserByUsername(username: string) {
 
 async function findUserByUserAndPass(username: any, password: any) {
     return await UserSchema.find({ username: username, password: password });
+async function findUserByUserAndPass(username: any, password: any) {
+	return await UserSchema.find({ username: username, password: password });
+}
+
+async function findUserByEmail(email: any, conn: any) {
+	const userModel = conn.model('User', UserSchema);
+	return await userModel.find({ email: email});
 }
 
 
@@ -167,8 +180,7 @@ async function deleteUserById(id: any) {
         return false;
     }
 }
-
-
+exports.getDbConnection = getDbConnection;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
@@ -179,10 +191,9 @@ exports.deleteItemFromUser = deleteItemFromUser;
 exports.updateItemFromUser = updateItemFromUser;
 exports.findUserByUsername = findUserByUsername;
 exports.findUserByUserAndPass = findUserByUserAndPass;
+exports.findUserByEmail = findUserByEmail;
 exports.deleteUserById = deleteUserById;
 export {};
-
-
 
 
 

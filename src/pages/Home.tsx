@@ -11,15 +11,10 @@ const Home = () => {
   const [currentFolder, setCurrentFolder] = useState('Default');
   const [itemsData, setItemsData] = useState([
     // Preset items assigned to 'Default' folder or others as needed
-    { folder: 'Default', name: "Apple", quantity: 5, image: "/images/apple.jpg" },
-    { folder: 'Default', name: "Big Pot", quantity: 2, image: "/images/bigPot.jpg" },
-    { folder: 'Default', name: "Fish", quantity: 3, image: "/images/fish.jpg" },
-    { folder: 'Default', name: "Mini", quantity: 5, image: "/images/mini.jpg" },
-    { folder: 'Default', name: "Mushroom", quantity: 10, image: "/images/mushrooom.jpg" },
-    { folder: 'Default', name: "Golf Club", quantity: 1, image: "/images/golf.jpg" },
-    { folder: 'Default', name: "Basketball", quantity: 1, image: "/images/basketball.jpg" },
-    { folder: 'Default', name: "Rocket", quantity: 1, image: "/images/rocket.jpg" },
-    { folder: 'Default', name: "Testing Size", quantity: 1, image: "/images/testing.jpg" },
+    { folder: 'Default', name: "Grocery List", quantity: 5, image: "/images/groceryList.jpg" },
+    { folder: 'Default', name: "Purse", quantity: 2, image: "/images/purseItems.jpg" },
+    { folder: 'Default', name: "Sneakers", quantity: 3, image: "/images/sneakers.jpg" },
+    { folder: 'Default', name: "Adam's Crafts", quantity: 5, image: "/images/etsyStore.jpg" },
   ]);
 
   const handleFolderSelect = (folderName) => {
@@ -52,11 +47,11 @@ const Home = () => {
     <ThemeProvider theme={theme}>
       <Header />
       <div className={styles.homeContainer}>
-        <LeftOptionNav 
+        {/* <LeftOptionNav 
           folders={folders}
           onFolderSelect={handleFolderSelect}
           onCreateFolder={handleCreateFolder}
-        />
+        /> */}
         <div className={styles.contentContainer}>
           <ItemBox 
             items={filteredItems} 
