@@ -1,128 +1,136 @@
 const mongoose = require('mongoose');
-const mockingoose = require('mockingoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 const {
-	getItems,
-	getItemsFromUser,
-	getDbConnection,
-	deleteItem,
-	addItem,
-	findItemByName,
-	updateItem,
-} = require('./item-services.tsx');
-const ItemModel = require('./item.tsx');
+  getItems,
+  getItemsFromUser,
+  findItemByName,
+  addItem,
+  deleteItem,
+  updateItem,
+} = require('./item-services');
+const ItemSchema = require('./item').schema;
 
 describe('item services', () => {
-	
-	beforeEach(async () => {
+  let mongoServer: any;
+  let conn: any;
 
-	})
-	beforeAll(async () => {
-		mongoose.set("debug", true);
-		await mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
-		useNewUrlParser: true, //useFindAndModify: false,
-		useUnifiedTopology: true,
-		});
-	});
-	afterAll(async () => {
-		await mongoose.connection.close();
-	});
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
 
-	test('addItem', async () =>{
-		const itemToAdd = { userId: 'dawglogsondog', name: 'Foot', quantity: 3 };
-		mockingoose(ItemModel).toReturn(itemToAdd, 'save');
-		const savedItem = await addItem(itemToAdd);
-		expect(savedItem.name).toBe(itemToAdd.name);
-		expect(savedItem.quantity).toBe(itemToAdd.quantity);
-		expect(savedItem.userId).toBe(itemToAdd.userId);
-	});
+    const mongooseOpts = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    };
 
+    conn = await mongoose.createConnection(uri, mongooseOpts);
+  });
 
+  afterAll(async () => {
+    await conn.dropDatabase();
+    await conn.close();
+    await mongoServer.stop();
+  });
 
-
-
-	test('getItemsFromUser returns items for a given user', async () => {
-        const mockItems = [
-            { userId: 'dawglogsondog', name: 'Foot', quantity: 3 },
-            { userId: 'abcdeffasdf', name: 'Foot', quantity: 5 },
-            { userId: 'abcdeffasdfasdf', name: 'Foot', quantity: 5 }
-        ];
-
-        mockingoose(ItemModel).toReturn(mockItems.filter(item => item.userId === 'dawglogsondog'), 'find');
-        const items = await getItemsFromUser('dawglogsondog');
-
-        expect(items[0].name).toBe('Foot');
-        expect(items[0].quantity).toBe(3);
-        expect(items[0].userId).toBe('dawglogsondog');
+  afterEach(async () => {
+    const models = mongoose.modelNames();
+    models.forEach(async (model: any) => {
+      await conn.model(model).deleteMany();
     });
+  });
 
+  describe('getItemsFromUser', () => {
+    it('returns items for a given user', async () => {
+      const ItemModel = conn.model('Item', ItemSchema, 'items');
+      await ItemModel.create({ userId: 'dawglogsondog', name: 'Foot', quantity: 3 });
+      await ItemModel.create({ userId: 'abcdeffasdf', name: 'Foot', quantity: 5 });
+      await ItemModel.create({ userId: 'abcdeffasdfasdf', name: 'Foot', quantity: 5 });
+      const items = await getItemsFromUser('dawglogsondog', conn);
 
-    test('findItemByName finds the item by name', async () => {
-		// Define mock data
-		const mockItems = [
-            { userId: 'dawglogsondog', name: 'Foot', quantity: 3 },
-            { userId: 'abcdeffasdf', name: 'Foot', quantity: 5 },
-            { userId: 'josh', name: 'toes', quantity: 5 }
-		];
+      expect(items[0].name).toBe('Foot');
+      expect(items[0].quantity).toBe(3);
+      expect(items[0].userId).toBe('dawglogsondog');
+    });
+  });
+
+  describe('findItemByName', () => {
+    it('finds the item by name', async () => {
+		const ItemModel = conn.model('Item', ItemSchema, 'items');
+		// await ItemModel.create({ userId: 'dawglogsondog', name: 'Toe', quantity: 3 });
 		
-		// Setup mocking
-		// mockingoose(ItemModel).toReturn(mockItems, 'find');
-		ItemModel.find = jest.fn().mockResolvedValue(mockItems);
+		const newItem = new ItemModel({
+            userId: 'dawglogsondog',
+            name: 'Toe',
+            quantity: 3
+        });
+        await newItem.save();
 		
-		// Execute function
-		const items = await findItemByName("toes");
-	
-		console.log("items", items);
-		// Assertions
-		// expect(items.length).toBe(1);
-		// if (items.length > 0) {
-			expect(items[0].name).toBe('toes');
-			expect(items[0].quantity).toBe(5);
-			expect(items[0].userId).toBe('josh');
-		// } else {
-		// 	fail('No items found');
-		// }
-	});
-	
-	
-	
+		const all = await getItems();
+		console.log("all items: ", all);
 
-    test('deleteItem deletes items', async () => {
-        const mockItem = { userId: 'dawglogsondog', name: 'Toe', quantity: 3, _id: '65ef409a0336b57ddfbe9ce3' };
-		mockingoose(ItemModel).toReturn(mockItem, 'findOneAndDelete');
-        const items = await deleteItem('65ef409a0336b57ddfbe9ce3');
+		const items = await findItemByName('Toe');
 
-		console.log(items);
-        expect(items.name).toBe('Toe');
-        expect(items.quantity).toBe(3);
-        expect(items.userId).toBe('dawglogsondog');
+		console.log("items: ", items);
+
+		expect(items.length).toBeGreaterThan(0);
+		expect(items[0].name).toBe('Toe');
+		expect(items[0].quantity).toBe(3);
+		expect(items[0].userId).toBe('dawglogsondog');
     });
+  });
 
-    test('updateItem updates items', async () => {
-        const updates = { quantity: 233, note: 'update worasdfasdfks', name: 'Hello' };
-        const updatedItem = { ...updates, userId: 'dawglogsondog', _id: '65ef409a0336b57ddfbe9ce3' };
-        mockingoose(ItemModel).toReturn(updatedItem, 'findOneAndUpdate');
-        const res = await updateItem('65ef409a0336b57ddfbe9ce3', updates);
+  describe('addItem', () => {
+    it('adds items', async () => {
+      const itemToAdd = { userId: 'dawglogsondog', name: 'Foot', quantity: 3 };
+      const res = await addItem(itemToAdd, conn);
 
-        expect(res.name).toBe('Hello');
-        expect(res.quantity).toBe(233);
-        expect(res.userId).toBe('dawglogsondog');
-        expect(res.note).toBe('update worasdfasdfks');
+      expect(res.name).toBe(itemToAdd.name);
+      expect(res.quantity).toBe(itemToAdd.quantity);
+      expect(res.userId).toBe(itemToAdd.userId);
     });
+  });
 
-    test('getItems retrieves all items', async () => {
-        const mockItems = [
-            { name: 'Pentagon', quantity: 3 },
-            { name: 'Foot', quantity: 5 }
-        ];
-        mockingoose(ItemModel).toReturn(mockItems, 'find');
-        const items = await getItems();
+  describe('deleteItem', () => {
+    it('deletes items', async () => {
+      const ItemModel = conn.model('Item', ItemSchema, 'items');
+      const newItem = await ItemModel.create({ userId: 'dawglogsondog', name: 'Toe', quantity: 3 });
+      const res = await deleteItem(newItem._id.toString(), conn);
 
-        expect(items).toEqual(expect.arrayContaining(mockItems));
-        // expect(items).toEqual(mockItems);
-        // expect(items).toHaveLength(2);
-        // expect(items[0].name).toBe('Pentagon');
-        // expect(items[1].name).toBe('Foot');
+      expect(res.name).toBe('Toe');
+      expect(res.quantity).toBe(3);
+      expect(res.userId).toBe('dawglogsondog');
     });
+  });
+
+  describe('updateItem', () => {
+    it('updates items', async () => {
+      const ItemModel = conn.model('Item', ItemSchema, 'items');
+      const newItem = await ItemModel.create({
+        userId: 'dawglogsondog',
+        name: 'Toe',
+        quantity: 3,
+        note: 'Hi there',
+      });
+      const updates = { quantity: 233, note: 'update works', name: 'Hello' };
+      const res = await updateItem(newItem._id.toString(), updates, conn);
+
+      expect(res.name).toBe('Hello');
+      expect(res.quantity).toBe(233);
+      expect(res.userId).toBe('dawglogsondog');
+      expect(res.note).toBe('update works');
+    });
+  });
+
+  describe('getItems', () => {
+    it('all items', async () => {
+      const itemList = [{ name: 'pentagon', quantity: 3 }, { name: 'Foot', quantity: 5 }];
+      const ItemModel = conn.model('Item', ItemSchema, 'items');
+      ItemModel.find = jest.fn().mockResolvedValue(itemList);
+      const items = await getItems(conn);
+
+      expect(items).toEqual(itemList);
+    });
+  });
 });
 
 export {};

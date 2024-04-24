@@ -1,4 +1,4 @@
-const ItemSchema = require('./item.tsx');
+const ItemSchema = require('./item');
 const mongoose = require('mongoose');
 
 
