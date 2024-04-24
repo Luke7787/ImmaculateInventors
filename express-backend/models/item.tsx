@@ -4,7 +4,7 @@ const ItemSchema = new mongoose.Schema(
 	{
 		userId: {
 			type: String,
-			required: true,
+			required: false,
 			trim: true,
 		},
 		name: {
@@ -27,6 +27,11 @@ const ItemSchema = new mongoose.Schema(
             required: true,
             default: Date.now, // Default to the current date and time
         },
+		folder: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Folder',
+		}
 	},
 	{ collection: 'items' }
 );

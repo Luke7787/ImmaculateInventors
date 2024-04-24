@@ -1,14 +1,16 @@
 const ItemSchema = require('./item.tsx');
 const mongoose = require('mongoose');
-
+const dotenv = require('dotenv');
+dotenv.config();
 
 let dbConnection: any;
 
-
-mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
+const uri = process.env.MONGODB_URI;
+mongoose.connect(uri, {
     useNewUrlParser: true, //useFindAndModify: false,
     useUnifiedTopology: true,
   });
+
 
 async function getItems() {
 	return await ItemSchema.find();
@@ -32,6 +34,7 @@ async function addItem(item: any) {
 }
 
 async function findItemByName(name: any) {
+	console.log(name)
 	return await ItemSchema.find({ name: name });
 }
 

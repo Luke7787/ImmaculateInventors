@@ -1,30 +1,33 @@
-// import mongoose from 'mongoose';
-// const {
-// 	getItems,
-// 	getItemsFromUser,
-// 	getDbConnection,
-// 	deleteItem,
-// 	addItem,
-// 	findItemByName,
-// 	updateItem,
-// } = require('./item-services.tsx');
-// const ItemSchema = require('./item.tsx');
+import mongoose from 'mongoose';
+const mockingoose = require('mockingoose');
 
-// describe('item services', () => {
-// 	afterEach(() => {
-// 		jest.clearAllMocks();
-// 	});
-// 	let conn: any;
-// 	afterEach(() => {
-// 		jest.clearAllMocks();
-// 	});
-// 	beforeAll(async () => {
-// 		conn = await getDbConnection();
-// 	});
-// 	afterAll(async () => {
-// 		await mongoose.disconnect();
-// 		await mongoose.connection.close();
-// 	});
+const {
+	getItems,
+	getItemsFromUser,
+	getDbConnection,
+	deleteItem,
+	addItem,
+	findItemByName,
+	updateItem,
+} = require('./item-services.tsx');
+const ItemSchema = require('./item.tsx');
+
+describe('item services', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+		mockingoose.resetAll();
+	});
+	let conn: any;
+	beforeAll(async () => {
+		conn = await getDbConnection();
+		mongoose.model = jest.fn().mockReturnValue(ItemSchema);
+	});
+	afterAll(async () => {
+		jest.clearAllMocks();
+		mockingoose.resetAll();
+		await mongoose.disconnect();
+		await mongoose.connection.close();
+	});
 
 // 	describe('getItemsFromUser', () => {
 // 		it('returns items for a given user', async () => {

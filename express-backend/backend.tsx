@@ -2,16 +2,60 @@ const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
+// const upload = require('./models/aws-config');
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
+const dotenv = require('dotenv');
+dotenv.config();
 
+
+ 
+const s3client = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+});
+
+
+// AWS.config.update({
+//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   region: process.env.AWS_REGION,
+// });
+ 
+const s3 = new AWS.S3();
+ 
+// const storage = multer.memoryStorage();
+const s3Storage = multerS3({
+    s3: s3client, // s3 instance
+    bucket: process.env.S3_BUCKET_NAME, // change it as per your project requirement
+    // acl: 'public-read', // storage access type
+    metadata: (req: any, file: any, cb: any) => {
+        cb(null, { fieldname: file.fieldname });
+    },
+    key: (req: any, file: any, cb: any) => {
+        const fileName =
+            Date.now() + '_' + file.fieldname + '_' + file.originalname;
+        console.log(fileName);
+        cb(null, fileName);
+    },
+});
+const uploadImage = multer({ storage: s3Storage });
+ 
 const app = express();
 const port = 8000;
-
+ 
 app.use(cors());
 app.use(express.json());
-
+ 
 const users = {
-	users_list: [],
+    users_list: [],
 };
+
 // test
 app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
@@ -76,7 +120,6 @@ app.get('/uniqueUser/:username', async (req: any, res: any) => {
 
 app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
-	//const conn = await itemServices.getDbConnection();
 	const savedItem = await itemServices.addItem(item);
 	if (savedItem) res.status(201).send(savedItem);
 	else res.status(409).end();
@@ -140,9 +183,6 @@ app.get('/items/', async (req: any, res: any) => {
 
 app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
-	
-	const uid = await itemServices.getUserId(id);
-	const result = await userServices.deleteItemFromUser(uid, id);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
 });
@@ -175,3 +215,142 @@ app.patch('/items/:id', async (req: any, res: any) => {
 		res.status(400).send('Error updating item');
 	}
 });
+
+app.post(
+    '/upload',
+    uploadImage.single('imageFile'),
+    async (req: any, res: any) => {
+        if (!req.file) {
+            return res.status(400).send('Please upload a file.');
+        }
+        console.log('upload req', JSON.stringify(req.file));
+        try {
+            // `req.file.buffer` contains the file data
+            const fileName = `uploads/${Date.now().toString()}-${
+                req.file.originalname
+            }`;
+            // await uploadImage(req.file.buffer, fileName);
+ 
+            // // Construct the file URL or use the response from `uploadFile` as needed
+            const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+            console.log(
+                'fileUrl: ',
+                `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
+            );
+            res.status(201).send({
+                message: 'File uploaded successfully',
+                fileUrl: fileUrl,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error uploading file to S3.');
+        }
+    }
+);
+
+app.post(
+    '/upload',
+    uploadImage.single('imageFile'),
+    async (req: any, res: any) => {
+        if (!req.file) {
+            return res.status(400).send('Please upload a file.');
+        }
+        console.log('upload req', JSON.stringify(req.file));
+        try {
+            // `req.file.buffer` contains the file data
+            const fileName = `uploads/${Date.now().toString()}-${
+                req.file.originalname
+            }`;
+            // await uploadImage(req.file.buffer, fileName);
+ 
+            // // Construct the file URL or use the response from `uploadFile` as needed
+            const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+            console.log(
+                'fileUrl: ',
+                `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
+            );
+            res.status(201).send({
+                message: 'File uploaded successfully',
+                fileUrl: fileUrl,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error uploading file to S3.');
+        }
+    }
+);
+
+app.post('/folders/', async (req:any, res: any) => {
+	// when making a folder return the id
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	try {
+		const folderId = await userServices.addFolder(userId, folderName);
+		if (!folderId) {
+			return res.status(404).send('User not found');
+		}
+		res.send(folderId);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating user');
+	}
+});
+
+app.delete('/folders/', async (req:any, res: any) => {
+	const folderName = req.query['folderName'];
+	const userId = req.query['userId'];
+	try {
+		const updatedUser = await userServices.deleteFolder(userId, folderName);
+		if (!updatedUser) {
+			return res.status(404).send('User not found');
+		}
+		res.send(updatedUser);
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating user');
+	}
+});
+
+
+app.patch('/folders/', async (req:any, res: any) => {
+	const option = req.query['option'];
+	const folderName = req.query['folderName'];
+	const itemId = req.query['itemId'];
+	console.log(folderName);
+	try {
+		if (option === 'add') {
+			const updatedFolder = await userServices.addItemToFolder(folderName, itemId);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
+		} else if (option === 'delete') {
+			const updatedFolder = await userServices.deleteItemFromFolder(folderName, itemId);
+			if (!updatedFolder) {
+				return res.status(404).send('Folder not found');
+			}
+			res.send(updatedFolder);
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating folder');
+	}
+});
+
+app.patch('/folderName/', async (req:any, res: any) => {
+	const folderId = req.query['folderId'];
+	const newFolderName = req.query['newName'];
+	try {
+		const updatedFolder = await userServices.updateFolderName(folderId, newFolderName);
+		res.status(201).send(updatedFolder)
+	} catch (error) {
+		console.log(error);
+		res.status(400).send('Error updating folder');
+	}
+});
+
+app.get('/folderGet/', async (req: any, res: any) => {
+	const folderId = req.query['folderId'];
+	const items = await userServices.getFolderContents(folderId);
+	res.status(201).send(items);
+})
