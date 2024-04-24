@@ -14,19 +14,19 @@ const ContactPage = () => {
                 </Typography>
                 <form className={styles.contactForm}>
                     <TextField
-                        label={<span style={{fontSize: '20px'}}>Name</span>}
+                        label={<span style={{ fontSize: '20px' }}>Name</span>}
                         variant="outlined"
                         fullWidth
                         className={styles.inputField}
                     />
                     <TextField
-                        label={<span style={{fontSize: '20px'}}>Email</span>}
+                        label={<span style={{ fontSize: '20px' }}>Email</span>}
                         variant="outlined"
                         fullWidth
                         className={styles.inputField}
                     />
                     <TextField
-                        label={<span style={{fontSize: '20px'}}>Message</span>}
+                        label={<span style={{ fontSize: '20px' }}>Message</span>}
                         variant="outlined"
                         fullWidth
                         multiline

@@ -22,7 +22,7 @@ const Header = () => {
       </div>
       <div className={styles.headerCenter}>
       <Button className={`${styles.signInButton} ${styles.moveRight}`} onClick={() => setSignInOpen(true)}>
-          Sign In
+          SIGN IN
         </Button>
         <Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
           {!createAccountOpen ? (
@@ -51,13 +51,13 @@ const Header = () => {
           )}
         </Modal>
         <Button className={styles.signInButton} onClick={() => navigate('/')}>
-          Home
+          HOME
         </Button>
         <Button className={styles.signInButton} onClick={() => navigate('/about')}>
-          About
+          ABOUT
         </Button>
         <Button className={styles.signInButton} onClick={() => navigate('/contact')}>
-          Contact
+          CONTACT
         </Button>
       </div>
     </nav>
