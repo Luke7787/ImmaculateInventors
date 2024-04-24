@@ -355,8 +355,22 @@ app.get('/folderGet/', async (req: any, res: any) => {
 	res.status(201).send(items);
 })
 
-app.patch('/sort/', async (req: any, res: any) => {
+app.get('/sort/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
-	const items = await userServices.sortByQuantity(folderId);
+	const option = req.query['option'];
+	let items;
+	if (option === 'ascQ') {
+		items = await userServices.sortByQuantityAsc(folderId);
+	} else if (option === 'desQ') {
+		items = await userServices.sortByQuantityDes(folderId);
+	} else if (option === 'ascD') {
+		items = await userServices.sortByDateAsc(folderId);
+	} else if (option === 'desD') {
+		items = await userServices.sortByDateDes(folderId);
+	} else if (option == 'ascN') {
+		items = await userServices.sortByNameAsc(folderId);
+	} else if (option == 'desN') {
+		items = await userServices.sortByNameDes(folderId);
+	}
 	res.status(201).send(items);
 })
