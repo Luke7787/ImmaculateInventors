@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const mockingoose = require('mockingoose');
 mongoose.set("debug", true);
 mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
@@ -19,9 +19,9 @@ const {
 	findUserByUserAndPass,
 	findUserByUsername,
 } = require('./user-services.tsx');
-const { findItemByName, deleteItem } = require('./item-services.tsx');
-const UserSchema = require('./user.tsx');
-const ItemSchema = require('./item.tsx');
+// const { findItemByName, deleteItem } = require('./item-services.tsx');
+// const UserSchema = require('./user.tsx');
+// const ItemSchema = require('./item.tsx');
 
 describe('getUsers function', () => {
 	

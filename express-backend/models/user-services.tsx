@@ -3,14 +3,19 @@ const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
 const FolderSchema = require('./folder.tsx');
 const itemServices = require('./item-services.tsx');
+<<<<<<< HEAD
 const dotenv = require("dotenv")
 dotenv.config();
 //dotenv.config();
+=======
+const dotenv = require('dotenv');
+dotenv.config();
+
+>>>>>>> 52501ce37480ff3f81c1c0055c0b7e5721bbacac
 
 mongoose.set("debug", true);
 
 const uri = process.env.MONGODB_URI;
-
 mongoose.connect(uri, {
     useNewUrlParser: true, //useFindAndModify: false,
     useUnifiedTopology: true,
