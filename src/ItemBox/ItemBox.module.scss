@@ -96,7 +96,7 @@
 
 .addButton {
   padding: 10px 20px;
-  background-color: #FBF29C;
+  background-color: #9CF0FB;
   cursor: pointer;
   border: none;
   font-size: 24px;
@@ -129,7 +129,7 @@
   }
 
   &:hover {
-    background-color: #FBF29C;
+    background-color: #9CF0FB;
     border-radius: 5px;
   }
 }
@@ -163,7 +163,7 @@
   align-items: center;
   padding-right: 5px;
   padding-left: 5px;
-  background-color: #FBF29C;
+  background-color: #9CF0FB;
 
   &:hover {
     cursor: pointer;
@@ -177,7 +177,7 @@
   width: 0%;
   padding-right: 30px;
   height: 15%;
-  background-color: #FBF29C;
+  background-color: #9CF0FB;
   left: 0;
   z-index: 10000;
   transition: width 0.5s ease;
@@ -203,7 +203,7 @@
 }
 
 .gridItem {
-  background-color: #FBF29C;
+  background-color: #9CF0FB;
   position: relative;
   display: flex;
   flex-direction: column;
