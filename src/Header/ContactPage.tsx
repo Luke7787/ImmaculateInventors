@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
 import styles from './ContactPage.module.scss';
 import Header from '../Header/Header';
 
@@ -9,33 +8,34 @@ const ContactPage = () => {
             <Header />
             <img src="/images/contactPicture.webp" alt="Decorative Background" className={styles.bgImage} />
             <div className={styles.contactContainer}>
-                <Typography variant="h4" component="h1" className={styles.heading}>
+                <div className={`${styles.heading} ${styles.customFont}`}>
                     Get in Touch
-                </Typography>
+                </div>
                 <form className={styles.contactForm}>
-                    <TextField
-                        label={<span style={{ fontSize: '20px' }}>Name</span>}
-                        variant="outlined"
-                        fullWidth
-                        className={styles.inputField}
-                    />
-                    <TextField
-                        label={<span style={{ fontSize: '20px' }}>Email</span>}
-                        variant="outlined"
-                        fullWidth
-                        className={styles.inputField}
-                    />
-                    <TextField
-                        label={<span style={{ fontSize: '20px' }}>Message</span>}
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        className={styles.inputField}
-                    />
-                    <Button variant="contained" color="primary" className={styles.submitButton}>
+                    <div className={styles.inputContainer}>
+                        <input
+                            type="text"
+                            placeholder="Name"
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <div className={styles.inputContainer}>
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <div className={styles.inputContainer}>
+                        <textarea
+                            placeholder="Message"
+                            rows={4}
+                            className={styles.inputField}
+                        />
+                    </div>
+                    <button type="submit" className={styles.submitButton}>
                         Send Message
-                    </Button>
+                    </button>
                 </form>
             </div>
         </div>
