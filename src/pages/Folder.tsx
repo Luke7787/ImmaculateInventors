@@ -46,7 +46,7 @@ const Folder = () => {
 	const fetchItems = async (folderId: string) => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/folderGet?folderId=${folderId}`
+				`${process.env.REACT_APP_BACKEND}/folderGet?folderId=${folderId}`
 			);
 			const dataArray = Object.values(response.data);
 			const formattedArray: any = dataArray.map((item: any) => ({
@@ -65,7 +65,7 @@ const Folder = () => {
 
 	const handleAddNewItem: any = async (item: ItemProps) => {
 		try {
-			const response = await axios.post('http://localhost:8000/items/', {
+			const response = await axios.post(`${process.env.REACT_APP_BACKEND}/items/`, {
 				name: item.name,
 				quantity: item.quantity,
 				note: item.note,
@@ -82,7 +82,7 @@ const Folder = () => {
 
 	const handleDelete: any = async (item: ItemProps) => {
 		try {
-			const response = await axios.delete(`http://localhost:8000/items?id=${item.id}`)
+			const response = await axios.delete(`${process.env.REACT_APP_BACKEND}/items?id=${item.id}`)
 			setUpdateItems(!updateItems);
 			console.log(response);
 		} catch (err) {
