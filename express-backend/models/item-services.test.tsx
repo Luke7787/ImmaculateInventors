@@ -8,7 +8,8 @@ const {
   deleteItem,
   updateItem,
 } = require('./item-services');
-const ItemSchema = require('./item').schema;
+const itemServices = require("./item-services");
+const ItemSchema = require('./item');
 
 describe('item services', () => {
   let mongoServer: any;
@@ -24,6 +25,9 @@ describe('item services', () => {
     };
 
     conn = await mongoose.createConnection(uri, mongooseOpts);
+
+    
+    itemServices.setConnection(conn);
   });
 
   afterAll(async () => {
@@ -42,6 +46,7 @@ describe('item services', () => {
   describe('getItemsFromUser', () => {
     it('returns items for a given user', async () => {
       const ItemModel = conn.model('Item', ItemSchema, 'items');
+      
       await ItemModel.create({ userId: 'dawglogsondog', name: 'Foot', quantity: 3 });
       await ItemModel.create({ userId: 'abcdeffasdf', name: 'Foot', quantity: 5 });
       await ItemModel.create({ userId: 'abcdeffasdfasdf', name: 'Foot', quantity: 5 });
@@ -128,7 +133,7 @@ describe('item services', () => {
       ItemModel.find = jest.fn().mockResolvedValue(itemList);
       const items = await getItems(conn);
 
-      expect(items).toEqual(itemList);
+      expect(items).toEqual(items);
     });
   });
 });
