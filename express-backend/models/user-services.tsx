@@ -50,6 +50,11 @@ async function getFolderContents(folderId: any) {
 	return items;
 }
 
+async function sortByQuantity(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({quantity: 1});
+	return items;
+}
+
 async function deleteFolder(userId: any, folderName: any) {
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToDel = await FolderSchema.find({ name: folderName });
@@ -206,6 +211,42 @@ async function deleteUserById(id: any) {
 	}
 }
 
+async function sortByQuantityAsc(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({quantity: 1});
+	return items;
+}
+
+async function sortByQuantityDes(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({quantity: -1});
+	return items;
+}
+
+async function sortByDateAsc(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({date: 1});
+	return items;
+}
+
+async function sortByDateDes(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({date: -1});
+	return items;
+}
+
+async function sortByNameAsc(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({name: 1});
+	return items;
+}
+
+async function sortByNameDes(folderId: any) {
+	const items = await ItemSchema.find({folder: folderId}).sort({name: -1});
+	return items;
+}
+
+exports.sortByNameAsc = sortByNameAsc;
+exports.sortByNameDes = sortByNameDes;
+exports.sortByDateAsc = sortByDateAsc;
+exports.sortByDateDes = sortByDateDes;
+exports.sortByQuantityAsc = sortByQuantityAsc;
+exports.sortByQuantityDes = sortByQuantityDes;
 exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
