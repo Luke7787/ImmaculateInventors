@@ -29,7 +29,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		e.preventDefault();
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/users?username=${signInData.username}&password=${signInData.password}`
+				`${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
 			);
 			if (response.status === 200) {
 				setSignInErr(false);

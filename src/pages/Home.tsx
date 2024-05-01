@@ -24,7 +24,7 @@ const Home = () => {
 	const fetchFolders = async (userId: string) => {
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/folders?userId=${userId.substring(1, userId.length - 1)}`
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}`
 			);
 			const dataArray = Object.values(response.data);
 			const formattedArray: any = dataArray.map((item: any) => ({
@@ -43,7 +43,7 @@ const Home = () => {
 	const handleDelete = async (userId: string, folderName: string) => {
 		try {
 			const response = await axios.delete(
-				`http://localhost:8000/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`
+				`${process.env.REACT_APP_BACKEND}/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`
 			);
 			console.log(response);
 			setUpdateFolders(!updateFolders);
@@ -61,7 +61,7 @@ const Home = () => {
 	const handleAddNewItem: any = async (userId: string, name: string) => {
 		try {
 			const response = await axios.post(
-				`http://localhost:8000/folders?userId=${userId.substring(1, userId.length - 1)}&folderName=${name}`
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}&folderName=${name}`
 			);
 			console.log(response);
 			setUpdateFolders(!updateFolders);
