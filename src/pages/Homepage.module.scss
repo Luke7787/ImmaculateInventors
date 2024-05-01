@@ -1,0 +1,106 @@
+.homepageContainer {
+  position: relative;
+}
+
+.overlayTextBox {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FFF4E0;
+  border-radius: 8px;
+  position: absolute;
+  padding-top: 40px;
+  width: 500px;
+  padding: 20px;
+  height: 300px;
+  right: 7%;
+  top: 15%;
+}
+
+.decorativeRectangle {
+  background-color: #E0C224;
+  position: absolute;
+  height: 10px;
+  left: 8.4%;
+  width: 25%;
+  top: 50px;
+}
+
+.decorativeRectangleFeature1 {
+  background-color: #E0C224;
+  bottom: 325px;
+  height: 10px;
+  left: 190px;
+  width: 90px;
+}
+
+.decorativeRectangleFeature2 {
+  background-color: #E0C224;
+  bottom: 325px;
+  height: 10px;
+  left: 610px;
+  width: 90px;
+}
+
+.decorativeRectangleFeature3 {
+  background-color: #E0C224;
+  bottom: 325px;
+  height: 10px;
+  left: 1055x;
+  width: 90px;
+}
+
+.featureSection {
+  text-align: center;
+  margin-top: 35px;
+}
+
+.featuresTitle {
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.featuresContainer {
+  justify-content: center;
+  padding-top: 15px;
+  display: flex;
+  gap: 40px;
+}
+
+.featureBox {
+  
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #FBF29C;
+  border-radius: 8px;
+  padding: 40px;
+  width: 300px;
+}
+
+.featureTextContainer {
+  margin-bottom: 20px;
+  height: 100px; 
+}
+
+.featureIcon {
+  object-fit: contain;
+  margin: 20px auto;
+  display: block;
+  height: 140px;
+  width: 140px;
+}
+
+.tryOurProductSection {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.tryOurProductTitle {
+  margin-bottom: 20px;
+}
+
+.placeholderBox {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #D3D3D3;
+  border-radius: 8px;
+  margin: 0 auto;
+  height: 600px;
+  width: 83%;
+}

@@ -1,7 +1,11 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
-const Item = require('./item.tsx');
+//const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
+import {Schema, model, models}  from "mongoose";
+const ObjectId = mongoose.Types.ObjectId;
+//const Item = require('./item.tsx');
+const bcryptjs = require('bcryptjs');
+
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -66,8 +70,24 @@ const UserSchema = new mongoose.Schema(
 				trim: true,
 			},
 		],
+		folders: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Folder',
+			}
+		]
 	},
-	{ collection: 'users_list' }
+	{ collection: 'users' }
 );
 
-module.exports = UserSchema;
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified("password")) {
+        return next()
+    }
+	const salt = await bcryptjs.genSalt(10);
+    this.password = bcryptjs.hash(this.password, salt);
+})
+
+const User = mongoose.model("User", UserSchema) || models.User;
+
+module.exports = User;

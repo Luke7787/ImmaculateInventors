@@ -1,8 +1,8 @@
 import styles from './ForgetPassword.module.css';
+import { InputError } from '../passwordTypes';
 import React, { useState } from 'react';
-import axios from 'axios';
-import emailjs from "emailjs-com";
-
+import { FORGOT_PASSWORD_API_URL } from '../passwordConstants';
+import axios, { AxiosError } from 'axios';
 
 interface emailData {
 	email: string;
@@ -12,6 +12,10 @@ const ForgetPassword = () => {
 		email: ''
 	});
 	const [emailErr, setEmailErr] = useState<boolean>(false);
+	const [validationError, setValidationError] = useState<InputError>({})
+    const [submitError, setSubmitError] = useState<string>("")
+    const [apiSuccessMsg, setApiSuccessMsg] = useState<string>("")
+    const [loading, setLoading] = useState<boolean>(false)
 
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
@@ -23,37 +27,33 @@ const ForgetPassword = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		try {
-            console.log("enter try block");
-			//need to add email directory to the links in backend.tsx
-			const response = await axios.get('http://localhost:3000/users/email', {
-				params: emailData,
-			});
-			if (response.status === 200) {
-				setEmailErr(false);
-			}
-        
-            console.log(response);
+		if (emailData.email.trimEnd() === "") {
+            setValidationError({ email: "Email is required" })
+        }
+        else {
+            setValidationError({ email: "" })
+            setApiSuccessMsg("")
 
-            const email__address = response['email'].toString();
+            try {
+                setLoading(true)
+                const apiRes = await axios.post(FORGOT_PASSWORD_API_URL, { emailData })
 
-            //send email
-			//"hello" is message in place for now
-            emailjs.sendForm(email__address, 'template_nh3erqm', "Hello", '8SWejLGvEgMtubpdK')
-            .then((result) => {
-                console.log(result.text);
-            }, (error) => {
-                console.log(error.text);
-            });
+                if (apiRes?.data?.success) {
+                    setApiSuccessMsg(apiRes?.data.msg)
+                    setSubmitError("")
+                }
 
+            } catch (error) {
+                setApiSuccessMsg("")
 
+                if (error instanceof AxiosError) {
+                    const errorMsg = error.response?.data?.error
+                    setSubmitError(errorMsg)
+                }
+            }
 
-		} catch (err) {
-			console.error('err', err);
-			if (err.response.status === 404) {
-				setEmailErr(true);
-			}
-		}
+            setLoading(false)
+        }
 		setEmailData({ email: '' });
 	};
 
@@ -72,7 +72,7 @@ const ForgetPassword = () => {
 				</div>
 				{emailErr && (
 					<p className={styles.emailErr}>
-						Your email is invalid. Please try again.
+						Your email is invalid. Please try again. email err oop
 					</p>
 				)}
 				<button className={styles.button} type="submit">
