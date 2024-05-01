@@ -31,6 +31,9 @@ const ItemSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
 			ref: 'Folder',
+		},
+		image: {
+			type: String
 		}
 	},
 	{ collection: 'items' }
