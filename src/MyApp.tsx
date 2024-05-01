@@ -1,20 +1,27 @@
-import React from "react";
-import Home from "./pages/Home.tsx";
-import Homepage from "./pages/Homepage.tsx"; // Import your new Homepage component
-import Profile from "./pages/Profile.tsx";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React from 'react';
+import Home from './pages/Home.tsx';
+import Homepage from './pages/Homepage.tsx';
+import Profile from './pages/Profile.tsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Folder from './pages/Folder.tsx';
+import { AuthContext } from './context/AuthContext.tsx';
+import { useAuth } from './hooks/useAuth.ts';
 
 const MyApp = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Homepage />} /> {/* Set Homepage as the default route */}
-        <Route path="/inventory" element={<Home />} /> {/* Move Home to a new path */}
-        <Route path="/profile" element={<Profile />} />
-        {/* Add more routes as needed */}
-      </Routes>
-    </Router>
-  );
+	const { user, login, logout, setUser } = useAuth();
+	return (
+		<AuthContext.Provider value={{ user, setUser }}>
+			<Router>
+				<Routes>
+					<Route path="/" element={<Homepage />} />
+					<Route path="/inventory" element={<Home />} />
+					<Route path="/profile" element={<Profile />} />
+					<Route path="/folder/:id" element={<Folder />} />
+					<Route path="/inventory/folder/:id" element={<Folder />} />
+				</Routes>
+			</Router>
+		</AuthContext.Provider>
+	);
 };
 
 export default MyApp;

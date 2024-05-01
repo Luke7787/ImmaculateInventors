@@ -1,4 +1,4 @@
-import styles from './CreateAccount.module.css';
+import styles from './CreateAccount.module.scss';
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { FormControl, FormHelperText, MenuItem, Select } from '@mui/material';
@@ -121,7 +121,7 @@ const CreateAccount = () => {
 		}
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/uniqueUser/${username}`
+				`${process.env.REACT_APP_BACKEND}/uniqueUser/${username}`
 			);
 			if (response.status === 200) {
 				return '';
@@ -174,7 +174,7 @@ const CreateAccount = () => {
 				createSubmitted
 			) {
 				try {
-					const response = await axios.post('http://localhost:8000/users', {
+					const response = await axios.post(`${process.env.REACT_APP_BACKEND}/users`, {
 						firstName: data.firstName,
 						lastName: data.lastName,
 						email: data.email,

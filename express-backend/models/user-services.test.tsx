@@ -1,24 +1,24 @@
 // const mongoose = require('mongoose');
-// const mockingoose = require('mockingoose');
-// mongoose.set("debug", true);
-// mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
-//     useNewUrlParser: true, //useFindAndModify: false,
-//     useUnifiedTopology: true,
-// });
-// const {
-// 	getUsers,
-// 	getDbConnection,
-// 	updateItemFromUser,
-// 	findUserById,
-// 	getItemFromUser,
-// 	addItemToUser,
-// 	deleteItemFromUser,
-// 	addUser,
-// 	deleteUserById,
-// 	delUser,
-// 	findUserByUserAndPass,
-// 	findUserByUsername,
-// } = require('./user-services.tsx');
+const mockingoose = require('mockingoose');
+mongoose.set("debug", true);
+mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
+    useNewUrlParser: true, //useFindAndModify: false,
+    useUnifiedTopology: true,
+});
+const {
+	getUsers,
+	getDbConnection,
+	updateItemFromUser,
+	findUserById,
+	getItemFromUser,
+	addItemToUser,
+	deleteItemFromUser,
+	addUser,
+	deleteUserById,
+	delUser,
+	findUserByUserAndPass,
+	findUserByUsername,
+} = require('./user-services.tsx');
 // const { findItemByName, deleteItem } = require('./item-services.tsx');
 // const UserSchema = require('./user.tsx');
 // const ItemSchema = require('./item.tsx');

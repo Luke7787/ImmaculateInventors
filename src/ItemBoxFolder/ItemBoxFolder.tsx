@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ItemBox.module.scss';
+import styles from './ItemBoxFolder.module.scss';
 import AddItemModal from '../AddItemModal/AddItemModal.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
@@ -13,28 +13,19 @@ interface ItemProps {
 	quantity: number;
 	image: string;
 	id: string;
-	note: string;
 }
 
 interface ItemBoxProps {
 	items: ItemProps[];
-	onDelete: (item: ItemProps) => void;
-	onAddNewItem: (item: {
-		name: string;
-		image: string;
-		quantity: number;
-		id: string;
-		note: string;
-	}) => void;
-	onClickBox: () => void;
+	onDelete: (userId: string, folderName: string) => void;
+	onAddNewItem: (userId: string, name: string) => void;
 	type: 'Folder' | 'Item';
 	lowerText: React.ReactNode;
 }
-const ItemBox = ({
+const ItemBoxFolder = ({
 	items,
 	onDelete,
 	onAddNewItem,
-	onClickBox,
 	lowerText,
 	type,
 }: ItemBoxProps) => {
@@ -109,7 +100,9 @@ const ItemBox = ({
 								isEditMode && styles.gridItemEditMode
 							)}
 							key={index}
-							onClick={onClickBox}
+							onClick={() => {
+								navigate(`/inventory/folder/${item.id}`);
+							}}
 						>
 							<img
 								src={item.image}
@@ -121,7 +114,7 @@ const ItemBox = ({
 									onClick={(e: any) => {
 										e.preventDefault();
 										e.stopPropagation();
-										onDelete(item);
+										onDelete(getUser(), item.name);
 									}}
 									className={styles.deleteButton}
 								>
@@ -154,8 +147,8 @@ const ItemBox = ({
 				<AddItemModal
 					isOpen={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
-					onAdd={async (newItem: ItemProps) => {
-						await onAddNewItem(newItem);
+					onAdd={async (newItem) => {
+						await onAddNewItem(getUser(), newItem.name);
 						setIsModalOpen(false);
 					}}
 				/>
@@ -164,4 +157,4 @@ const ItemBox = ({
 	);
 };
 
-export default ItemBox;
+export default ItemBoxFolder;

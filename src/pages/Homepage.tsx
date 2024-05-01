@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../Header/Header.tsx';
 import { ThemeProvider } from '@mui/material';
 import theme from '../theme.tsx';
-import styles from './Homepage.module.css';
+import styles from './Homepage.module.scss';
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Homepage = () => {
       <Header />
       <div className={styles.homepageContainer}>
         <img
-          src="/images/homePage2.png"
+          src="/images/homePage3.png"
           alt="Home Page"
           style={{ width: '100%', display: 'block', filter: 'blur(2px)'}}
         />
@@ -23,7 +23,7 @@ const Homepage = () => {
           <Typography
             variant="h4"
             component="h2"
-            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: '11px', lineHeight: '1', marginTop: '70px', marginLeft: '25px', fontSize: '2.7rem' }}
+            style={{ color: '#FFC700', fontWeight: 'bold', marginBottom: 'px', lineHeight: '1', marginTop: '70px', marginLeft: '23px', fontSize: '2.7rem' }}
             gutterBottom
           >
             Discover A New Way <br /> To Stay Organized
@@ -37,8 +37,8 @@ const Homepage = () => {
           </Typography>
           <Button
             variant="contained"
-            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '20',
-            padding: '12px 30px', }}
+            style={{ backgroundColor: '#FFC700', color: 'white', fontWeight: 'bold', marginLeft: '25px', fontSize: '1.20rem',
+            padding: '15px 35px', }}
             onClick={() => navigate('/inventory')}
           >
             TRY NOW
@@ -49,32 +49,32 @@ const Homepage = () => {
             Key Features
           </Typography>
           <div className={styles.featuresContainer}>
-  {[
-    { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
-    { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
-    { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
-  ].map((feature, index) => (
-    <div key={index} className={styles.featureBox}>
-      {index === 0 && <div className={styles.decorativeRectangleFeature1}></div>}
-      {index === 1 && <div className={styles.decorativeRectangleFeature2}></div>}
-      {index === 2 && <div className={styles.decorativeRectangleFeature3}></div>}
-      <div style={{paddingTop: '35px', display: 'flex', flexDirection: 'column', height: '90%', justifyContent: 'space-between'}}>
-        <Typography 
-          variant="h6" 
-          align="left"
-          style={{ fontWeight: 'bold', fontSize: '1.38rem', lineHeight: 1.2}}
-        >
-          {feature.text}
-        </Typography>
-        <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
-      </div>
-    </div>
-  ))}
-</div>
+            {[
+              { text: "Easily Add Images to Your Inventory", img: "addImage.png" },
+              { text: "Secure Your Data: Advanced Password Encryption", img: "Lock.png" },
+              { text: "Real-Time Inventory Updates: Instant Notifications", img: "bell.png" }
+            ].map((feature, index) => (
+              <div key={index} className={styles.featureBox}>
+                {index === 0 && <div className={styles.decorativeRectangleFeature1}></div>}
+                {index === 1 && <div className={styles.decorativeRectangleFeature2}></div>}
+                {index === 2 && <div className={styles.decorativeRectangleFeature3}></div>}
+                <div style={{paddingTop: '35px', display: 'flex', flexDirection: 'column', height: '90%', justifyContent: 'space-between'}}>
+                  <Typography 
+                    variant="h6" 
+                    align="left"
+                    style={{ fontWeight: 'bold', fontSize: '1.38rem', lineHeight: 1.2}}
+                  >
+                    {feature.text}
+                  </Typography>
+                  <img src={`/images/${feature.img}`} alt={feature.text} className={styles.featureIcon} />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className={styles.tryOurProductSection}>
-        <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold' }}>
+        <Typography variant="h4" component="h2" className={styles.tryOurProductTitle} style={{ fontWeight: 'bold', marginBottom: '15px'}}>
           Try Our Product
         </Typography>
         <div className={styles.placeholderBox}></div>

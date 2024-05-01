@@ -27,6 +27,7 @@ function getDbConnection() {
 //     useUnifiedTopology: true,
 //   });
 
+
 async function getItems() {
 	const ItemModel = getDbConnection().model("Item", ItemSchema);
 	return await ItemModel.find();
@@ -53,9 +54,8 @@ async function addItem(item: any) {
 }
 
 async function findItemByName(name: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
-	console.log("name: ", name);
-	return await ItemModel.find({ name: name });
+	console.log(name)
+	return await ItemSchema.find({ name: name });
 }
 
 async function deleteItem(id: any) {

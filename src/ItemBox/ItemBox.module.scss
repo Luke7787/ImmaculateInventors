@@ -2,6 +2,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -11,14 +12,14 @@
 .itemQuantity,
 .deleteButton,
 .addButton {
-	font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .outerContainer {
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  width: 100%; 
+  align-items: center;
+  width: 100%;
   padding: 60px;
   padding-top: 40px;
 }
@@ -37,9 +38,9 @@
   align-items: center;
   width: 100%;
 
-  & > p {
+  &>p {
     font-size: 36px;
-    margin: 0;    
+    margin: 0;
   }
 }
 
@@ -48,7 +49,7 @@
 }
 
 .gridItemEditMode {
-  &:hover > *:not(.deleteButton){
+  &:hover>*:not(.deleteButton) {
     filter: blur(2px);
     cursor: auto !important;
   }
@@ -92,9 +93,10 @@
 .addButtonActive {
   background-color: #FB9C9C !important;
 }
+
 .addButton {
   padding: 10px 20px;
-  background-color: #FBF29C;
+  background-color: #9CF0FB;
   cursor: pointer;
   border: none;
   font-size: 24px;
@@ -104,10 +106,47 @@
   justify-content: center;
   align-items: center;
 
-  &:hover{ 
+  &:hover {
     background-color: #FB9C9C;
   }
 }
+.goBackButton {
+  padding-left: 15px;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  font-size: 24px;
+  height: 6vh;
+  width: 4vw !important;
+  width: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+
+  img {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    background-color: #9CF0FB;
+    border-radius: 5px;
+  }
+}
+
+// .goBackButton {
+//   cursor: pointer;
+//   border: none;
+//   font-size: 24px;
+//   left: 0;
+//   width: 3vw !important;
+//   background-color: transparent;
+//   height: 6vh;
+//   width: 250px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 
 .container {
   height: 100%;
@@ -124,19 +163,32 @@
   align-items: center;
   padding-right: 5px;
   padding-left: 5px;
-  background-color: #f5e660;  
+  background-color: #9CF0FB;
+
   &:hover {
     cursor: pointer;
   }
 }
 
 .filterMode {
-  padding-right: 50px;
-  height: 100%;
-  background-color: #FBF29C;
-  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  position: fixed;
+  width: 0%;
+  padding-right: 30px;
+  height: 15%;
+  background-color: #9CF0FB;
   left: 0;
-  z-index: 100000;
+  z-index: 10000;
+  transition: width 0.5s ease;
+  overflow: hidden;
+}
+
+.expandFilter {
+  width: 18%;
+  height: 100% !important;
+  transform: none !important;
+  top: 0 !important;
 }
 
 .addFolderBtn {
@@ -151,14 +203,15 @@
 }
 
 .gridItem {
-	background-color: #FBF29C;
+  background-color: #9CF0FB;
   position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   height: 65vh;
   transition: transform 0.3s;
+
   &:hover {
     transform: scale(1.025);
     cursor: pointer;
@@ -173,12 +226,12 @@
   bottom: 0;
   z-index: 1000;
 
-  * > p {
+  *>p {
     text-align: center;
     font-size: 32px;
   }
 
-  & > p {
+  &>p {
     text-align: center;
     font-size: 24px;
   }
