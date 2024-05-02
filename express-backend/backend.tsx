@@ -248,8 +248,8 @@ app.post(
     }
 );
 
-app.post(
-    '/upload',
+app.patch(
+    '/create-item',
     uploadImage.single('imageFile'),
     async (req: any, res: any) => {
         if (!req.file) {
@@ -261,6 +261,11 @@ app.post(
             const fileName = `uploads/${Date.now().toString()}-${
                 req.file.originalname
             }`;
+
+			const item = JSON.parse(req.body.updates);
+			console.log(item);
+			const savedItem = await itemServices.addItem(item);
+
             // await uploadImage(req.file.buffer, fileName);
  
             // // Construct the file URL or use the response from `uploadFile` as needed
@@ -269,6 +274,7 @@ app.post(
                 'fileUrl: ',
                 `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
             );
+			await itemServices.updateItem(savedItem._id, {image: fileUrl});
             res.status(201).send({
                 message: 'File uploaded successfully',
                 fileUrl: fileUrl,
