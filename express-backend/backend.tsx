@@ -248,7 +248,7 @@ app.post(
     }
 );
 
-app.patch(
+app.post(
     '/create-item',
     uploadImage.single('imageFile'),
     async (req: any, res: any) => {
