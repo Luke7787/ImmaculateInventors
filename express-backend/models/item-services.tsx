@@ -7,10 +7,9 @@ let dbConnection: any;
 
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, {
-    useNewUrlParser: true, //useFindAndModify: false,
-    useUnifiedTopology: true,
-  });
-
+	useNewUrlParser: true, //useFindAndModify: false,
+	useUnifiedTopology: true,
+});
 
 async function getItems() {
 	return await ItemSchema.find();
@@ -34,7 +33,7 @@ async function addItem(item: any) {
 }
 
 async function findItemByName(name: any) {
-	console.log(name)
+	console.log(name);
 	return await ItemSchema.find({ name: name });
 }
 

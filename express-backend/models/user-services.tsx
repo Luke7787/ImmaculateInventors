@@ -6,7 +6,6 @@ const itemServices = require('./item-services.tsx');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
 mongoose.set('debug', true);
 
 const uri = process.env.MONGODB_URI;
@@ -45,13 +44,15 @@ async function addFolder(userId: any, folderName: any) {
 
 async function getFolderContents(folderId: any) {
 	console.log(folderId);
-	const items = await ItemSchema.find({folder: folderId});
+	const items = await ItemSchema.find({ folder: folderId });
 	console.log(items);
 	return items;
 }
 
 async function sortByQuantity(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({quantity: 1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({
+		quantity: 1,
+	});
 	return items;
 }
 
@@ -212,32 +213,36 @@ async function deleteUserById(id: any) {
 }
 
 async function sortByQuantityAsc(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({quantity: 1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({
+		quantity: 1,
+	});
 	return items;
 }
 
 async function sortByQuantityDes(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({quantity: -1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({
+		quantity: -1,
+	});
 	return items;
 }
 
 async function sortByDateAsc(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({date: 1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({ date: 1 });
 	return items;
 }
 
 async function sortByDateDes(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({date: -1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({ date: -1 });
 	return items;
 }
 
 async function sortByNameAsc(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({name: 1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({ name: 1 });
 	return items;
 }
 
 async function sortByNameDes(folderId: any) {
-	const items = await ItemSchema.find({folder: folderId}).sort({name: -1});
+	const items = await ItemSchema.find({ folder: folderId }).sort({ name: -1 });
 	return items;
 }
 
