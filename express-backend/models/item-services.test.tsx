@@ -28,6 +28,7 @@ describe('item services', () => {
 		await mongoose.disconnect();
 		await mongoose.connection.close();
 	});
+});
 
 // 	describe('getItemsFromUser', () => {
 // 		it('returns items for a given user', async () => {

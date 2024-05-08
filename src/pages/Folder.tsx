@@ -65,14 +65,17 @@ const Folder = () => {
 
 	const handleAddNewItem: any = async (item: ItemProps) => {
 		try {
-			const response = await axios.post(`${process.env.REACT_APP_BACKEND}/items/`, {
-				name: item.name,
-				quantity: item.quantity,
-				note: item.note,
-				folder: id,
-				date: Date.now(),
-				userId: getUser(),
-			});
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/items/`,
+				{
+					name: item.name,
+					quantity: item.quantity,
+					note: item.note,
+					folder: id,
+					date: Date.now(),
+					userId: getUser(),
+				}
+			);
 			setUpdateItems(!updateItems);
 			console.log(response);
 		} catch (err) {
@@ -82,7 +85,9 @@ const Folder = () => {
 
 	const handleDelete: any = async (item: ItemProps) => {
 		try {
-			const response = await axios.delete(`${process.env.REACT_APP_BACKEND}/items?id=${item.id}`)
+			const response = await axios.delete(
+				`${process.env.REACT_APP_BACKEND}/items?id=${item.id}`
+			);
 			setUpdateItems(!updateItems);
 			console.log(response);
 		} catch (err) {
