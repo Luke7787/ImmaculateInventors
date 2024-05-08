@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "backend.tsx",
 	"scripts": {
-		"test": "jest --runInBand --detectOpenHandles --forceExit --detectOpenHandles",
+		"test": "prettier --check .",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "nodemon --exec npx ts-node backend.tsx"
 	},
