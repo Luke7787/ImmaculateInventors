@@ -22,7 +22,8 @@
 		"multer-s3": "^3.0.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.4.2",
-		"@types/node": "^20.11.24"
+		"@types/node": "^20.11.24",
+		"axios": "^1.6.5"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.2",
