@@ -32,6 +32,10 @@ const ItemSchema = new mongoose.Schema(
 			required: true,
 			ref: 'Folder',
 		},
+		image: {
+			type: String,
+			required: true,
+		},
 	},
 	{ collection: 'items' }
 );
