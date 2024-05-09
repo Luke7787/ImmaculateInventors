@@ -214,37 +214,6 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	}
 });
 
-app.post(
-	'/upload',
-	uploadImage.single('imageFile'),
-	async (req: any, res: any) => {
-		if (!req.file) {
-			return res.status(400).send('Please upload a file.');
-		}
-		console.log('upload req', JSON.stringify(req.file));
-		try {
-			// `req.file.buffer` contains the file data
-			const fileName = `uploads/${Date.now().toString()}-${
-				req.file.originalname
-			}`;
-			// await uploadImage(req.file.buffer, fileName);
-
-			// // Construct the file URL or use the response from `uploadFile` as needed
-			const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
-			console.log(
-				'fileUrl: ',
-				`https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
-			);
-			res.status(201).send({
-				message: 'File uploaded successfully',
-				fileUrl: fileUrl,
-			});
-		} catch (error) {
-			console.error(error);
-			res.status(500).send('Error uploading file to S3.');
-		}
-	}
-);
 
 app.post(
 	'/upload',
@@ -299,8 +268,9 @@ app.post('/folders/', async (req: any, res: any) => {
 	// when making a folder return the id
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
+	const imageUrl = req.query['imageUrl'];
 	try {
-		const folderId = await userServices.addFolder(userId, folderName);
+		const folderId = await userServices.addFolder(userId, folderName, imageUrl);
 		if (!folderId) {
 			return res.status(404).send('User not found');
 		}

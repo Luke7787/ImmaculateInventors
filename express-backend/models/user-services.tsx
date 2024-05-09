@@ -32,9 +32,9 @@ async function getFolders(userId: any) {
 	return folders;
 }
 
-async function addFolder(userId: any, folderName: any) {
+async function addFolder(userId: any, folderName: any, imageUrl: string) {
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToAdd = new FolderSchema({ name: folderName, userId: objUID });
+	const folderToAdd = new FolderSchema({ name: folderName, userId: objUID, image: imageUrl });
 	const savedFolder = await folderToAdd.save();
 	const user = await UserSchema.findByIdAndUpdate(userId, {
 		$push: { folders: mongoose.Types.ObjectId(folderToAdd._id) },
