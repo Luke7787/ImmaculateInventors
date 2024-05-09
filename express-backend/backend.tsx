@@ -30,9 +30,10 @@ const s3 = new AWS.S3();
 const s3Storage = multerS3({
 	s3: s3client, // s3 instance
 	bucket: process.env.S3_BUCKET_NAME, // change it as per your project requirement
-	// acl: 'public-read', // storage access type
+	// ContentType : 'image/jpeg',
+	acl: 'public-read', // storage access type - makes it so that everyone can view it
 	metadata: (req: any, file: any, cb: any) => {
-		cb(null, { fieldname: file.fieldname });
+		cb(null, { fieldname: file.fieldname });	
 	},
 	key: (req: any, file: any, cb: any) => {
 		const fileName =
@@ -40,6 +41,7 @@ const s3Storage = multerS3({
 		console.log(fileName);
 		cb(null, fileName);
 	},
+	contentType: multerS3.AUTO_CONTENT_TYPE, // Automatically sets the ContentType based on the file type
 });
 const uploadImage = multer({ storage: s3Storage });
 
@@ -260,8 +262,11 @@ app.post(
 			// await uploadImage(req.file.buffer, fileName);
 
 			// // Construct the file URL or use the response from `uploadFile` as needed
-			const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+			const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
+
+
 			console.log(
+				'Success!',
 				'fileUrl: ',
 				`https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`
 			);
