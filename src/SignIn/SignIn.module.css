@@ -1,47 +1,160 @@
-.body {
-	padding: 12px 42px;
+@import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
-	& > p {
-		font-size: 16px;
-	}
-
-	a {
-		text-decoration: underline;
-		color: blue;
-		cursor: pointer;
-	}
+input::placeholder {
+    color: white; /* Making placeholder text white */
+    font-family: 'Sniglet', cursive; /* Ensuring the font family is Sniglet */
 }
 
-.username,
+.body {
+    padding: 12px 42px;
+
+    & > p {
+        font-size: 16px; /* Default size for other <p> tags, if any */
+    }
+
+    a {
+        text-decoration: underline;
+        color: blue;
+        cursor: pointer;
+    }
+}
+
+.username {
+    font-size: 18px;
+    position: relative;
+    z-index: 2;
+
+    p {
+        font-size: 48px; /* New font size for "Sign In" */
+        font-family: 'Sniglet', cursive; /* New font family "Sniglet" */
+		margin-left: 85px;
+        margin-top: 70px;
+        margin-bottom: 50px;
+    }
+
+    input {
+        background-image: url('../../public/images/User.png');
+        background-position: 27.5px center;
+        background-size: 22px 22px;
+        background-repeat: no-repeat;
+        background-color: #CDCDCD;
+        border-radius: 90px;
+        padding-top: 7px;
+        padding-left: 65px;
+        border: 0px #838383 solid;
+		font-family: 'Sniglet', cursive;
+        width: 250px;
+        height: 55px;
+		font-size: 25px;
+        margin-bottom: -5px;
+		color: white;
+    }
+}
+
 .password {
-	font-size: 18px;
-	input {
-		background-color: #e4e4e4;
-		border-radius: 6px;
-		padding-left: 12px;
-		border: 2px #838383 solid;
-		width: 100%;
-		height: 36px;
-	}
+    font-size: 18px;
+    position: relative;
+    z-index: 2;
+    input {
+        background-image: url('../../public/images/lockIcon.png');
+        background-position: 25px center;
+        background-size: 28px 28px;
+        background-repeat: no-repeat;
+        background-color: #CDCDCD;
+        border-radius: 90px;
+        padding-top: 7px;
+        padding-left: 65px;
+        border: 0px #838383 solid;
+		font-family: 'Sniglet', cursive;
+        width: 250px;
+        height: 55px;
+		font-size: 25px;
+		color: white;
+    }
 }
 
 .button {
-	background-color: #6a4b4b;
-	border-radius: 6px;
-	color: #ffffff;
-	width: 100px;
-	height: 40px;
-	margin-top: 36px;
-	margin-bottom: 12px;
+    position: relative;
+    z-index: 2;
+    background-color: #CDCDCD;
+    border-radius: 90px;
+	border: 0px #838383 solid;
+    color: #FBF29C;
+    width: 120px;
+    height: 55px;
+    margin-left: 90px;
+    margin-bottom: 12px;
+	font-family: 'Sniglet', cursive;
+	font-size: 24px;
 
-	&:hover {
-		cursor: pointer;
-	}
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.button:hover {
+    background-color: #bfbfbf; /* Slightly darker on hover to indicate interactivity */
 }
 
 .signInErr {
-	color: red;
-	position: absolute;
-	padding: 12px 0px;
-	margin: 0;
+    color: red;
+    position: absolute;
+    padding: 12px 0px;
+    margin: 0;
+}
+
+.forgotPassword {
+    color: #797070; /* Adjust color as needed */
+    font-size: 16px;
+    width: 100%;
+    top: 60px;
+    margin-left: 75px;
+    font-family: 'Sniglet', cursive;
+}
+
+.signUpGreeting {
+    color: #000000;
+    font-size: 45px;
+    margin-left: 404px;
+    margin-top: -320px;
+    font-family: 'Sniglet', cursive;
+    white-space: nowrap;
+}
+
+.signUpMessage {
+    color: #797070;
+    font-size: 16.5px;
+    font-family: 'Sniglet', cursive;
+    margin-top: -40px;
+    margin-left: 405px;
+}
+
+.signUpLink {
+    position: relative;
+    z-index: 2;
+    background-color: #CDCDCD;
+    border-radius: 90px;
+    border: none; 
+    color: #FBF29C;
+    width: 120px;
+    height: 55px;
+    margin-left: 490px;
+    margin-bottom: 12px;
+    font-family: 'Sniglet', cursive;
+    font-size: 24px;
+    text-align: center; 
+    cursor: pointer;
+}
+
+.signUpLink:hover {
+    background-color: #bfbfbf;
+}
+
+.loginNewImage {
+    width: 400.5px;
+    height: 200;
+    margin-top: -4.12px;
+    margin-left: 358px;
+    z-index: 0;  
+    position: relative;
 }

@@ -64,13 +64,13 @@ const CreateAccount = () => {
 	const handleConfirmPassBlur = () => {
 		setConfirmPassErr(
 			validateFilled(confirmPassData) ||
-				validateConfirmPassword(data.password, confirmPassData)
+			validateConfirmPassword(data.password, confirmPassData)
 		);
 	};
 	const handleUsernameBlur = async () => {
 		setUserErr(
 			validateFilled(data.username) ||
-				(await validateUniqueUsername(data.username))
+			(await validateUniqueUsername(data.username))
 		);
 	};
 	const handleFirstBlur = () => {
@@ -212,69 +212,91 @@ const CreateAccount = () => {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className={styles.container}>
+			<img src="/images/backup.png" alt="Decorative Background" className={styles.bgImage} />
 				<div className={styles.grid}>
 					<div className={styles.first}>
-						<p>First name</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
-								label="First name"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>First Name</span>}
 								type="text"
 								variant="filled"
 								name="firstName"
 								onChange={handleUpdate}
 								onBlur={handleFirstBlur}
 								value={data.firstName}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
 					<div className={styles.last}>
-						<p>Last name</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
-								label="Last name"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Last Name</span>}
 								type="text"
 								variant="filled"
 								name="lastName"
 								onBlur={handleLastBlur}
 								onChange={handleUpdate}
 								value={data.lastName}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
 					<div className={styles.email}>
-						<p>Email</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
-								label="Email address"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Email Address</span>}
 								type="text"
 								variant="filled"
 								name="email"
 								onChange={handleUpdate}
 								onBlur={handleEmailBlur}
 								value={data.email}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
 					<div className={styles.country}>
-						<p>Country</p>
 						<FormControl fullWidth>
 							<Select
-								error={!!countryErr}
-								id="country-input"
-								name="country"
 								value={data.country}
 								onChange={handleUpdate}
-								onBlur={handleCountryBlur}
+								displayEmpty
+								name="country"
+								renderValue={
+									(selected) => {
+										if (!selected) {
+											return <span className={styles.customRenderValue}>Country</span>;
+										}
+										return <span className={styles.customRenderValue2}>{selected}</span>;
+									}
+								}
 							>
+								<MenuItem value="" disabled>Country</MenuItem>
 								<MenuItem value="Bangladesh">Bangladesh</MenuItem>
 								<MenuItem value="Brazil">Brazil</MenuItem>
 								<MenuItem value="Canada">Canada</MenuItem>
@@ -291,57 +313,71 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 					<div className={styles.state}>
-						<p>State</p>
 						<TextField
 							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
-							label="State"
+							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>State</span>}
 							type="text"
 							variant="filled"
 							name="state"
 							onBlur={handleStateBlur}
 							onChange={handleUpdate}
 							value={data.state}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.city}>
-						<p>City</p>
 						<TextField
 							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
-							label="City"
+							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>City</span>}
 							type="text"
 							variant="filled"
 							name="city"
 							onBlur={handleCityBlur}
 							onChange={handleUpdate}
 							value={data.city}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.zip}>
-						<p>Zip Code</p>
 						<TextField
 							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
-							label="Zip code"
+							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Zip Code</span>}
 							type="text"
 							variant="filled"
 							name="zipcode"
 							onBlur={handleZipBlur}
 							onChange={handleUpdate}
 							value={data.zipcode}
+							InputProps={{
+								className: styles.customInput,
+							}}
+							InputLabelProps={{
+								className: styles.customInputLabel,
+							}}
 						/>
 					</div>
 					<div className={styles.user}>
-						<p>Username</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!userErr}
 								id="username-input"
-								label="Username"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Username</span>}
 								helperText={userErr ? userErr : ''}
 								type="text"
 								name="username"
@@ -349,45 +385,62 @@ const CreateAccount = () => {
 								onBlur={handleUsernameBlur}
 								onChange={handleUpdate}
 								value={data.username}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
 					<div className={styles.pass}>
-						<p>Password</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!passwordErr}
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label="Password"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
 								onChange={handleUpdate}
 								value={data.password}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
 					<div className={styles.confirmPass}>
-						<p>Confirm Password</p>
 						<FormControl fullWidth>
 							<TextField
 								error={!!confirmPassErr}
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label="Confirm password"
+								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}
 								onBlur={handleConfirmPassBlur}
 								value={confirmPassData}
+								InputProps={{
+									className: styles.customInput,
+								}}
+								InputLabelProps={{
+									className: styles.customInputLabel,
+								}}
 							/>
 						</FormControl>
 					</div>
+
 					<button className={styles.button} type="submit">
-						Submit
+						Create
 					</button>
 				</div>
 			</div>

@@ -27,7 +27,7 @@ async function findUserById(id: any) {
 	}
 }
 
-async function getFolders(userId: any) {
+async function getFolders(userId: String) {
 	const folders = await FolderSchema.find({ userId: userId });
 	return folders;
 }
@@ -42,21 +42,14 @@ async function addFolder(userId: any, folderName: any, imageUrl: string) {
 	return folderToAdd._id;
 }
 
-async function getFolderContents(folderId: any) {
+async function getFolderContents(folderId: String) {
 	console.log(folderId);
 	const items = await ItemSchema.find({ folder: folderId });
 	console.log(items);
 	return items;
 }
 
-async function sortByQuantity(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({
-		quantity: 1,
-	});
-	return items;
-}
-
-async function deleteFolder(userId: any, folderName: any) {
+async function deleteFolder(userId: String, folderName: String) {
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToDel = await FolderSchema.find({ name: folderName });
 	const user = await UserSchema.findByIdAndUpdate(userId, {
@@ -66,7 +59,7 @@ async function deleteFolder(userId: any, folderName: any) {
 	return user;
 }
 
-async function addItemToFolder(folderName: any, itemId: any) {
+async function addItemToFolder(folderName: String, itemId: String) {
 	const folderToUpdate = await FolderSchema.find({ name: folderName });
 	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
 		$push: { items: mongoose.Types.ObjectId(itemId) },
@@ -79,7 +72,7 @@ async function addItemToFolder(folderName: any, itemId: any) {
 	return true;
 }
 
-async function deleteItemFromFolder(folderName: any, itemId: any) {
+async function deleteItemFromFolder(folderName: String, itemId: String) {
 	const folderToUpdate = await FolderSchema.find({ name: folderName });
 	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
 		$pull: { items: mongoose.Types.ObjectId(itemId) },
@@ -92,7 +85,7 @@ async function deleteItemFromFolder(folderName: any, itemId: any) {
 	return true;
 }
 
-async function updateFolderName(folderId: any, newName: any) {
+async function updateFolderName(folderId: String, newName: String) {
 	const folderToUpdate = await FolderSchema.findByIdAndUpdate(
 		folderId,
 		{ name: newName },
@@ -132,7 +125,7 @@ async function delUser(user: any) {
 	}
 }
 
-async function addItemToUser(user_id: any, item_id: any) {
+async function addItemToUser(user_id: String, item_id: String) {
 	// connect to user collection and item collection databases
 	// find user with matching id
 	const user = await UserSchema.findById(user_id);
@@ -149,13 +142,13 @@ async function addItemToUser(user_id: any, item_id: any) {
 	return updatedUser;
 }
 
-async function getItemFromUser(userId: any, itemId: any) {
+async function getItemFromUser(userId: String, itemId: String) {
 	const user = await UserSchema.findById(userId);
 	const userItem = await UserSchema.find({ items: itemId });
 	return await ItemSchema.find({ _id: itemId });
 }
 
-async function deleteItemFromUser(userId: any, itemId: any) {
+async function deleteItemFromUser(userId: String, itemId: String) {
 	const user = await UserSchema.findById(userId);
 	if (user) console.log(user.username);
 	const userItem = await UserSchema.find({ items: itemId });
@@ -167,10 +160,10 @@ async function deleteItemFromUser(userId: any, itemId: any) {
 }
 
 async function updateItemFromUser(
-	userId: any,
-	itemId: any,
-	quantity: any,
-	option: any
+	userId: String,
+	itemId: String,
+	quantity: number,
+	option: String
 ) {
 	const user = await UserSchema.findById(userId);
 	if (option === 'add') {
@@ -195,15 +188,15 @@ async function updateItemFromUser(
 	}
 }
 
-async function findUserByUsername(username: string) {
+async function findUserByUsername(username: String) {
 	return await UserSchema.find({ username: username });
 }
 
-async function findUserByUserAndPass(username: any, password: any) {
+async function findUserByUserAndPass(username: String, password: String) {
 	return await UserSchema.find({ username: username, password: password });
 }
 
-async function deleteUserById(id: any) {
+async function deleteUserById(id: String) {
 	try {
 		if (await UserSchema.findByIdAndDelete(id)) return true;
 	} catch (error) {
@@ -212,36 +205,36 @@ async function deleteUserById(id: any) {
 	}
 }
 
-async function sortByQuantityAsc(folderId: any) {
+async function sortByQuantityAsc(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
 	return items;
 }
 
-async function sortByQuantityDes(folderId: any) {
+async function sortByQuantityDes(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({
 		quantity: -1,
 	});
 	return items;
 }
 
-async function sortByDateAsc(folderId: any) {
+async function sortByDateAsc(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({ date: 1 });
 	return items;
 }
 
-async function sortByDateDes(folderId: any) {
+async function sortByDateDes(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({ date: -1 });
 	return items;
 }
 
-async function sortByNameAsc(folderId: any) {
+async function sortByNameAsc(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({ name: 1 });
 	return items;
 }
 
-async function sortByNameDes(folderId: any) {
+async function sortByNameDes(folderId: String) {
 	const items = await ItemSchema.find({ folder: folderId }).sort({ name: -1 });
 	return items;
 }
