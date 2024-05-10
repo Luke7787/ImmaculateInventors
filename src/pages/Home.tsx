@@ -11,15 +11,7 @@ import { FolderProps } from '../interfaces/interfaces.tsx';
 
 const Home = () => {
 	const [currentFolder, setCurrentFolder] = useState('Default');
-	const [itemsData, setItemsData] = useState<FolderProps[]>([
-		{
-			name: '',
-			userId: '',
-			imageUrl: '',
-			items: [],
-			id: '',
-		},
-	]);
+	const [itemsData, setItemsData] = useState<FolderProps[]>([]);
 	const [updateFolders, setUpdateFolders] = useState(false);
 	const navigate = useNavigate();
 
