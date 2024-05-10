@@ -8,6 +8,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const s3client = new S3Client({
@@ -49,6 +50,7 @@ const app = express();
 const port = 8000;
 
 app.use(cors());
+app.use(express.json());
 app.use(express.json());
 
 const users = {
@@ -110,6 +112,24 @@ app.post('/users/', async (req: any, res: any) => {
 		}
 	}
 });
+
+app.post('/users/login', async (req: any, res: any) => {
+	const username = req.body.username;
+	const password = req.body.password;
+	const user = await userServices.findUserByUsername(username);
+	if (user == null) {
+		return res.status(400).send("Cannot find user");
+	}
+	try {
+		console.log(user);
+		const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+		console.log(accessToken);
+		res.json({ accessToken : accessToken});
+	} catch {
+		res.status(500).send();
+	}
+})
+
 
 app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	const username = req.params.username;

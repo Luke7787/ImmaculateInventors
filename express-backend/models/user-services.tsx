@@ -214,7 +214,8 @@ async function updateItemFromUser(
 }
 
 async function findUserByUsername(username: string) {
-	return await UserSchema.find({ username: username });
+	const user = await UserSchema.find({ username: username });
+	return user[0];
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
