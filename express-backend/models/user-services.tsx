@@ -34,7 +34,11 @@ async function getFolders(userId: any) {
 
 async function addFolder(userId: any, folderName: any, imageUrl: string) {
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToAdd = new FolderSchema({ name: folderName, userId: objUID, image: imageUrl });
+	const folderToAdd = new FolderSchema({
+		name: folderName,
+		userId: objUID,
+		image: imageUrl,
+	});
 	const savedFolder = await folderToAdd.save();
 	const user = await UserSchema.findByIdAndUpdate(userId, {
 		$push: { folders: mongoose.Types.ObjectId(folderToAdd._id) },
@@ -66,14 +70,28 @@ async function deleteFolder(userId: any, folderName: any) {
 	return user;
 }
 
-async function addItemToFolder(folderName: any, itemId: any) {
-	const folderToUpdate = await FolderSchema.find({ name: folderName });
-	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
-		$push: { items: mongoose.Types.ObjectId(itemId) },
-	});
+// async function addItemToFolder(folderName: any, itemId: any) {
+// 	const folderToUpdate = await FolderSchema.find({ name: folderName });
+// 	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
+// 		$push: { items: mongoose.Types.ObjectId(itemId) },
+// 	});
+// 	const itemToUpdate = await ItemSchema.findByIdAndUpdate(
+// 		itemId,
+// 		{ folder: folderToUpdate[0]._id },
+// 		{ new: true }
+// 	);
+// 	return true;
+// }
+async function addItemToFolder(folderId: any, itemId: any) {
+	const folder = await FolderSchema.findByIdAndUpdate(
+		mongoose.Types.ObjectId(folderId),
+		{
+			$push: { items: mongoose.Types.ObjectId(itemId) },
+		}
+	);
 	const itemToUpdate = await ItemSchema.findByIdAndUpdate(
 		itemId,
-		{ folder: folderToUpdate[0]._id },
+		{ folder: mongoose.Types.ObjectId(folderId) },
 		{ new: true }
 	);
 	return true;

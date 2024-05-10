@@ -27,7 +27,7 @@ const Folder = () => {
 		{
 			name: '',
 			quantity: 0,
-			image: '',
+			imageUrl: '',
 			id: '',
 			folder: '',
 		},
@@ -47,7 +47,7 @@ const Folder = () => {
 				(item: any) =>
 					({
 						name: item.name,
-						quantity: 0,
+						quantity: item.quantity,
 						imageUrl:
 							item.image ||
 							'https://plus.unsplash.com/premium_photo-1661870839207-d668a9857cb4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
