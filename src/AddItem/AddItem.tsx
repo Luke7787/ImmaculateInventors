@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import styles from './AddItemModal.module.scss';
+import styles from './AddItem.module.scss';
+import axios from 'axios';
 
-interface ItemProps {
-	name: string;
-	quantity: number;
-	image: string;
-	id: string;
-	note: string;
-}
-interface AddItemModalProps {
+interface AddItemProps {
 	isOpen: boolean;
 	onClose: () => void;
-	onAdd: (item: ItemProps) => void;
+	onAdd: (
+		name: string,
+		quantity: number,
+		note: string,
+		imageUrl: string
+	) => any;
 }
 
-const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
+const AddItem = ({ isOpen, onClose, onAdd }: AddItemProps) => {
 	const [itemName, setItemName] = useState('');
 	const [imageFile, setImageFile] = useState<File | null>(null);
-	const [quantity, setQuantity] = useState('');
+	const [quantity, setQuantity] = useState(0);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -27,7 +26,7 @@ const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
 		}
 	}, [isOpen]);
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const parsedQuantity = parseInt(quantity, 10);
 		if (
@@ -41,8 +40,26 @@ const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
 			);
 			return;
 		}
-		onAdd({ name: itemName, image: imageFile, quantity: parsedQuantity });
-		onClose();
+		try {
+			const formData = new FormData();
+			formData.append('imageFile', imageFile);
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/upload`,
+				formData,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+
+			console.log('File uploaded successfully:', response.data.fileUrl);
+			const res: string = response.data.fileUrl;
+			onAdd(itemName, quantity, '', res);
+			onClose();
+		} catch (error) {
+			console.error('Error uploading file:', error);
+		}
 	};
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +99,7 @@ const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
 							id="quantity"
 							type="number"
 							value={quantity}
-							onChange={(e) => setQuantity(e.target.value)}
+							onChange={(e) => setQuantity(parseInt(e.target.value))}
 							required
 						/>
 					</div>
@@ -104,4 +121,4 @@ const AddItemModal = ({ isOpen, onClose, onAdd }: AddItemModalProps) => {
 	);
 };
 
-export default AddItemModal;
+export default AddItem;

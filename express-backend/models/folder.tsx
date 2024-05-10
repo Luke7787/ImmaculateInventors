@@ -17,6 +17,10 @@ const FolderSchema = new mongoose.Schema(
 				ref: 'Item',
 			},
 		],
+		image: {
+			type: String,
+			required: true,
+		},
 	},
 	{ collection: 'folders' }
 );

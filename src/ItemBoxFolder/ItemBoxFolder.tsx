@@ -1,34 +1,25 @@
 import React, { useState } from 'react';
 import styles from './ItemBoxFolder.module.scss';
-import AddItemModal from '../AddItemModal/AddItemModal.tsx';
+import AddItemModal from '../AddFolder/AddFolder.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.ts';
+import { FolderProps } from '../interfaces/interfaces.tsx';
 
-interface ItemProps {
-	name: string;
-	quantity: number;
-	image: string;
-	id: string;
-}
 
-interface ItemBoxProps {
-	items: ItemProps[];
+interface ItemBoxFolderProps {
+	items: FolderProps[];
 	onDelete: (userId: string, folderName: string) => void;
-	onAddNewItem: (userId: string, name: string) => void;
-	type: 'Folder' | 'Item';
-	lowerText: React.ReactNode;
+	onAddNewItem: (name: string, userId: string, imageUrl: string)  => any;
 }
 const ItemBoxFolder = ({
 	items,
 	onDelete,
 	onAddNewItem,
-	lowerText,
-	type,
-}: ItemBoxProps) => {
+}: ItemBoxFolderProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
 	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
@@ -61,26 +52,13 @@ const ItemBoxFolder = ({
 
 			<div className={styles.outerContainer}>
 				<div className={styles.boxHeader}>
-					{type === 'Item' && (
-						<button
-							className={classNames(styles.goBackButton)}
-							onClick={() => navigate(-1)}
-						>
-							<img
-								src="https://static.thenounproject.com/png/1881199-200.png"
-								height="80%"
-							/>
-						</button>
-					)}
-				</div>
-				<div className={styles.boxHeader}>
 					<button
 						className={styles.addButton}
 						onClick={() => setIsFilterMode(!isFilterMode)}
 					>
-						Filter {type}s
+						Filter Folders
 					</button>
-					<p>Your {type}s</p>
+					<p>Your Folders</p>
 					<button
 						className={classNames(
 							styles.addButton,
@@ -89,7 +67,7 @@ const ItemBoxFolder = ({
 						onClick={() => setIsEditMode(!isEditMode)}
 					>
 						<img src="/images/editIcon.png" className={styles.iconImage} />
-						Edit {type}s
+						Edit Folders
 					</button>
 				</div>
 				<div className={styles.gridContainer}>
@@ -105,7 +83,7 @@ const ItemBoxFolder = ({
 							}}
 						>
 							<img
-								src={item.image}
+								src={item.imageUrl}
 								alt={item.name}
 								className={styles.itemImage}
 							/>
@@ -118,7 +96,7 @@ const ItemBoxFolder = ({
 									}}
 									className={styles.deleteButton}
 								>
-									Delete {type}
+									Delete Folders
 								</button>
 							)}
 							<div
@@ -131,7 +109,7 @@ const ItemBoxFolder = ({
 									<p>{item.name}</p>
 								</div>
 								{/* <p className={styles.itemQuantity}>Qty: {item.quantity}</p> */}
-								{lowerText}
+								<p>{item.items.length} items</p>
 							</div>
 						</div>
 					))}
@@ -140,15 +118,15 @@ const ItemBoxFolder = ({
 							onClick={() => setIsModalOpen(true)}
 							className={classNames(styles.gridItem, styles.addFolderBtn)}
 						>
-							Add New {type}
+							Add New Folders
 						</button>
 					)}
 				</div>
 				<AddItemModal
 					isOpen={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
-					onAdd={async (newItem) => {
-						await onAddNewItem(getUser(), newItem.name);
+					onAdd={async (name: string, imageUrl: string) => {
+						await onAddNewItem(name, getUser(), imageUrl);
 						setIsModalOpen(false);
 					}}
 				/>

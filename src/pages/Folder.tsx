@@ -5,14 +5,8 @@ import ItemBox from '../ItemBox/ItemBox.tsx';
 import styles from './Folder.module.scss';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth.ts';
+import { ItemProps } from '../interfaces/interfaces.tsx';
 
-interface ItemProps {
-	name: string;
-	quantity: number;
-	image: string;
-	id: string;
-	note: string;
-}
 interface ItemBoxProps {
 	items: ItemProps[];
 	onDelete: (name: string) => void;
@@ -35,7 +29,7 @@ const Folder = () => {
 			quantity: 0,
 			image: '',
 			id: '',
-			note: '',
+			folder: '',
 		},
 	]);
 	const [updateItems, setUpdateItems] = useState(false);
@@ -49,31 +43,44 @@ const Folder = () => {
 				`${process.env.REACT_APP_BACKEND}/folderGet?folderId=${folderId}`
 			);
 			const dataArray = Object.values(response.data);
-			const formattedArray: any = dataArray.map((item: any) => ({
-				name: item.name,
-				quantity: 0,
-				image:
-					'https://plus.unsplash.com/premium_photo-1661870839207-d668a9857cb4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-				id: item._id,
-				note: item.node,
-			}));
+			const formattedArray: any = dataArray.map(
+				(item: any) =>
+					({
+						name: item.name,
+						quantity: 0,
+						imageUrl:
+							item.image ||
+							'https://plus.unsplash.com/premium_photo-1661870839207-d668a9857cb4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+						id: item._id,
+						note: item.note,
+						folder: item.folder,
+						date: item.date,
+						userId: item.userId,
+					}) as ItemProps
+			);
 			setFolderData(formattedArray);
 		} catch (err) {
 			console.error('err', err);
 		}
 	};
 
-	const handleAddNewItem: any = async (item: ItemProps) => {
+	const handleAddNewItem: any = async (
+		name: string,
+		quantity: number,
+		note: string,
+		imageUrl: string
+	) => {
 		try {
 			const response = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/items/`,
 				{
-					name: item.name,
-					quantity: item.quantity,
-					note: item.note,
+					image: imageUrl,
+					name: name,
+					quantity: quantity,
+					note: note,
 					folder: id,
 					date: Date.now(),
-					userId: getUser(),
+					userId: getUser()					
 				}
 			);
 			setUpdateItems(!updateItems);
@@ -105,8 +112,6 @@ const Folder = () => {
 						onDelete={handleDelete}
 						onAddNewItem={handleAddNewItem}
 						onClickBox={() => console.log('helo')}
-						lowerText={<p>Quantity: 3</p>}
-						type="Item"
 					/>
 				</div>
 			</div>
