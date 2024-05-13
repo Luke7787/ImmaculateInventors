@@ -9,6 +9,7 @@ const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
 dotenv.config();
+const bcrypt = require('bcrypt');
 
 const s3client = new S3Client({
 	region: process.env.AWS_REGION,
@@ -366,4 +367,29 @@ app.get('/sort/', async (req: any, res: any) => {
 		items = await userServices.sortByNameDes(folderId);
 	}
 	res.status(201).send(items);
+});
+
+app.post('/login', async (req: any, res: any) => {
+	const {username, password } = req.body;
+
+	try{
+		const users = await userServices.findUserByUsername(username);
+		if (users.length === 0) {
+			return res.status(404).send('User not found');
+		}
+		
+		const user = users[0] //since findUserByUsername() returns an array
+		
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch){
+			return res.status(400).send('Incorrect username or password');
+		}
+
+		res.send('Login Successful!');
+	}
+	catch (error) {
+		console.error(error);
+		res.status(500).send('Server error');
+	}
+
 });
