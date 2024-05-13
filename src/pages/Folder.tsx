@@ -80,7 +80,7 @@ const Folder = () => {
 					note: note,
 					folder: id,
 					date: Date.now(),
-					userId: getUser()					
+					userId: getUser(),
 				}
 			);
 			setUpdateItems(!updateItems);

@@ -34,13 +34,13 @@ async function addItem(item: any) {
 	console.log(savedItem);
 	console.log(savedItem._id);
 	const folder = await FolderSchema.findById(savedItem.folder);
-	await FolderSchema.findByIdAndUpdate(folder._id, 
-		{$push: {items : savedItem._id} ,}
-	)
-	
-	await UserSchema.findByIdAndUpdate(folder.userId,
-		{$push: {items : savedItem._id},}
-	)
+	await FolderSchema.findByIdAndUpdate(folder._id, {
+		$push: { items: savedItem._id },
+	});
+
+	await UserSchema.findByIdAndUpdate(folder.userId, {
+		$push: { items: savedItem._id },
+	});
 	return savedItem;
 }
 

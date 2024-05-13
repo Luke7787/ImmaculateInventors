@@ -8,11 +8,11 @@ export interface FolderProps {
 
 export interface ItemProps {
 	name: string;
-    userId?: string;
+	userId?: string;
 	quantity: number;
 	imageUrl: string;
 	id: string;
 	note?: string;
-    date?: Date;
-    folder: string;
+	date?: Date;
+	folder: string;
 }
