@@ -32,7 +32,7 @@ async function getFolders(userId: any) {
 	return folders;
 }
 
-async function addFolder(userId: any, folderName: any, imageUrl: string) {
+async function addFolder(userId: any, folderName: String, imageUrl: string) {
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToAdd = new FolderSchema({
 		name: folderName,

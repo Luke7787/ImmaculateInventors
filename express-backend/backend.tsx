@@ -101,7 +101,7 @@ app.post('/users/', async (req: any, res: any) => {
 	const user1 = req.body['username'];
 	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
-	if (user2.length > 0) {
+	if (user2) {
 		res.status(409).send('username already taken');
 	} else {
 		const savedUser = await userServices.addUser(userData);
@@ -125,7 +125,7 @@ app.get('/uniqueUser/:username', async (req: any, res: any) => {
 	}
 });
 
-app.post('/items/', async (req: any, res: any) => {
+app.post('/items/', authenticateToken, async (req: any, res: any) => {
 	const item = req.body;
 	const savedItem = await itemServices.addItem(item);
 	if (savedItem) res.status(201).send(savedItem);
@@ -188,7 +188,7 @@ app.get('/items/', async (req: any, res: any) => {
 	}
 });
 
-app.delete('/items/', async (req: any, res: any) => {
+app.delete('/items/', authenticateToken, async (req: any, res: any) => {
 	const id = req.query['id'];
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
@@ -252,24 +252,22 @@ app.post(
 	}
 );
 
-app.get('/folders/', async (req: any, res: any) => {
-	const userId = req.query['userId'];
-	if (!userId) {
-		res.status(400).send('error: userid not provided');
-	}
+app.get('/folders/', authenticateToken, async (req: any, res: any) => {
+	const user = await userServices.findUserByUsername(req.user.username);
+	const userId = user._id;
 	try {
 		const c = await userServices.getFolders(userId);
 		res.status(200).send(c);
 	} catch (error) {
-		console.log('error', error);
 		res.status(400).send('error');
 	}
 });
 
-app.post('/folders/', async (req: any, res: any) => {
+app.post('/folders/', authenticateToken, async (req: any, res: any) => {
 	// when making a folder return the id
 	const folderName = req.query['folderName'];
-	const userId = req.query['userId'];
+	const user = await userServices.findUserByUsername(req.user.username);
+	const userId = user._id;
 	const imageUrl = req.query['imageUrl'];
 	try {
 		const folderId = await userServices.addFolder(userId, folderName, imageUrl);
@@ -283,9 +281,10 @@ app.post('/folders/', async (req: any, res: any) => {
 	}
 });
 
-app.delete('/folders/', async (req: any, res: any) => {
+app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
-	const userId = req.query['userId'];
+	const user = await userServices.findUserByUsername(req.user.username);
+	const userId = user._id;
 	try {
 		const updatedUser = await userServices.deleteFolder(userId, folderName);
 		if (!updatedUser) {
@@ -429,5 +428,5 @@ function authenticateToken(req : any, res : any, next : any) {
 }
 
 function generateAccessToken(user : any) {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'});
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20s'});
 }
