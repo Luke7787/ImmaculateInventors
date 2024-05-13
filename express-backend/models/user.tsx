@@ -72,12 +72,12 @@ const UserSchema = new mongoose.Schema(
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Folder',
-			}
-		]
+			},
+		],
 	},
 	{ collection: 'users' }
 );
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

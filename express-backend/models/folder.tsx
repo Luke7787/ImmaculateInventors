@@ -9,16 +9,22 @@ const FolderSchema = new mongoose.Schema(
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
+			ref: 'User',
 		},
-		items: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Item'
-        }]
+		items: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Item',
+			},
+		],
+		image: {
+			type: String,
+			required: true,
+		},
 	},
 	{ collection: 'folders' }
 );
 
-const Folder = mongoose.model("Folder", FolderSchema);
+const Folder = mongoose.model('Folder', FolderSchema);
 
 module.exports = Folder;
