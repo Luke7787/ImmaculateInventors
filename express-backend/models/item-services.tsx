@@ -1,4 +1,6 @@
 const ItemSchema = require('./item.tsx');
+const UserSchema = require('./user.tsx');
+const FolderSchema = require('./folder.tsx');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -29,6 +31,16 @@ async function getItemsFromUser(userId: any) {
 async function addItem(item: any) {
 	const itemToAdd = new ItemSchema(item);
 	const savedItem = await itemToAdd.save();
+	console.log(savedItem);
+	console.log(savedItem._id);
+	const folder = await FolderSchema.findById(savedItem.folder);
+	await FolderSchema.findByIdAndUpdate(folder._id, {
+		$push: { items: savedItem._id },
+	});
+
+	await UserSchema.findByIdAndUpdate(folder.userId, {
+		$push: { items: savedItem._id },
+	});
 	return savedItem;
 }
 

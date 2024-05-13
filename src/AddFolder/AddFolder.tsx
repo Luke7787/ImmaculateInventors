@@ -21,10 +21,7 @@ const AddFolder = ({ isOpen, onClose, onAdd }: AddFolderProps) => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (
-			!folderName.trim() ||
-			!imageFile 
-		) {
+		if (!folderName.trim() || !imageFile) {
 			alert(
 				'Please ensure all fields are correctly filled. Quantity must be a positive number.'
 			);

@@ -34,7 +34,7 @@ const s3Storage = multerS3({
 	// ContentType : 'image/jpeg',
 	acl: 'public-read', // storage access type - makes it so that everyone can view it
 	metadata: (req: any, file: any, cb: any) => {
-		cb(null, { fieldname: file.fieldname });	
+		cb(null, { fieldname: file.fieldname });
 	},
 	key: (req: any, file: any, cb: any) => {
 		const fileName =
@@ -215,7 +215,6 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	}
 });
 
-
 app.post(
 	'/upload',
 	uploadImage.single('imageFile'),
@@ -233,7 +232,6 @@ app.post(
 
 			// // Construct the file URL or use the response from `uploadFile` as needed
 			const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
-
 
 			console.log(
 				'Success!',

@@ -9,11 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.ts';
 import { FolderProps } from '../interfaces/interfaces.tsx';
 
-
 interface ItemBoxFolderProps {
 	items: FolderProps[];
 	onDelete: (userId: string, folderName: string) => void;
-	onAddNewItem: (name: string, userId: string, imageUrl: string)  => any;
+	onAddNewItem: (name: string, userId: string, imageUrl: string) => any;
 }
 const ItemBoxFolder = ({
 	items,

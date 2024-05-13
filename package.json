@@ -34,7 +34,8 @@
 		"build": "react-scripts build",
 		"test": "prettier --check .",
 		"eject": "react-scripts eject",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"format": "prettier . --write"
 	},
 	"eslintConfig": {
 		"extends": [
