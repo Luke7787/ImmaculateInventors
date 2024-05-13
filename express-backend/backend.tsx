@@ -378,12 +378,16 @@ app.post('/login', async (req: any, res: any) => {
 		
 		const user = users[0] //since findUserByUsername() returns an array
 		
+		console.log("User: ", user);	//debug
+		console.log("Password: ", password);	//debug
+		console.log("user.password: ", user.password);	//debug
+
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch){
-			return res.status(400).send('Incorrect username or password');
+			return res.status(404).send('Incorrect username or password');
 		}
 
-		res.send('Login Successful!');
+		res.status(200).send({ user });
 	}
 	catch (error) {
 		console.error(error);
