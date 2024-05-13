@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
+const refreshTokenServices = require('./models/refreshTokens-services');
 // const upload = require('./models/aws-config');
 const AWS = require('aws-sdk');
 const multer = require('multer');
@@ -112,34 +113,6 @@ app.post('/users/', async (req: any, res: any) => {
 		}
 	}
 });
-
-app.post('/users/login', async (req: any, res: any) => {
-	const username = req.body.username;
-	const password = req.body.password;
-	const user = await userServices.findUserByUsername(username);
-	if (user == null) {
-		return res.status(400).send("Cannot find user");
-	}
-	try {
-		console.log(user);
-		const accessToken = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
-		console.log(accessToken);
-		res.json({ accessToken : accessToken});
-	} catch {
-		res.status(500).send();
-	}
-});
-
-function authenticateToken(req : any, res : any, next : any) {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-	if (token == null) return res.sendStatus(401);
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: any) => {
-		if (err) return res.sendStatus(403);
-		req.user = user;
-		next();
-	})
-}
 
 
 app.get('/uniqueUser/:username', async (req: any, res: any) => {
@@ -398,3 +371,65 @@ app.get('/sort/', async (req: any, res: any) => {
 	}
 	res.status(201).send(items);
 });
+
+// User Authentication
+app.get('/posts', authenticateToken, async (req : any, res : any) => {
+	const user = await userServices.findUserByUsername(req.user.username);
+	res.json(user);
+});
+
+app.post('/token', async (req: any, res: any) => {
+	const refreshToken = req.body.token;
+	if (refreshToken == null) return res.sendStatus(401);
+	if (!await refreshTokenServices.getRefreshToken(refreshToken)) return res.sendStatus(403);
+	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: any, user: any) => {
+		if (err) return res.sendStatus(403);
+		const user2 = {
+			username: user.username,
+			password: user.password
+		}
+		const accessToken = generateAccessToken(user2);
+		res.json({accessToken: accessToken});
+	})
+});
+
+app.delete('/logout', async (req: any, res: any) => {
+	await refreshTokenServices.deleteRefreshToken(req.body.token);
+	res.sendStatus(204);
+});
+
+app.post('/login', async (req: any, res: any) => {
+	const username = req.body.username;
+	const password = req.body.password;
+	const user = await userServices.findUserByUserAndPass(username, password);
+	if (user == null) {
+		return res.status(400).send("Cannot find user");
+	}
+	try {
+		const user2 = {
+			username: username,
+			password: password
+		}
+		const accessToken = generateAccessToken(user2);
+		const refreshToken = jwt.sign(user2, process.env.REFRESH_TOKEN_SECRET);
+		await refreshTokenServices.addRefreshToken(refreshToken);
+		res.json({ accessToken : accessToken, refreshToken: refreshToken});
+	} catch {
+		res.status(500).send();
+	}
+});
+
+function authenticateToken(req : any, res : any, next : any) {
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(' ')[1];
+	if (token == null) return res.sendStatus(401);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: any) => {
+		if (err) return res.sendStatus(403);
+		req.user = user;
+		next();
+	})
+}
+
+function generateAccessToken(user : any) {
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'});
+}

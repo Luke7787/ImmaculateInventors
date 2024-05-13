@@ -219,7 +219,8 @@ async function findUserByUsername(username: string) {
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
-	return await UserSchema.find({ username: username, password: password });
+	const user = await UserSchema.find({ username: username, password: password });
+	return user[0];
 }
 
 async function deleteUserById(id: any) {
