@@ -367,5 +367,5 @@ function authenticateToken(req : any, res : any, next : any) {
 }
 
 function generateAccessToken(user : any) {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m'});
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m'});
 }

@@ -89,10 +89,16 @@ async function incQuantity(id: any, quantity: any) {
 }
 
 async function decQuantity(id: any, quantity: any) {
-	await ItemSchema.findByIdAndUpdate(id, {
-		$inc: { quantity : -quantity },
-	})
-	return await ItemSchema.findById(id);
+	const item = await ItemSchema.findById(id);
+	if (item.quantity - quantity <= 0) {
+		await deleteItem(id);
+	} else {
+		await ItemSchema.findByIdAndUpdate(id, {
+			$inc: { quantity : -quantity },
+		})
+		return await ItemSchema.findById(id);
+	}
+	return item;
 }
 
 
