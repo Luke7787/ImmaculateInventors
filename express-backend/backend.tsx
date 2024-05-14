@@ -62,7 +62,7 @@ app.listen(port || process.env.PORT, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 
-// test
+
 app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
 });
@@ -86,17 +86,7 @@ app.get('/users', async (req: any, res: any) => {
 	}
 });
 
-app.get('/users/:username', async (req: any, res: any) => {
-	const id = req.params['id'];
-	//const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserById(id);
-	if (result === undefined || result === null)
-		res.status(404).send('Resource not found.');
-	else {
-		res.send({ users_list: result });
-	}
-});
-
+// register a user (creates a new user to the database)
 app.post('/register/', async (req: any, res: any) => { //previously was /users/
 	const user1 = req.body['username'];
 	const userData = req.body;
@@ -114,18 +104,6 @@ app.post('/register/', async (req: any, res: any) => { //previously was /users/
 	}
 });
 
-
-// app.get('/uniqueUser/:username', async (req: any, res: any) => {
-// 	const username = req.params.username;
-// 	//const conn = await userServices.getDbConnection();
-// 	const result = await userServices.findUserByUsername(username);
-// 	if (result.length > 0) res.status(409).send('Username already taken');
-// 	else {
-// 		res.status(200).send('Valid username');
-// 	}
-// });
-
-
 // add item
 app.post('/items/', authenticateToken, async (req: any, res: any) => {
 	const item = req.body;
@@ -141,77 +119,49 @@ app.delete('/items/', authenticateToken, async (req: any, res: any) => {
 	res.status(201).send(result2);
 });
 
-// app.patch('/itemToUser/', async (req: any, res: any) => {
-// 	const item = req.body;
-// 	const uid = item.userId;
-// 	const savedItem = await itemServices.addItem(item);
-// 	const id = savedItem._id;
-// 	const user = await userServices.addItemToUser(uid, id);
-// 	if (user) {
-// 		res.status(201).send(user);
-// 	} else res.status(409).end();
-// });
-
-app.patch('/items/', async (req: any, res: any) => {
-	const uid = req.query['uid'];
+// add or subtract number of items
+app.patch('/items/', authenticateToken, async (req: any, res: any) => {
+	let result;
 	const id = req.query['id'];
-	const option = req.query['option']; // add or subtract from existing quantity
-	const quantity = req.query['quantity']; // amount to increment or decrement by
-	if (option === 'add' || option === 'sub') {
-		//const conn = await userServices.getDbConnection();
-		const result = await userServices.updateItemFromUser(
-			uid,
+	const option = req.query['option'];
+	const quantity = req.query['quantity'];
+	if (option === 'add') {
+		result = await itemServices.incQuantity(
 			id,
-			quantity,
-			option
+			quantity
 		);
-		if (result) {
-			res.status(201).send(result);
-		} else {
-			res.status(404).send('function: updateItemFromUser');
-		}
-	} else {
-		res.status(404).send('Wrong Option! (Use add or subtract)');
+	} else if (option === 'sub') {
+		result = await itemServices.decQuantity(
+			id,
+			quantity
+		);
 	}
+	if (!result) res.sendStatus(404);
+	res.status(201).send(result);
 });
 
-app.get('/items/', async (req: any, res: any) => {
+// gets items from a user
+app.get('/items/', authenticateToken, async (req: any, res: any) => {
 	let result = null;
-	const uid = req.query['uid'];
+	const user = await userServices.findUserByUsername(req.user.username);
+	const uid = user._id;
 	const id = req.query['id'];
 	const itemName = req.query['itemName'];
-	//const conn = await userServices.getDbConnection();
-	if (!id && !uid && !itemName) {
-		result = await itemServices.getItems(); // gets all items from item database
-	} else if (uid && !id) {
-		result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
-	} else if (!uid && !id && itemName) {
-		result = await itemServices.findItemByName(itemName); // get items with the name
-	} else {
-		result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
+	if (uid && !id && !itemName) { // get all items from a user
+		result = await itemServices.getItemsFromUser(uid);
+	} else if (uid && !id && itemName) { // get an item by name
+		result = await itemServices.findItemByName(itemName, uid);
+	} else if (id && !itemName) { // get an item by id
+		result = await itemServices.findItemById(id);
 	}
-	if (result) {
-		res.status(201).send(result);
-	} else {
-		res.status(404).send('item not found');
-	}
+	if (!result) res.sendStatus(404);
+	res.status(201).send(result);
 });
 
-
-
-app.delete('/users/:id', async (req: any, res: any) => {
-	const id = req.params['id'];
-	if (await userServices.deleteUserById(id)) {
-		res.status(204).end();
-	} else {
-		res.status(404).send('Resource not found.');
-	}
-});
-
-app.patch('/items/:id', async (req: any, res: any) => {
+// update an item
+app.patch('/items/:id', authenticateToken, async (req: any, res: any) => {
 	const { id } = req.params;
 	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
-	//const conn = await itemServices.getDbConnection();
 	try {
 		const updatedItem = await itemServices.updateItem(id, updates);
 		if (!updatedItem) {
@@ -221,6 +171,16 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	} catch (error) {
 		console.error(error);
 		res.status(400).send('Error updating item');
+	}
+});
+
+// delete a user
+app.delete('/users/:id', async (req: any, res: any) => {
+	const id = req.params['id'];
+	if (await userServices.deleteUserById(id)) {
+		res.status(204).end();
+	} else {
+		res.status(404).send('Resource not found.');
 	}
 });
 
@@ -277,9 +237,8 @@ app.get('/folderGet/', authenticateToken, async (req: any, res: any) => {
 	res.status(201).send(items);
 });
 
-// adds a folder to the user
+// adds a folder to the user and returns the id of the folder
 app.post('/folders/', authenticateToken, async (req: any, res: any) => {
-	// when making a folder return the id
 	const folderName = req.query['folderName'];
 	const user = await userServices.findUserByUsername(req.user.username);
 	const userId = user._id;
@@ -313,37 +272,7 @@ app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-// app.patch('/folders/', async (req: any, res: any) => {
-// 	const option = req.query['option'];
-// 	const folderName = req.query['folderName'];
-// 	const itemId = req.query['itemId'];
-// 	console.log(folderName);
-// 	try {
-// 		if (option === 'add') {
-// 			const updatedFolder = await userServices.addItemToFolder(
-// 				folderName,
-// 				itemId
-// 			);
-// 			if (!updatedFolder) {
-// 				return res.status(404).send('Folder not found');
-// 			}
-// 			res.send(updatedFolder);
-// 		} else if (option === 'delete') {
-// 			const updatedFolder = await userServices.deleteItemFromFolder(
-// 				folderName,
-// 				itemId
-// 			);
-// 			if (!updatedFolder) {
-// 				return res.status(404).send('Folder not found');
-// 			}
-// 			res.send(updatedFolder);
-// 		}
-// 	} catch (error) {
-// 		console.log(error);
-// 		res.status(400).send('Error updating folder');
-// 	}
-// });
-
+// change the name of a folder
 app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const newFolderName = req.query['newName'];
@@ -359,9 +288,7 @@ app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-
-
-app.get('/sort/', async (req: any, res: any) => {
+app.get('/sort/', authenticateToken, async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const option = req.query['option'];
 	let items;

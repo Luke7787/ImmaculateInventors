@@ -23,9 +23,7 @@ async function getUserId(id: any) {
 }
 
 async function getItemsFromUser(userId: any) {
-	//let result;
 	return ItemSchema.find({ userId: userId });
-	//return result;
 }
 
 async function addItem(item: any) {
@@ -46,9 +44,19 @@ async function addItem(item: any) {
 	return savedItem;
 }
 
-async function findItemByName(name: any) {
-	console.log(name);
-	return await ItemSchema.find({ name: name });
+async function findItemByName(name: any, uid: any) {
+	const user = await UserSchema.findById(uid);
+	const items = user.items;
+	let item;
+	for (let i = 0; i < items.length; i++) {
+		item = await ItemSchema.findById(items[i]);
+		if (item.name === name) break;
+	}
+	return item;
+}
+
+async function findItemById(id: any) {
+	return await ItemSchema.findById(id);
 }
 
 async function deleteItem(id: any) {
@@ -73,16 +81,29 @@ async function updateItem(id: any, updates: any) {
 	return updatedItem;
 }
 
-// async function disconnectDB() {
-//   await mongoose.connection.close();
-//   await mongoose.disconnect();
-// }
+async function incQuantity(id: any, quantity: any) {
+	await ItemSchema.findByIdAndUpdate(id, {
+		$inc: { quantity : quantity },
+	})
+	return await ItemSchema.findById(id);
+}
+
+async function decQuantity(id: any, quantity: any) {
+	await ItemSchema.findByIdAndUpdate(id, {
+		$inc: { quantity : -quantity },
+	})
+	return await ItemSchema.findById(id);
+}
+
+
 exports.getItems = getItems;
 exports.findItemByName = findItemByName;
+exports.findItemById = findItemById;
 exports.addItem = addItem;
 exports.deleteItem = deleteItem;
 exports.getItemsFromUser = getItemsFromUser;
 exports.updateItem = updateItem;
 exports.getUserId = getUserId;
-// exports.disconnectDB = disconnectDB;
+exports.incQuantity = incQuantity;
+exports.decQuantity = decQuantity;
 export {};
