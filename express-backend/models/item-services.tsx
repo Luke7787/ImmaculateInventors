@@ -37,10 +37,12 @@ async function addItem(item: any) {
 	await FolderSchema.findByIdAndUpdate(folder._id, {
 		$push: { items: savedItem._id },
 	});
-
 	await UserSchema.findByIdAndUpdate(folder.userId, {
 		$push: { items: savedItem._id },
 	});
+	await ItemSchema.findByIdAndUpdate(savedItem._id, 
+		{ userId : folder.userId }
+	);
 	return savedItem;
 }
 
@@ -51,8 +53,10 @@ async function findItemByName(name: any) {
 
 async function deleteItem(id: any) {
 	const item = await ItemSchema.findById(id);
-	const folder = await FolderSchema.findById(item._id);
+	const folder = await FolderSchema.findById(item.folder);
 	const user = await UserSchema.findById(item.userId);
+	console.log(item.folder);
+	console.log(item.userId)
 	await FolderSchema.findByIdAndUpdate(folder._id, {
 		$pull : { items : mongoose.Types.ObjectId(id) },
 	});

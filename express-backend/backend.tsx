@@ -97,7 +97,7 @@ app.get('/users/:username', async (req: any, res: any) => {
 	}
 });
 
-app.post('/users/', async (req: any, res: any) => {
+app.post('/register/', async (req: any, res: any) => { //previously was /users/
 	const user1 = req.body['username'];
 	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
@@ -115,16 +115,18 @@ app.post('/users/', async (req: any, res: any) => {
 });
 
 
-app.get('/uniqueUser/:username', async (req: any, res: any) => {
-	const username = req.params.username;
-	//const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserByUsername(username);
-	if (result.length > 0) res.status(409).send('Username already taken');
-	else {
-		res.status(200).send('Valid username');
-	}
-});
+// app.get('/uniqueUser/:username', async (req: any, res: any) => {
+// 	const username = req.params.username;
+// 	//const conn = await userServices.getDbConnection();
+// 	const result = await userServices.findUserByUsername(username);
+// 	if (result.length > 0) res.status(409).send('Username already taken');
+// 	else {
+// 		res.status(200).send('Valid username');
+// 	}
+// });
 
+
+// add item
 app.post('/items/', authenticateToken, async (req: any, res: any) => {
 	const item = req.body;
 	const savedItem = await itemServices.addItem(item);
@@ -132,16 +134,23 @@ app.post('/items/', authenticateToken, async (req: any, res: any) => {
 	else res.status(409).end();
 });
 
-app.patch('/itemToUser/', async (req: any, res: any) => {
-	const item = req.body;
-	const uid = item.userId;
-	const savedItem = await itemServices.addItem(item);
-	const id = savedItem._id;
-	const user = await userServices.addItemToUser(uid, id);
-	if (user) {
-		res.status(201).send(user);
-	} else res.status(409).end();
+// delete item
+app.delete('/items/', authenticateToken, async (req: any, res: any) => {
+	const id = req.query['id'];
+	const result2 = await itemServices.deleteItem(id);
+	res.status(201).send(result2);
 });
+
+// app.patch('/itemToUser/', async (req: any, res: any) => {
+// 	const item = req.body;
+// 	const uid = item.userId;
+// 	const savedItem = await itemServices.addItem(item);
+// 	const id = savedItem._id;
+// 	const user = await userServices.addItemToUser(uid, id);
+// 	if (user) {
+// 		res.status(201).send(user);
+// 	} else res.status(409).end();
+// });
 
 app.patch('/items/', async (req: any, res: any) => {
 	const uid = req.query['uid'];
@@ -188,11 +197,8 @@ app.get('/items/', async (req: any, res: any) => {
 	}
 });
 
-app.delete('/items/', authenticateToken, async (req: any, res: any) => {
-	const id = req.query['id'];
-	const result2 = await itemServices.deleteItem(id);
-	res.status(201).send(result2);
-});
+
+
 app.delete('/users/:id', async (req: any, res: any) => {
 	const id = req.params['id'];
 	if (await userServices.deleteUserById(id)) {
@@ -252,6 +258,7 @@ app.post(
 	}
 );
 
+// returns a list of folders associated with the user
 app.get('/folders/', authenticateToken, async (req: any, res: any) => {
 	const user = await userServices.findUserByUsername(req.user.username);
 	const userId = user._id;
@@ -263,6 +270,14 @@ app.get('/folders/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
+// returns a list of items inside of a folder
+app.get('/folderGet/', authenticateToken, async (req: any, res: any) => {
+	const folderId = req.query['folderId'];
+	const items = await userServices.getFolderContents(folderId);
+	res.status(201).send(items);
+});
+
+// adds a folder to the user
 app.post('/folders/', authenticateToken, async (req: any, res: any) => {
 	// when making a folder return the id
 	const folderName = req.query['folderName'];
@@ -281,6 +296,7 @@ app.post('/folders/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
+// deletes a folder
 app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
 	const user = await userServices.findUserByUsername(req.user.username);
@@ -297,38 +313,38 @@ app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-app.patch('/folders/', async (req: any, res: any) => {
-	const option = req.query['option'];
-	const folderName = req.query['folderName'];
-	const itemId = req.query['itemId'];
-	console.log(folderName);
-	try {
-		if (option === 'add') {
-			const updatedFolder = await userServices.addItemToFolder(
-				folderName,
-				itemId
-			);
-			if (!updatedFolder) {
-				return res.status(404).send('Folder not found');
-			}
-			res.send(updatedFolder);
-		} else if (option === 'delete') {
-			const updatedFolder = await userServices.deleteItemFromFolder(
-				folderName,
-				itemId
-			);
-			if (!updatedFolder) {
-				return res.status(404).send('Folder not found');
-			}
-			res.send(updatedFolder);
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(400).send('Error updating folder');
-	}
-});
+// app.patch('/folders/', async (req: any, res: any) => {
+// 	const option = req.query['option'];
+// 	const folderName = req.query['folderName'];
+// 	const itemId = req.query['itemId'];
+// 	console.log(folderName);
+// 	try {
+// 		if (option === 'add') {
+// 			const updatedFolder = await userServices.addItemToFolder(
+// 				folderName,
+// 				itemId
+// 			);
+// 			if (!updatedFolder) {
+// 				return res.status(404).send('Folder not found');
+// 			}
+// 			res.send(updatedFolder);
+// 		} else if (option === 'delete') {
+// 			const updatedFolder = await userServices.deleteItemFromFolder(
+// 				folderName,
+// 				itemId
+// 			);
+// 			if (!updatedFolder) {
+// 				return res.status(404).send('Folder not found');
+// 			}
+// 			res.send(updatedFolder);
+// 		}
+// 	} catch (error) {
+// 		console.log(error);
+// 		res.status(400).send('Error updating folder');
+// 	}
+// });
 
-app.patch('/folderName/', async (req: any, res: any) => {
+app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const newFolderName = req.query['newName'];
 	try {
@@ -343,11 +359,7 @@ app.patch('/folderName/', async (req: any, res: any) => {
 	}
 });
 
-app.get('/folderGet/', async (req: any, res: any) => {
-	const folderId = req.query['folderId'];
-	const items = await userServices.getFolderContents(folderId);
-	res.status(201).send(items);
-});
+
 
 app.get('/sort/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
@@ -428,5 +440,5 @@ function authenticateToken(req : any, res : any, next : any) {
 }
 
 function generateAccessToken(user : any) {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20s'});
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m'});
 }
