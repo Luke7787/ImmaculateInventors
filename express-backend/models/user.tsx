@@ -74,8 +74,8 @@ const UserSchema = new mongoose.Schema(
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Folder',
-			}
-		]
+			},
+		],
 	},
 	{ collection: 'users' }
 );
@@ -88,6 +88,6 @@ UserSchema.pre('save', async function (next) {
     this.password = bcryptjs.hash(this.password, salt);
 })
 
-const User = mongoose.model("User", UserSchema) || models.User;
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

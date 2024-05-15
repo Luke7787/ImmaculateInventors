@@ -1,14 +1,14 @@
 "use client"
 import React, { useState } from 'react'
 import Link from 'next/link'
-import Button from './common/Button'
-import Input from './common/Input'
+import Button from './common/Button/Button.tsx'
+import Input from './common/Input/Input.tsx'
 import styles from './Auth.module.scss'
 import { InputError, ResetPasswordProps } from '../passwordTypes'
 import axios, { AxiosError } from 'axios'
 import { RESET_PASSWORD_API_URL } from '../passwordConstants';
 import { useRouter } from 'next/navigation'
-import ErrorText from './common/ErrorText'
+import ErrorText from './common/ErrorText/ErrorText.tsx'
 
 const ResetPassword = ({ params }: ResetPasswordProps) => {
     const router = useRouter()

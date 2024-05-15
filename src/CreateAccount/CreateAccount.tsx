@@ -121,7 +121,7 @@ const CreateAccount = () => {
 		}
 		try {
 			const response = await axios.get(
-				`http://localhost:8000/uniqueUser/${username}`
+				`${process.env.REACT_APP_BACKEND}/uniqueUser/${username}`
 			);
 			if (response.status === 200) {
 				return '';
@@ -174,17 +174,20 @@ const CreateAccount = () => {
 				createSubmitted
 			) {
 				try {
-					const response = await axios.post('http://localhost:8000/users', {
-						firstName: data.firstName,
-						lastName: data.lastName,
-						email: data.email,
-						country: data.country,
-						state: data.state,
-						city: data.city,
-						zipcode: data.zipcode,
-						username: data.username,
-						password: data.password,
-					});
+					const response = await axios.post(
+						`${process.env.REACT_APP_BACKEND}/users`,
+						{
+							firstName: data.firstName,
+							lastName: data.lastName,
+							email: data.email,
+							country: data.country,
+							state: data.state,
+							city: data.city,
+							zipcode: data.zipcode,
+							username: data.username,
+							password: data.password,
+						}
+					);
 					console.log(response);
 				} catch (err) {
 					console.error('err', err);

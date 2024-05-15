@@ -1,5 +1,13 @@
 // const mongoose = require('mongoose');
 const mockingoose = require('mockingoose');
+mongoose.set('debug', true);
+mongoose.connect(
+	'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory',
+	{
+		useNewUrlParser: true, //useFindAndModify: false,
+		useUnifiedTopology: true,
+	}
+);
 const {
 	getUsers,
 	getDbConnection,
@@ -29,7 +37,6 @@ mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb
 });
 
 describe('getUsers function', () => {
-	
 	//let conn: any;
 	// beforeAll(async () => {
 	// 	conn = await getDbConnection();
@@ -38,19 +45,17 @@ describe('getUsers function', () => {
 	// 	await mongoose.disconnect();
 	// });
 	test('Testing addUsers', async () => {
-		const user1 = await addUser(
-			{
-				username: 'awu98',
-				password: 'a1234567890!AA',
-				email: 'awu98@gmail.com',
-				country: 'United States',
-				state: 'California',
-				zipcode: '93410',
-				city: 'SLO',
-				firstName: 'Anson',
-				lastName: 'Wu',
-			}
-		);
+		const user1 = await addUser({
+			username: 'awu98',
+			password: 'a1234567890!AA',
+			email: 'awu98@gmail.com',
+			country: 'United States',
+			state: 'California',
+			zipcode: '93410',
+			city: 'SLO',
+			firstName: 'Anson',
+			lastName: 'Wu',
+		});
 		// const user2 = await addUser(
 		// 	{
 		// 		username: 'koalascope',
@@ -133,7 +138,7 @@ describe('getUsers function', () => {
 			quantity: 3,
 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
 		});
-		console.log(user[0]._id.toString())
+		console.log(user[0]._id.toString());
 		const result = await addItemToUser(
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3'
@@ -202,8 +207,7 @@ describe('getUsers function', () => {
 			user[0]._id.toString(),
 			'65ef409a0336b57ddfbe9ce3',
 			3,
-			'sub',
-			
+			'sub'
 		);
 		expect(update2).toBeDefined();
 		expect(result[0].quantity).toBeLessThan(target);
@@ -219,8 +223,7 @@ describe('getUsers function', () => {
 		});
 		const result = await deleteItemFromUser(
 			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			
+			'65ef409a0336b57ddfbe9ce3'
 		);
 		const updatedUser = await findUserByUsername('awu98');
 		console.log(updatedUser);

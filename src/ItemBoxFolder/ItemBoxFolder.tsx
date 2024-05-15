@@ -1,31 +1,24 @@
 import React, { useState } from 'react';
-import styles from './ItemBox.module.scss';
+import styles from './ItemBoxFolder.module.scss';
+import AddItemModal from '../AddFolder/AddFolder.tsx';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.ts';
-import { ItemProps } from '../interfaces/interfaces.tsx';
-import AddItem from '../AddItem/AddItem.tsx';
+import { FolderProps } from '../interfaces/interfaces.tsx';
 
-interface ItemBoxProps {
-	items: ItemProps[];
-	onDelete: (item: ItemProps) => void;
-	onAddNewItem: (
-		name: string,
-		quantity: number,
-		note: string,
-		imageUrl: string
-	) => void;
-	onClickBox: () => void;
+interface ItemBoxFolderProps {
+	items: FolderProps[];
+	onDelete: (userId: string, folderName: string) => void;
+	onAddNewItem: (name: string, userId: string, imageUrl: string) => any;
 }
-const ItemBox = ({
+const ItemBoxFolder = ({
 	items,
 	onDelete,
 	onAddNewItem,
-	onClickBox,
-}: ItemBoxProps) => {
+}: ItemBoxFolderProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
 	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
@@ -59,23 +52,12 @@ const ItemBox = ({
 			<div className={styles.outerContainer}>
 				<div className={styles.boxHeader}>
 					<button
-						className={classNames(styles.goBackButton)}
-						onClick={() => navigate(-1)}
-					>
-						<img
-							src="https://static.thenounproject.com/png/1881199-200.png"
-							height="80%"
-						/>
-					</button>
-				</div>
-				<div className={styles.boxHeader}>
-					<button
 						className={styles.addButton}
 						onClick={() => setIsFilterMode(!isFilterMode)}
 					>
-						Filter Items
+						Filter Folders
 					</button>
-					<p>Your Items</p>
+					<p>Your Folders</p>
 					<button
 						className={classNames(
 							styles.addButton,
@@ -84,7 +66,7 @@ const ItemBox = ({
 						onClick={() => setIsEditMode(!isEditMode)}
 					>
 						<img src="/images/editIcon.png" className={styles.iconImage} />
-						Edit Items
+						Edit Folders
 					</button>
 				</div>
 				<div className={styles.gridContainer}>
@@ -95,7 +77,9 @@ const ItemBox = ({
 								isEditMode && styles.gridItemEditMode
 							)}
 							key={index}
-							onClick={onClickBox}
+							onClick={() => {
+								navigate(`/inventory/folder/${item.id}`);
+							}}
 						>
 							<img
 								src={item.imageUrl}
@@ -107,11 +91,11 @@ const ItemBox = ({
 									onClick={(e: any) => {
 										e.preventDefault();
 										e.stopPropagation();
-										onDelete(item);
+										onDelete(getUser(), item.name);
 									}}
 									className={styles.deleteButton}
 								>
-									Delete Item
+									Delete Folders
 								</button>
 							)}
 							<div
@@ -123,7 +107,8 @@ const ItemBox = ({
 								<div className={styles.itemName}>
 									<p>{item.name}</p>
 								</div>
-								<p>Qty: {item.quantity}</p>
+								{/* <p className={styles.itemQuantity}>Qty: {item.quantity}</p> */}
+								<p>{item.items.length} items</p>
 							</div>
 						</div>
 					))}
@@ -132,20 +117,15 @@ const ItemBox = ({
 							onClick={() => setIsModalOpen(true)}
 							className={classNames(styles.gridItem, styles.addFolderBtn)}
 						>
-							Add New Item
+							Add New Folders
 						</button>
 					)}
 				</div>
-				<AddItem
+				<AddItemModal
 					isOpen={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
-					onAdd={async (
-						name: string,
-						quantity: number,
-						note: string,
-						imageUrl: string
-					) => {
-						await onAddNewItem(name, quantity, note, imageUrl);
+					onAdd={async (name: string, imageUrl: string) => {
+						await onAddNewItem(name, getUser(), imageUrl);
 						setIsModalOpen(false);
 					}}
 				/>
@@ -154,4 +134,4 @@ const ItemBox = ({
 	);
 };
 
-export default ItemBox;
+export default ItemBoxFolder;
