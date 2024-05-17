@@ -20,6 +20,8 @@ const Header = () => {
     phoneNumber: "",
     about: ""
   });
+  const [profilePicModalOpen, setProfilePicModalOpen] = useState<boolean>(false);
+  const [profilePic, setProfilePic] = useState<string>(`${process.env.PUBLIC_URL}/images/penguin.png`);
 
   const navigate = useNavigate();
 
@@ -44,6 +46,15 @@ const Header = () => {
   const handleSave = () => {
     setIsEditing(false);
     // Here you can add your logic to save the updated info, e.g., API call
+  };
+
+  const handleProfilePicClick = () => {
+    setProfilePicModalOpen(true);
+  };
+
+  const handleProfilePicSelect = (pic: string) => {
+    setProfilePic(pic);
+    setProfilePicModalOpen(false);
   };
 
   return (
@@ -94,7 +105,7 @@ const Header = () => {
         </Button>
       </div>
       <img
-        src={`${process.env.PUBLIC_URL}/images/penguin.png`}
+        src={profilePic}
         alt="Logo"
         className={styles.logoImage1}
         onClick={handleOpenSideModal}
@@ -117,9 +128,11 @@ const Header = () => {
             />
             <div className={styles.sideModalContent}>
               <img
-                src={`${process.env.PUBLIC_URL}/images/penguin.png`}
+                src={profilePic}
                 alt="Profile"
                 className={styles.profileImage}
+                onClick={handleProfilePicClick}
+                style={{ cursor: 'pointer' }}
               />
               {isEditing ? (
                 <>
@@ -190,6 +203,33 @@ const Header = () => {
                   <span>Log Out</span>
                 </div>
               </div>
+            </div>
+          </Box>
+        </Slide>
+      </Modal>
+
+      {/* Profile Picture Selection Modal */}
+      <Modal
+        open={profilePicModalOpen}
+        onClose={() => setProfilePicModalOpen(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Slide direction="up" in={profilePicModalOpen} mountOnEnter unmountOnExit>
+          <Box className={styles.profilePicModal}>
+            <CloseIcon
+              onClick={() => setProfilePicModalOpen(false)}
+              className={styles.closeIcon}
+            />
+            <div className={styles.profilePicGallery}>
+              <img src={`${process.env.PUBLIC_URL}/images/pic1.png`} alt="Profile 1" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic1.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic2.png`} alt="Profile 2" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic2.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic3.png`} alt="Profile 3" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic3.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic4.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic4.png`)} />
+              {/* Add more images as needed */}
             </div>
           </Box>
         </Slide>
