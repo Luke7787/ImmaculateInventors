@@ -4,145 +4,230 @@
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
 body {
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .header {
-	background-color: #FFF5F5;
-	display: flex;
-	align-items: center;
-	border-bottom: 3px #AAA7A7 solid;
-	padding: 10px 25px;
+  background-color: #FFF5F5;
+  display: flex;
+  align-items: center;
+  border-bottom: 3px #AAA7A7 solid;
+  padding: 10px 25px;
 }
 
 .headerLeft {
-	position: absolute;
-	padding: 10px 20px;
+  position: absolute;
+  padding: 10px 20px;
 }
 
 h1 {
-	color: #000000;
-	font-size: 30px;
-	font-family: 'Playfair Display', serif;
-	text-transform: uppercase;
-	letter-spacing: 3px;
+  color: #000000;
+  font-size: 30px;
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
 }
 
 .logoImage {
-	height: 40px;
-	vertical-align: middle;
+  height: 40px;
+  vertical-align: middle;
+}
+
+.logoImage1 {
+  height: 55px;
+  vertical-align: middle;
 }
 
 .headerCenter {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	text-align: right;
-	padding: 10px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: right;
+  padding: 10px 20px;
 
-	.signInButton {
-		font-weight: 400;
-		color: #000000;
-		font-size: 22px;
-		font-family: 'Montserrat', sans-serif;
-		padding-left: 50px;
-		padding-right: 50px;
-		border-radius: 25px;
-		transition: all 0.3s ease;
+  .signInButton {
+    font-weight: 400;
+    color: #000000;
+    font-size: 22px;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
 
-		&:hover {
-			background-color: #E0AFA0;
-			color: #000;
-			cursor: pointer;
-		}
+    &:hover {
+      background-color: #E0AFA0;
+      color: #000;
+      cursor: pointer;
+    }
 
-		&.moveRight {  
-			margin-left: 175px; 
-		}
-	}
+    &.moveRight {  
+      margin-left: 175px; 
+    }
+  }
 }
 
 .signInModal {
-	position: absolute;
-	top: 415px;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 800px;
-	height: 500px;
-	background: linear-gradient(to right, #EADEDE 50%, #F0E793 50%);
-	border-radius: 40px;
+  position: absolute;
+  top: 415px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 500px;
+  background: linear-gradient(to right, #EADEDE 50%, #F0E793 50%);
+  border-radius: 40px;
 }
 
 .closeIcon {
-	position: absolute;
-	right: 20px;
-	top: 25px;
-	cursor: pointer;
-	color: #000000;
-	font-size: 40px;
+  position: absolute;
+  right: 20px;
+  top: 25px;
+  cursor: pointer;
+  color: #000000;
+  font-size: 40px;
 }
 
 .button {
-	background-color: #6a4b4b;
-	border-radius: 6px;
-	color: #ffffff;
-	width: 100px;
-	height: 40px;
-	margin-top: 42px;
-	margin-bottom: 12px;
+  background-color: #6a4b4b;
+  border-radius: 6px;
+  color: #ffffff;
+  width: 100px;
+  height: 40px;
+  margin-top: 42px;
+  margin-bottom: 12px;
 
-	&:hover {
-		cursor: pointer;
-	}
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .createAccountModal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 738px;
-    height: 660px;
-    background-color: #EADEDE;
-    border-radius: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 738px;
+  height: 660px;
+  background-color: #EADEDE;
+  border-radius: 40px;
 
-    .modalHeader h1 {
-        font-family: 'Sniglet', cursive; /* Using Sniglet font */
-        font-size: 30px; /* Setting font size to 48px */
-		text-align: center;
-		padding-top: 65px;
-		padding-bottom: 15px; 
-    }
+  .modalHeader h1 {
+    font-family: 'Sniglet', cursive;
+    font-size: 30px;
+    text-align: center;
+    padding-top: 65px;
+    padding-bottom: 15px; 
+  }
 }
 
 .logoImage {
-	height: auto;
-	width: 50px;
-  }
-  
-  .headerLeft {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-  }
-  
-  .loginNewImage {
-    position: absolute;
-    top: 9%;
-    left: 23.3%;
-    transform: translate(-50%, -50%) rotate(55deg);
-    z-index: -1; 
-    width: 260px;  
-    height: 260px;
+  height: auto;
+  width: 50px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.loginNewImage {
+  position: absolute;
+  top: 9%;
+  left: 23.3%;
+  transform: translate(-50%, -50%) rotate(55deg);
+  z-index: -1;
+  width: 260px;
+  height: 260px;
 }
 
 .loginNewImage2 {
+  position: absolute;
+  top: 15%;
+  left: 84.8%;
+  transform: translate(-50%, -50%) rotate(350deg);
+  z-index: -1;
+  width: 210px;
+  height: 250px;
+}
+
+.sideModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 8px 0 0 8px;
+  transition: transform 0.3s ease-out;
+
+  .closeIcon {
     position: absolute;
-    top: 15%;
-    left: 84.8%;
-    transform: translate(-50%, -50%) rotate(350deg);
-    z-index: -1;  
-    width: 210px;  
-    height: 250px; 
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    color: #000000;
+    font-size: 30px;
+  }
+
+  .sideModalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+
+    img.profileImage {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      color: #000;
+    }
+
+    p {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .divider {
+      width: 100%;
+      border-top: 1px solid #000;
+      margin: 20px 0;
+    }
+
+    .menuItem {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .menuIcon {
+        margin-right: 10px;
+      }
+
+      span {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        color: #000;
+      }
+    }
+  }
 }
