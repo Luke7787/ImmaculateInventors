@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Header.module.scss";
-import { Box, Button, Modal, Slide, Backdrop } from "@mui/material";
+import { Box, Button, Modal, Slide, Backdrop, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CreateAccount from "../CreateAccount/CreateAccount.tsx";
 import SignIn from "../SignIn/SignIn.tsx";
@@ -13,6 +13,14 @@ const Header = () => {
   const [signInOpen, setSignInOpen] = useState<boolean>(false);
   const [createAccountOpen, setCreateAccountOpen] = useState<boolean>(false);
   const [sideModalOpen, setSideModalOpen] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState({
+    username: "Username",
+    email: "",
+    phoneNumber: "",
+    about: ""
+  });
+
   const navigate = useNavigate();
 
   const handleOpenSideModal = () => {
@@ -21,6 +29,21 @@ const Header = () => {
 
   const handleCloseSideModal = () => {
     setSideModalOpen(false);
+    setIsEditing(false); // Reset editing state when modal is closed
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserInfo((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    // Here you can add your logic to save the updated info, e.g., API call
   };
 
   return (
@@ -98,9 +121,59 @@ const Header = () => {
                 alt="Profile"
                 className={styles.profileImage}
               />
-              <h2>Username</h2>
-              <p>Email</p>
-              <p>About me</p>
+              {isEditing ? (
+                <>
+                  <TextField
+                    name="username"
+                    value={userInfo.username}
+                    onChange={handleInputChange}
+                    className={styles.textField}
+                    label="Username"
+                    variant="outlined"
+                  />
+                  <TextField
+                    name="email"
+                    value={userInfo.email}
+                    onChange={handleInputChange}
+                    className={styles.textField}
+                    label="Email"
+                    variant="outlined"
+                  />
+                  <TextField
+                    name="phoneNumber"
+                    value={userInfo.phoneNumber}
+                    onChange={handleInputChange}
+                    className={styles.textField}
+                    label="Phone number"
+                    variant="outlined"
+                  />
+                  <TextField
+                    name="about"
+                    value={userInfo.about}
+                    onChange={handleInputChange}
+                    className={styles.textField}
+                    label="About me"
+                    variant="outlined"
+                    multiline
+                    rows={3}
+                  />
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={styles.saveButton}
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <h2 onClick={handleEditClick}>{userInfo.username}</h2>
+                  <p onClick={handleEditClick}><span className={styles.label}>Email:</span> {userInfo.email}</p>
+                  <p onClick={handleEditClick}><span className={styles.label}>Phone number:</span> {userInfo.phoneNumber}</p>
+                  <p onClick={handleEditClick}><span className={styles.label}>About me:</span> {userInfo.about}</p>
+                </>
+              )}
               <div className={styles.spacer}></div>
               <hr className={styles.divider} />
               <div className={styles.menuContainer}>
