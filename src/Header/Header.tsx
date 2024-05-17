@@ -101,18 +101,21 @@ const Header = () => {
               <h2>Username</h2>
               <p>Email</p>
               <p>About me</p>
+              <div className={styles.spacer}></div>
               <hr className={styles.divider} />
-              <div className={styles.menuItem}>
-                <AccountCircleIcon className={styles.menuIcon} />
-                <span>Friends</span>
-              </div>
-              <div className={styles.menuItem}>
-                <SettingsIcon className={styles.menuIcon} />
-                <span>Settings</span>
-              </div>
-              <div className={styles.menuItem}>
-                <ExitToAppIcon className={styles.menuIcon} />
-                <span>Log Out</span>
+              <div className={styles.menuContainer}>
+                <div className={styles.menuItem}>
+                  <AccountCircleIcon className={styles.menuIcon} />
+                  <span>Friends</span>
+                </div>
+                <div className={styles.menuItem}>
+                  <SettingsIcon className={styles.menuIcon} />
+                  <span>Settings</span>
+                </div>
+                <div className={styles.menuItem}>
+                  <ExitToAppIcon className={styles.menuIcon} />
+                  <span>Log Out</span>
+                </div>
               </div>
             </div>
           </Box>
