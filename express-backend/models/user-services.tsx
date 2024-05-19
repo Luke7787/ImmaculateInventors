@@ -32,7 +32,7 @@ async function getFolders(userId: any) {
 	return folders;
 }
 
-async function addFolder(userId: any, folderName: any, imageUrl: string) {
+async function addFolder(userId: any, folderName: String, imageUrl: string) {
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToAdd = new FolderSchema({
 		name: folderName,
@@ -214,11 +214,13 @@ async function updateItemFromUser(
 }
 
 async function findUserByUsername(username: string) {
-	return await UserSchema.find({ username: username });
+	const user = await UserSchema.find({ username: username });
+	return user[0];
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
-	return await UserSchema.find({ username: username, password: password });
+	const user = await UserSchema.find({ username: username, password: password });
+	return user[0];
 }
 
 async function deleteUserById(id: any) {
