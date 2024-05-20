@@ -7,7 +7,7 @@
 		"test": "prettier --check .",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "nodemon --exec npx ts-node backend.tsx",
-		"start": "ts-node backend.tsx",
+		"start": "nodemon --exec npx ts-node backend.tsx",
 		"format": "prettier . --write"
 	},
 	"author": "Dr. da Silva",
@@ -24,6 +24,7 @@
 		"ts-node": "^10.9.2",
 		"typescript": "^5.4.2",
 		"@types/node": "^20.11.24",
+		"nodemon": "^2.0.13",
 		"axios": "^1.6.5"
 	},
 	"devDependencies": {
@@ -35,7 +36,6 @@
 		"eslint": "^8.57.0",
 		"eslint-plugin-react": "^7.33.2",
 		"jest": "^29.7.0",
-		"nodemon": "^2.0.13",
 		"prettier": "2.4.1",
 		"ts-jest": "^29.1.2"
 	},
