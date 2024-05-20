@@ -229,6 +229,12 @@ const Header = () => {
               <img src={`${process.env.PUBLIC_URL}/images/pic2.png`} alt="Profile 2" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic2.png`)} />
               <img src={`${process.env.PUBLIC_URL}/images/pic3.png`} alt="Profile 3" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic3.png`)} />
               <img src={`${process.env.PUBLIC_URL}/images/pic4.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic4.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic5.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic5.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic6.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic6.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic7.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic7.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic8.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic8.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic9.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic9.png`)} />
+              <img src={`${process.env.PUBLIC_URL}/images/pic10.png`} alt="Profile 4" onClick={() => handleProfilePicSelect(`${process.env.PUBLIC_URL}/images/pic10.png`)} />
               {/* Add more images as needed */}
             </div>
           </Box>
