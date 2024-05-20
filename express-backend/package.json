@@ -5,6 +5,7 @@
 	"main": "backend.tsx",
 	"scripts": {
 		"test": "prettier --check .",
+		"build": "tsc || ./node_modules/typescript/bin/tsc",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "nodemon --exec npx ts-node backend.tsx",
 		"start": "ts-node backend.tsx",
