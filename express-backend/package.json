@@ -7,7 +7,7 @@
 		"test": "prettier --check .",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "ts-node backend.tsx",
-		"start": "nodemon --exec npx ts-node backend.tsx",
+		"start": "ts-node backend.tsx",
 		"format": "prettier . --write"
 	},
 	"author": "Dr. da Silva",
