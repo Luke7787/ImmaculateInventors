@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "prettier --check .",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
-		"dev": "nodemon --exec npx ts-node backend.tsx",
+		"dev": "ts-node backend.tsx",
 		"start": "nodemon --exec npx ts-node backend.tsx",
 		"format": "prettier . --write"
 	},
