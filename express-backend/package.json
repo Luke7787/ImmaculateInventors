@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "prettier --check .",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
-		"dev": "ts-node backend.tsx",
-		"start": "ts-node backend.tsx",
+		"dev": "node node_modules/ts-node/dist/bin.js backend.tsx",
+		"start": "node node_modules/ts-node/dist/bin.js backend.tsx",
 		"format": "prettier . --write"
 	},
 	"author": "Dr. da Silva",
