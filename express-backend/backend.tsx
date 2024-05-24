@@ -1,3 +1,5 @@
+import { application } from "express";
+
 const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
@@ -247,6 +249,37 @@ app.post(
 		}
 	}
 );
+
+app.delete('/delete-image', async (req: any, res: any) => {
+	const { imageUrl } = req.body;	//pass in the image's URL in the request body
+
+	if (!imageUrl) {
+		return res.status(400).send({ error: 'Image URL is required.'});
+	}
+
+	console.log(imageUrl); // debug stuff
+
+	// Extract the key from the URL
+    const bucketName = process.env.S3_BUCKET_NAME;
+    const urlPrefix = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/`;
+    const key = imageUrl.replace(urlPrefix, '');	//sets the key to the last part of the link
+
+	const parameters = {
+		Bucket: bucketName,
+		Key: key
+	};
+
+	s3.deleteObject(parameters, function(err: any, data: any) {
+		if (err) {
+			console.log("Error", err);
+            return res.status(500).send({ error: 'Failed to delete image' });
+		}
+		console.log("Success", data);
+		// res.send({message: 'Image deleted successfully' });
+		res.status(204).send();
+	});
+
+});
 
 app.get('/folders/', async (req: any, res: any) => {
 	const userId = req.query['userId'];
