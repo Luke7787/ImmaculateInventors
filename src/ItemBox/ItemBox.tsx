@@ -123,7 +123,7 @@ const ItemBox = ({
 								<div className={styles.itemName}>
 									<p>{item.name}</p>
 								</div>
-								<p>Qty: {item.quantity}</p>
+								<p>Qty: {item.quantity}</p> 
 							</div>
 						</div>
 					))}

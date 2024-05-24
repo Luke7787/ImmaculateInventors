@@ -46,7 +46,7 @@ const s3Storage = multerS3({
 const uploadImage = multer({ storage: s3Storage });
 
 const app = express();
-const port = 8000;
+const port = 8080;
 
 app.use(cors());
 app.use(express.json());
@@ -55,7 +55,7 @@ const users = {
 	users_list: [],
 };
 
-app.listen(port || process.env.PORT, () => {
+app.listen(process.env.PORT || port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 

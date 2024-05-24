@@ -1,7 +1,7 @@
 import EmailTemplate from "../../../src/Email/forgotTemplate";
 const ForgotPasswordToken =require("../../token.tsx");
 const UserSchema = require('./user.tsx');
-const BASE_URL = require("../../../src/passwordContants/index.ts");
+const BASE_URL = require("../../../src/passwordConstants/index.ts");
 import { NextResponse } from "next/server";
 import { Resend } from 'resend';
 

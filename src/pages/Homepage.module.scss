@@ -96,10 +96,14 @@
 }
 
 .placeholderBox {
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	background-color: #d3d3d3;
-	border-radius: 8px;
-	margin: 0 auto;
-	height: 600px;
-	width: 83%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #D3D3D3;  
+  border-radius: 8px;
+  margin: 0 auto;
+  height: 1000px;
+  width: 1225px;
+  background-image: url('../../public/images/HomePageTry.webp');
+  background-position: center; 
+  background-repeat: no-repeat;
+  background-size: cover;
 }

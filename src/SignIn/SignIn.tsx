@@ -54,9 +54,9 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		<form onSubmit={handleSubmit}>
 			<div className={styles.body}>
 				<div className={styles.username}>
-					<p>Username</p>
+					<p>Sign In</p>
 					<input
-						placeholder="Enter username"
+						placeholder="Username"
 						onChange={handleUpdate}
 						type="text"
 						name="username"
@@ -64,14 +64,15 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					/>
 				</div>
 				<div className={styles.password}>
-					<p>Password</p>
+					<p> </p>
 					<input
-						placeholder="Enter password"
+						placeholder="Password"
 						onChange={handleUpdate}
 						type="password"
 						name="password"
 						value={signInData.password}
 					/>
+					<p className={styles.forgotPassword}>Forgot your password?</p>
 				</div>
 				{setForgetPasswordOpen && (
 						<span
@@ -101,25 +102,18 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						Your username or password is incorrect. Please try again.
 					</p>
 				)}
-				<button className={styles.button} type="submit">
-					Sign In
-				</button>
-				{setCreateAccountOpen && (
-					<p>
-						Not registered?
-						<span
-							onClick={() => {
-								setCreateAccountOpen(true);
-							}}
-						>
-							{' '}
-							<a>Create an account here</a>
-						</span>
-					</p>
-				)}
-			</div>
-		</form>
-	);
+				<button className={styles.button} type="submit">Login</button>
+                <div className={styles.signUpSection}>
+                    <p className={styles.signUpGreeting}>Hey, new friend!</p>
+                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey!</p>
+                    <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
+                        Sign Up
+                    </button>
+					<img src="/images/SunFlower.png" alt="Decorative" className={styles.loginNewImage} />
+                </div>
+            </div>
+        </form>
+    );
 };
 
 export default SignIn;
