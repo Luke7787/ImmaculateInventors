@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 
+
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
 }
@@ -28,13 +29,18 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
+			const response = await axios.post(
+				// `${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
+				`${process.env.REACT_APP_BACKEND}login`, {
+					username: signInData.username,
+					password: signInData.password
+				}
 			);
+			console.log("response: ", response);
 			if (response.status === 200) {
 				setSignInErr(false);
-				console.log(response.data.user[0]._id);
-				login(response.data.user[0]._id);
+				console.log(response.data.user._id);
+				login(response.data.user._id);
 			}
 		} catch (err) {
 			console.error('err', err);
