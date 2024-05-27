@@ -124,6 +124,7 @@ const ItemBox = ({
 									<p>{item.name}</p>
 								</div>
 								<p>Qty: {item.quantity}</p> 
+								<p><i>{item.note}</i></p>
 							</div>
 						</div>
 					))}

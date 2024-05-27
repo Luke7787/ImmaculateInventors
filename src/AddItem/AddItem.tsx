@@ -17,12 +17,14 @@ const AddItem = ({ isOpen, onClose, onAdd }: AddItemProps) => {
 	const [itemName, setItemName] = useState('');
 	const [imageFile, setImageFile] = useState<File | null>(null);
 	const [quantity, setQuantity] = useState(0);
+	const [note, setNote] = useState('');
 
 	useEffect(() => {
 		if (isOpen) {
 			setItemName('');
 			setImageFile(null);
 			setQuantity('');
+			setNote('');
 		}
 	}, [isOpen]);
 
@@ -55,7 +57,7 @@ const AddItem = ({ isOpen, onClose, onAdd }: AddItemProps) => {
 
 			console.log('File uploaded successfully:', response.data.fileUrl);
 			const res: string = response.data.fileUrl;
-			onAdd(itemName, quantity, '', res);
+			onAdd(itemName, quantity, note, res);
 			onClose();
 		} catch (error) {
 			console.error('Error uploading file:', error);
@@ -100,6 +102,16 @@ const AddItem = ({ isOpen, onClose, onAdd }: AddItemProps) => {
 							type="number"
 							value={quantity}
 							onChange={(e) => setQuantity(parseInt(e.target.value))}
+							required
+						/>
+					</div>
+					<div className={styles.formGroup}>
+						<label htmlFor="quantity">Note:</label>
+						<input
+							id="quantity"
+							type="text"
+							value={note}
+							onChange={(e) => setNote(e.target.value)}
 							required
 						/>
 					</div>

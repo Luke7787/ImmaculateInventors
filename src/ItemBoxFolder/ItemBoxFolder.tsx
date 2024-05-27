@@ -108,7 +108,11 @@ const ItemBoxFolder = ({
 									<p>{item.name}</p>
 								</div>
 								{/* <p className={styles.itemQuantity}>Qty: {item.quantity}</p> */}
-								<p>{item.items.length} items</p>
+								<p>
+									{item.items.length === 1
+										? `${item.items.length} item`
+										: `${item.items.length} items`}
+								</p>
 							</div>
 						</div>
 					))}
