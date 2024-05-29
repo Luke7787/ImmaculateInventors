@@ -50,6 +50,17 @@ async function findItemByName(name: any) {
 }
 
 async function deleteItem(id: any) {
+	const item = await ItemSchema.findById(id);
+	const folder = await FolderSchema.findById(item.folder);
+	const user = await UserSchema.findById(item.userId);
+	console.log(item.folder);
+	console.log(item.userId)
+	await FolderSchema.findByIdAndUpdate(folder._id, {
+		$pull : { items : mongoose.Types.ObjectId(id) },
+	});
+	await UserSchema.findByIdAndUpdate(user._id, {
+		$pull : { items : mongoose.Types.ObjectId(id) },
+	});
 	return await ItemSchema.findByIdAndDelete(id);
 }
 
