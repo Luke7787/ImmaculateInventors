@@ -23,15 +23,7 @@ interface ItemBoxProps {
 const Folder = () => {
 	const { id } = useParams();
 	const { getUser } = useAuth();
-	const [folderData, setFolderData] = useState<ItemProps[]>([
-		{
-			name: '',
-			quantity: 0,
-			imageUrl: '',
-			id: '',
-			folder: '',
-		},
-	]);
+	const [folderData, setFolderData] = useState<ItemProps[]>([]);
 	const [updateItems, setUpdateItems] = useState(false);
 
 	useEffect(() => {
