@@ -87,6 +87,10 @@ h1 {
 	height: 500px;
 	background: linear-gradient(to right, #eadede 50%, #f0e793 50%);
 	border-radius: 40px;
+
+	&:focus-visible {
+		outline: none !important;
+	}
 }
 
 .closeIcon {
