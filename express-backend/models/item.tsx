@@ -35,7 +35,7 @@ const ItemSchema = new mongoose.Schema(
 		image: {
 			type: String,
 			required: true,
-			default: "idk",
+			default: 'idk',
 		},
 	},
 	{ collection: 'items' }

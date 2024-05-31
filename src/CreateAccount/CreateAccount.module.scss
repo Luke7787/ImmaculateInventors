@@ -1,260 +1,251 @@
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
 .button {
-    background-color: #F0E793;
-    border-radius: 90px;
-    color: black;
-    border: 0px #838383 solid;
-    width: 150px;
-    height: 55px;
-    margin-top: 10px;
-    margin-bottom: 12px;
-    font-family: 'Sniglet', cursive;
-    font-size: 24px;
+	background-color: #f0e793;
+	border-radius: 90px;
+	color: black;
+	border: 0px #838383 solid;
+	width: 150px;
+	height: 55px;
+	margin-top: 10px;
+	margin-bottom: 12px;
+	font-family: 'Sniglet', cursive;
+	font-size: 24px;
 
-    &:hover {
-        cursor: pointer;
-    }
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .container {
-    position: relative;
-    overflow: hidden;
-    padding: 10px 0px;
-    display: flex;
-    justify-content: center;
+	position: relative;
+	overflow: hidden;
+	padding: 10px 0px;
+	display: flex;
+	justify-content: center;
 }
 
 .grid {
-    display: grid;
-    grid-template-rows: repeat(5, 45px);
-    grid-template-columns: repeat(4, 130px);
-    grid-template-areas:
-        'first first last last'
-        'email email email email'
-        'country state city zip'
-        'user user user user'
-        'pass pass confirmPass confirmPass';
-    gap: 35px;
+	display: grid;
+	grid-template-rows: repeat(5, 45px);
+	grid-template-columns: repeat(4, 130px);
+	grid-template-areas:
+		'first first last last'
+		'email email email email'
+		'country state city zip'
+		'user user user user'
+		'pass pass confirmPass confirmPass';
+	gap: 35px;
 
-    .MuiFormControl-root .MuiInputBase-input,
-    .MuiFormControl-root .MuiInputBase-root {
-        background-color: #CDCDCD !important; // Background color for input field
-        border-radius: 90px !important; // Rounded borders for input field
-        font-family: 'Sniglet', cursive !important; // Font style for input text
-        color: white !important; // Text color for input text
-        font-size: 25px !important; // Text size for input text
-        box-shadow: none !important; // No shadow for any text field
-        overflow: visible;
-    }
+	.MuiFormControl-root .MuiInputBase-input,
+	.MuiFormControl-root .MuiInputBase-root {
+		background-color: #cdcdcd !important; // Background color for input field
+		border-radius: 90px !important; // Rounded borders for input field
+		font-family: 'Sniglet', cursive !important; // Font style for input text
+		color: white !important; // Text color for input text
+		font-size: 25px !important; // Text size for input text
+		box-shadow: none !important; // No shadow for any text field
+		overflow: visible;
+	}
 
-    .MuiFormControl-root .MuiInput-underline:before,
-    .MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
-        box-shadow: none !important;
-    }
+	.MuiFormControl-root .MuiInput-underline:before,
+	.MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
+		box-shadow: none !important;
+	}
 
-    p {
-        font-size: 16px;
-        margin: 5px 0px;
+	p {
+		font-size: 16px;
+		margin: 5px 0px;
 
-        &:last-child {
-            font-size: 14px;
-            color: red;
-        }
-    }
+		&:last-child {
+			font-size: 14px;
+			color: red;
+		}
+	}
 }
 
 .first {
-    grid-area: first;
+	grid-area: first;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .last {
-    grid-area: last;
+	grid-area: last;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .email {
-    grid-area: email;
+	grid-area: email;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .country {
-    grid-area: country;
-    margin-top: 5px;
+	grid-area: country;
+	margin-top: 5px;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .state {
-    grid-area: state;
+	grid-area: state;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .city {
-    grid-area: city;
+	grid-area: city;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .zip {
-    grid-area: zip;
+	grid-area: zip;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .user {
-    grid-area: user;
+	grid-area: user;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .pass {
-    grid-area: pass;
+	grid-area: pass;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .confirmPass {
-    grid-area: confirmPass;
+	grid-area: confirmPass;
 
-    * {
-        border: none !important;
-    }
+	* {
+		border: none !important;
+	}
 
-    *::before,
-    *::after {
-        border: none !important;
-    }
-
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 label {
-    color: white;
-    font-size: 23.4px;
-    font-family: 'Sniglet', cursive;
+	color: white;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
 }
 
 .customRenderValue {
-    color: black;
-    font-size: 23.4px;
-    font-family: 'Sniglet', cursive;
+	color: black;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
 }
 
 .customRenderValue2 {
-    color: white;
-    font-size: 23.4px;
-    font-family: 'Sniglet', cursive;
+	color: white;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
 }
 
 .customInput {
-    background-color: #CDCDCD !important;
-    border-radius: 90px !important;
-    font-family: 'Sniglet', cursive !important;
-    color: white !important;
-    font-size: 25px !important;
-    box-shadow: none !important;
-    margin-top: 7.4px;
-    height: 50px;
-    padding-left: 5px;
+	background-color: #cdcdcd !important;
+	border-radius: 90px !important;
+	font-family: 'Sniglet', cursive !important;
+	color: white !important;
+	font-size: 25px !important;
+	box-shadow: none !important;
+	margin-top: 7.4px;
+	height: 50px;
+	padding-left: 5px;
 }
 
 .customInputLabel {
-    color: black;
-    font-size: 23.4px;
-    font-family: 'Sniglet', cursive;
-    margin-left: 5px;
-    margin-top: 5px;
+	color: black;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
+	margin-left: 5px;
+	margin-top: 5px;
 }
 
 .container {
-    position: relative;  // Essential for absolute positioning context
-    overflow: hidden;  // Ensures nothing spills outside the container
-    padding: 10px 0px;
-    display: flex;
-    justify-content: center;
+	position: relative; // Essential for absolute positioning context
+	overflow: hidden; // Ensures nothing spills outside the container
+	padding: 10px 0px;
+	display: flex;
+	justify-content: center;
 
-    .bgImage {
-        position: absolute;
-        top: 168px;  // 168
-        left: 35px;  // Adjust as necessary, e.g., `50px` to move it right
-        width: 170px;  // Full width of the container
-        height: 70px;  // Maintain aspect ratio
-        z-index: -1;  // Behind all other content
-    }
+	.bgImage {
+		position: absolute;
+		top: 168px; // 168
+		left: 35px; // Adjust as necessary, e.g., `50px` to move it right
+		width: 170px; // Full width of the container
+		height: 70px; // Maintain aspect ratio
+		z-index: -1; // Behind all other content
+	}
 }

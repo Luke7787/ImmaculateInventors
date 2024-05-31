@@ -1,30 +1,40 @@
-import { useEffect } from 'react';
-import { useUser } from './useUser';
-import { useLocalStorage } from './useLocalStorage';
-
 export const useAuth = () => {
 	// we can re export the user methods or object from this hook
-	let { user, addUser, removeUser, setUser } = useUser();
-	const { getItem } = useLocalStorage();
 
-	useEffect(() => {
-		user = getItem('user');
-		if (user) {
-			addUser(JSON.parse(user));
-		}
-	}, [addUser, getItem]);
-
-	const login = (user: string) => {
-		addUser(user);
+	const login = (
+		user: string,
+		username: string,
+		email: string,
+		country: string
+	) => {
+		localStorage.setItem('user', JSON.stringify(user));
+		localStorage.setItem('username', JSON.stringify(username));
+		localStorage.setItem('email', JSON.stringify(email));
+		localStorage.setItem('country', JSON.stringify(country));
 	};
 
 	const logout = () => {
-		removeUser();
+		localStorage.setItem('user', '');
+		localStorage.setItem('username', '');
+		localStorage.setItem('email', '');
+		localStorage.setItem('country', '');
 	};
 
 	const getUser = () => {
-		return user || '';
+		return localStorage.getItem('user') || '';
 	};
 
-	return { user, login, logout, setUser, getUser };
+	const getUsername = () => {
+		return localStorage.getItem('username') || '';
+	};
+
+	const getEmail = () => {
+		return localStorage.getItem('email') || '';
+	};
+
+	const getCountry = () => {
+		return localStorage.getItem('country') || '';
+	};
+
+	return { login, logout, getUser, getUsername, getEmail, getCountry };
 };

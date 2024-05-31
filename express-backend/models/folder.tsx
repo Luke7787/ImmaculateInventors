@@ -20,7 +20,7 @@ const FolderSchema = new mongoose.Schema(
 		image: {
 			type: String,
 			required: true,
-			default: "idk",
+			default: 'idk',
 		},
 	},
 	{ collection: 'folders' }

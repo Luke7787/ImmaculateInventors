@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 const RefreshTokenSchema = new mongoose.Schema(
 	{
 		refreshToken: {
-            type: String
-        }
+			type: String,
+		},
 	},
 	{ collection: 'refreshtokens' }
 );

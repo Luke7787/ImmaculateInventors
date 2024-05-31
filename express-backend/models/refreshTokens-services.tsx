@@ -9,20 +9,22 @@ mongoose.connect(uri, {
 	useUnifiedTopology: true,
 });
 
-async function getRefreshToken(refreshToken : String) {
-    const result = await RefreshTokenSchema.find({refreshToken : refreshToken});
-    return result[0];
+async function getRefreshToken(refreshToken: String) {
+	const result = await RefreshTokenSchema.find({ refreshToken: refreshToken });
+	return result[0];
 }
 
 async function addRefreshToken(refreshToken: String) {
-    const tokenToAdd = new RefreshTokenSchema({refreshToken : refreshToken});
+	const tokenToAdd = new RefreshTokenSchema({ refreshToken: refreshToken });
 	const addedToken = await tokenToAdd.save();
-    return addedToken;
+	return addedToken;
 }
 
 async function deleteRefreshToken(refreshToken: String) {
-    const tokenToDelete = await RefreshTokenSchema.find({refreshToken : refreshToken});
-    await RefreshTokenSchema.findByIdAndDelete(tokenToDelete[0]._id);
+	const tokenToDelete = await RefreshTokenSchema.find({
+		refreshToken: refreshToken,
+	});
+	await RefreshTokenSchema.findByIdAndDelete(tokenToDelete[0]._id);
 }
 
 exports.getRefreshToken = getRefreshToken;

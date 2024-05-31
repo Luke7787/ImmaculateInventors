@@ -38,9 +38,7 @@ async function addItem(item: any) {
 	await UserSchema.findByIdAndUpdate(folder.userId, {
 		$push: { items: savedItem._id },
 	});
-	await ItemSchema.findByIdAndUpdate(savedItem._id, 
-		{ userId : folder.userId }
-	);
+	await ItemSchema.findByIdAndUpdate(savedItem._id, { userId: folder.userId });
 	return savedItem;
 }
 
@@ -64,12 +62,12 @@ async function deleteItem(id: any) {
 	const folder = await FolderSchema.findById(item.folder);
 	const user = await UserSchema.findById(item.userId);
 	console.log(item.folder);
-	console.log(item.userId)
+	console.log(item.userId);
 	await FolderSchema.findByIdAndUpdate(folder._id, {
-		$pull : { items : mongoose.Types.ObjectId(id) },
+		$pull: { items: mongoose.Types.ObjectId(id) },
 	});
 	await UserSchema.findByIdAndUpdate(user._id, {
-		$pull : { items : mongoose.Types.ObjectId(id) },
+		$pull: { items: mongoose.Types.ObjectId(id) },
 	});
 	return await ItemSchema.findByIdAndDelete(id);
 }
@@ -83,8 +81,8 @@ async function updateItem(id: any, updates: any) {
 
 async function incQuantity(id: any, quantity: any) {
 	await ItemSchema.findByIdAndUpdate(id, {
-		$inc: { quantity : quantity },
-	})
+		$inc: { quantity: quantity },
+	});
 	return await ItemSchema.findById(id);
 }
 
@@ -94,13 +92,12 @@ async function decQuantity(id: any, quantity: any) {
 		await deleteItem(id);
 	} else {
 		await ItemSchema.findByIdAndUpdate(id, {
-			$inc: { quantity : -quantity },
-		})
+			$inc: { quantity: -quantity },
+		});
 		return await ItemSchema.findById(id);
 	}
 	return item;
 }
-
 
 exports.getItems = getItems;
 exports.findItemByName = findItemByName;

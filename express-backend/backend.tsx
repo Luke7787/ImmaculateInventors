@@ -59,10 +59,9 @@ const users = {
 	users_list: [],
 };
 
-app.listen(port || process.env.PORT, () => {
+app.listen(process.env.PORT || port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
-
 
 app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
@@ -88,7 +87,8 @@ app.get('/users', async (req: any, res: any) => {
 });
 
 // register a user (creates a new user to the database)
-app.post('/register/', async (req: any, res: any) => { //previously was /users/
+app.post('/register/', async (req: any, res: any) => {
+	//previously was /users/
 	const user1 = req.body['username'];
 	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
@@ -127,15 +127,9 @@ app.patch('/items/', authenticateToken, async (req: any, res: any) => {
 	const option = req.query['option'];
 	const quantity = req.query['quantity'];
 	if (option === 'add') {
-		result = await itemServices.incQuantity(
-			id,
-			quantity
-		);
+		result = await itemServices.incQuantity(id, quantity);
 	} else if (option === 'sub') {
-		result = await itemServices.decQuantity(
-			id,
-			quantity
-		);
+		result = await itemServices.decQuantity(id, quantity);
 	}
 	if (!result) res.sendStatus(404);
 	res.status(201).send(result);
@@ -148,19 +142,39 @@ app.get('/items/', authenticateToken, async (req: any, res: any) => {
 	const uid = user._id;
 	const id = req.query['id'];
 	const itemName = req.query['itemName'];
-	if (uid && !id && !itemName) { // get all items from a user
+	if (uid && !id && !itemName) {
+		// get all items from a user
 		result = await itemServices.getItemsFromUser(uid);
-	} else if (uid && !id && itemName) { // get an item by name
+	} else if (uid && !id && itemName) {
+		// get an item by name
 		result = await itemServices.findItemByName(itemName, uid);
-	} else if (id && !itemName) { // get an item by id
+	} else if (id && !itemName) {
+		// get an item by id
 		result = await itemServices.findItemById(id);
 	}
-	if (!result) res.sendStatus(404);
-	res.status(201).send(result);
+	if (result) {
+		res.status(201).send(result);
+	} else {
+		res.status(404).send('item not found');
+	}
 });
 
-// update an item
-app.patch('/items/:id', authenticateToken, async (req: any, res: any) => {
+app.delete('/items/', async (req: any, res: any) => {
+	const id = req.query['id'];
+	console.log(id);
+	const result2 = await itemServices.deleteItem(id);
+	res.status(201).send(result2);
+});
+app.delete('/users/:id', async (req: any, res: any) => {
+	const id = req.params['id'];
+	if (await userServices.deleteUserById(id)) {
+		res.status(204).end();
+	} else {
+		res.status(404).send('Resource not found.');
+	}
+});
+
+app.patch('/items/:id', async (req: any, res: any) => {
 	const { id } = req.params;
 	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
 	try {
@@ -310,7 +324,7 @@ app.get('/sort/', authenticateToken, async (req: any, res: any) => {
 });
 
 // User Authentication
-app.get('/posts', authenticateToken, async (req : any, res : any) => {
+app.get('/posts', authenticateToken, async (req: any, res: any) => {
 	const user = await userServices.findUserByUsername(req.user.username);
 	res.json(user);
 });
@@ -318,16 +332,21 @@ app.get('/posts', authenticateToken, async (req : any, res : any) => {
 app.post('/token', async (req: any, res: any) => {
 	const refreshToken = req.body.token;
 	if (refreshToken == null) return res.sendStatus(401);
-	if (!await refreshTokenServices.getRefreshToken(refreshToken)) return res.sendStatus(403);
-	jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: any, user: any) => {
-		if (err) return res.sendStatus(403);
-		const user2 = {
-			username: user.username,
-			password: user.password
+	if (!(await refreshTokenServices.getRefreshToken(refreshToken)))
+		return res.sendStatus(403);
+	jwt.verify(
+		refreshToken,
+		process.env.REFRESH_TOKEN_SECRET,
+		(err: any, user: any) => {
+			if (err) return res.sendStatus(403);
+			const user2 = {
+				username: user.username,
+				password: user.password,
+			};
+			const accessToken = generateAccessToken(user2);
+			res.json({ accessToken: accessToken });
 		}
-		const accessToken = generateAccessToken(user2);
-		res.json({accessToken: accessToken});
-	})
+	);
 });
 
 app.delete('/logout', async (req: any, res: any) => {
@@ -340,23 +359,23 @@ app.post('/login', async (req: any, res: any) => {
 	const password = req.body.password;
 	const user = await userServices.findUserByUserAndPass(username, password);
 	if (user == null) {
-		return res.status(400).send("Cannot find user");
+		return res.status(400).send('Cannot find user');
 	}
 	try {
 		const user2 = {
 			username: username,
-			password: password
-		}
+			password: password,
+		};
 		const accessToken = generateAccessToken(user2);
 		const refreshToken = jwt.sign(user2, process.env.REFRESH_TOKEN_SECRET);
 		await refreshTokenServices.addRefreshToken(refreshToken);
-		res.json({ accessToken : accessToken, refreshToken: refreshToken});
+		res.json({ accessToken: accessToken, refreshToken: refreshToken });
 	} catch {
 		res.status(500).send();
 	}
 });
 
-function authenticateToken(req : any, res : any, next : any) {
+function authenticateToken(req: any, res: any, next: any) {
 	const authHeader = req.headers['authorization'];
 	const token = authHeader && authHeader.split(' ')[1];
 	if (token == null) return res.sendStatus(401);
@@ -364,9 +383,9 @@ function authenticateToken(req : any, res : any, next : any) {
 		if (err) return res.sendStatus(403);
 		req.user = user;
 		next();
-	})
+	});
 }
 
-function generateAccessToken(user : any) {
-	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m'});
+function generateAccessToken(user: any) {
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 }
