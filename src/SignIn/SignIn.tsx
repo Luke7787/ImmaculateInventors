@@ -35,8 +35,13 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 			);
 			if (response.status === 200) {
 				setSignInErr(false);
-				console.log(response.data.user[0]._id);
-				login(response.data.user[0]._id);
+				console.log(response);
+				login(
+					response.data.user[0]._id,
+					response.data.user[0].username,
+					response.data.user[0].email,
+					response.data.user[0].country
+				);
 				navigate('/inventory');
 			}
 		} catch (err) {

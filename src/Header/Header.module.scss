@@ -14,11 +14,17 @@ body {
 	align-items: center;
 	border-bottom: 3px #aaa7a7 solid;
 	padding: 10px 25px;
+	height: 55px;
 }
 
 .headerLeft {
 	position: absolute;
 	padding: 10px 20px;
+	z-index: 1000;
+
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 h1 {
@@ -30,20 +36,24 @@ h1 {
 }
 
 .logoImage {
-	height: 40px;
+	height: 55px;
 	vertical-align: middle;
 }
 
 .logoImage1 {
 	height: 55px;
 	vertical-align: middle;
+	position: absolute;
+	right: 16px;
 }
 
 .headerCenter {
+	left: 0px;
+	right: 0px;
 	width: 100%;
+	position: absolute;
 	display: flex;
 	justify-content: center;
-	text-align: right;
 	padding: 10px 20px;
 
 	.signInButton {

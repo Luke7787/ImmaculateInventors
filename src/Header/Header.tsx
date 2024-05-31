@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LoginIcon from '@mui/icons-material/Login';
 import { useAuth } from '../hooks/useAuth.ts';
 
 const Header = () => {
@@ -21,7 +22,7 @@ const Header = () => {
 		phoneNumber: '',
 		about: '',
 	});
-	const { logout, getUser } = useAuth();
+	const { logout, getUser, getUsername, getEmail, getCountry } = useAuth();
 	const [profilePicModalOpen, setProfilePicModalOpen] =
 		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<string>(
@@ -64,8 +65,8 @@ const Header = () => {
 
 	return (
 		<nav className={styles.header}>
-			<div className={styles.headerLeft}>
-				<div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+			<div className={styles.headerLeft} onClick={() => navigate('/')}>
+				<div style={{ cursor: 'pointer' }}>
 					<h1>My Inventory</h1>
 				</div>
 				<img
@@ -96,97 +97,45 @@ const Header = () => {
 						>
 							INVENTORY
 						</Button>
-						<Button
-							className={styles.signInButton}
-							onClick={() => {
-								logout();
-								navigate('/');
-							}}
-						>
-							SIGN OUT
-						</Button>
 					</>
 				) : (
-					<>
-						<Button
-							className={`${styles.signInButton}`}
-							onClick={() => setSignInOpen(true)}
-						>
-							SIGN IN
-						</Button>
-						<Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
-							{!createAccountOpen ? (
-								<Box className={styles.signInModal}>
-									<div className={styles.modalHeader}></div>
-									<CloseIcon
-										onClick={() => setSignInOpen(false)}
-										className={styles.closeIcon}
-									/>
-									<SignIn setCreateAccountOpen={setCreateAccountOpen} />
-								</Box>
-							) : (
-								<Box className={styles.createAccountModal}>
-									<div className={styles.modalHeader}>
-										<img
-											src="/images/part1.png"
-											alt="Decorative"
-											className={styles.loginNewImage}
-										/>
-										<img
-											src="/images/part2.png"
-											alt="Decorative"
-											className={styles.loginNewImage2}
-										/>
-										<h1>Create Account</h1>
-									</div>
-									<CloseIcon
-										onClick={() => setCreateAccountOpen(false)}
-										className={styles.closeIcon}
-									/>
-									<CreateAccount />
-								</Box>
-							)}
-						</Modal>
-					</>
+					<></>
 				)}
 			</div>
-			{getUser() ? (
-				<>
-					<img
-						src={profilePic}
-						alt="Logo"
-						className={styles.logoImage1}
-						onClick={handleOpenSideModal}
-						style={{ cursor: 'pointer' }}
-					/>
-					<Modal
-						open={sideModalOpen}
-						onClose={handleCloseSideModal}
-						closeAfterTransition
-						BackdropComponent={Backdrop}
-						BackdropProps={{
-							timeout: 500,
-						}}
-					>
-						<Slide
-							direction="left"
-							in={sideModalOpen}
-							mountOnEnter
-							unmountOnExit
-						>
-							<Box className={styles.sideModal}>
-								<CloseIcon
-									onClick={handleCloseSideModal}
-									className={styles.closeIcon}
-								/>
-								<div className={styles.sideModalContent}>
-									<img
-										src={profilePic}
-										alt="Profile"
-										className={styles.profileImage}
-										onClick={handleProfilePicClick}
-										style={{ cursor: 'pointer' }}
-									/>
+
+			<img
+				src={profilePic}
+				alt="Logo"
+				className={styles.logoImage1}
+				onClick={handleOpenSideModal}
+				style={{ cursor: 'pointer' }}
+			/>
+			<Modal
+				open={sideModalOpen}
+				onClose={handleCloseSideModal}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+			>
+				<Slide direction="left" in={sideModalOpen} mountOnEnter unmountOnExit>
+					<Box className={styles.sideModal}>
+						<CloseIcon
+							onClick={handleCloseSideModal}
+							className={styles.closeIcon}
+						/>
+						<div className={styles.sideModalContent}>
+							<img
+								src={profilePic}
+								alt="Profile"
+								className={styles.profileImage}
+								onClick={handleProfilePicClick}
+								style={{ cursor: 'pointer' }}
+							/>
+
+							{getUser() ? (
+								<>
 									{isEditing ? (
 										<>
 											<TextField
@@ -234,14 +183,16 @@ const Header = () => {
 										</>
 									) : (
 										<>
-											<h2 onClick={handleEditClick}>{userInfo.username}</h2>
+											<h2 onClick={handleEditClick}>
+												{getUsername().replace(/"/g, '')}
+											</h2>
 											<p onClick={handleEditClick}>
 												<span className={styles.label}>Email:</span>{' '}
-												{userInfo.email}
+												{getEmail().replace(/"/g, '')}
 											</p>
 											<p onClick={handleEditClick}>
-												<span className={styles.label}>Phone number:</span>{' '}
-												{userInfo.phoneNumber}
+												<span className={styles.label}>Location:</span>{' '}
+												{getCountry().replace(/"/g, '')}
 											</p>
 											<p onClick={handleEditClick}>
 												<span className={styles.label}>About me:</span>{' '}
@@ -249,9 +200,17 @@ const Header = () => {
 											</p>
 										</>
 									)}
-									<div className={styles.spacer}></div>
-									<hr className={styles.divider} />
-									<div className={styles.menuContainer}>
+								</>
+							) : (
+								<>
+									<h2>Please Sign In Below</h2>
+								</>
+							)}
+							<div className={styles.spacer}></div>
+							<hr className={styles.divider} />
+							<div className={styles.menuContainer}>
+								{getUser() ? (
+									<>
 										<div className={styles.menuItem}>
 											<AccountCircleIcon className={styles.menuIcon} />
 											<span>Friends</span>
@@ -260,135 +219,183 @@ const Header = () => {
 											<SettingsIcon className={styles.menuIcon} />
 											<span>Settings</span>
 										</div>
-										<div className={styles.menuItem}>
+										<div
+											className={styles.menuItem}
+											onClick={() => {
+												logout();
+												navigate('/');
+											}}
+										>
 											<ExitToAppIcon className={styles.menuIcon} />
 											<span>Log Out</span>
 										</div>
+									</>
+								) : (
+									<div
+										className={styles.menuItem}
+										onClick={() => setSignInOpen(true)}
+									>
+										<LoginIcon className={styles.menuIcon} />
+										<span>Sign In</span>
+										<Modal
+											open={signInOpen}
+											onClose={() => setSignInOpen(false)}
+										>
+											{!createAccountOpen ? (
+												<Box className={styles.signInModal}>
+													<div className={styles.modalHeader}></div>
+													<CloseIcon
+														onClick={() => setSignInOpen(false)}
+														className={styles.closeIcon}
+													/>
+													<SignIn setCreateAccountOpen={setCreateAccountOpen} />
+												</Box>
+											) : (
+												<Box className={styles.createAccountModal}>
+													<div className={styles.modalHeader}>
+														<img
+															src="/images/part1.png"
+															alt="Decorative"
+															className={styles.loginNewImage}
+														/>
+														<img
+															src="/images/part2.png"
+															alt="Decorative"
+															className={styles.loginNewImage2}
+														/>
+														<h1>Create Account</h1>
+													</div>
+													<CloseIcon
+														onClick={() => setCreateAccountOpen(false)}
+														className={styles.closeIcon}
+													/>
+													<CreateAccount />
+												</Box>
+											)}
+										</Modal>
 									</div>
-								</div>
-							</Box>
-						</Slide>
-					</Modal>
-					<Modal
-						open={profilePicModalOpen}
-						onClose={() => setProfilePicModalOpen(false)}
-						closeAfterTransition
-						BackdropComponent={Backdrop}
-						BackdropProps={{
-							timeout: 500,
-						}}
-					>
-						<Slide
-							direction="up"
-							in={profilePicModalOpen}
-							mountOnEnter
-							unmountOnExit
-						>
-							<Box className={styles.profilePicModal}>
-								<CloseIcon
-									onClick={() => setProfilePicModalOpen(false)}
-									className={styles.closeIcon}
-								/>
-								<div className={styles.profilePicGallery}>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic1.png`}
-										alt="Profile 1"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic1.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic2.png`}
-										alt="Profile 2"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic2.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic3.png`}
-										alt="Profile 3"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic3.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic4.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic4.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic5.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic5.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic6.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic6.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic7.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic7.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic8.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic8.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic9.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic9.png`
-											)
-										}
-									/>
-									<img
-										src={`${process.env.PUBLIC_URL}/images/pic10.png`}
-										alt="Profile 4"
-										onClick={() =>
-											handleProfilePicSelect(
-												`${process.env.PUBLIC_URL}/images/pic10.png`
-											)
-										}
-									/>
-									{/* Add more images as needed */}
-								</div>
-							</Box>
-						</Slide>
-					</Modal>
-				</>
-			) : (
-				<></>
-			)}
+								)}
+							</div>
+						</div>
+					</Box>
+				</Slide>
+			</Modal>
+			<Modal
+				open={profilePicModalOpen}
+				onClose={() => setProfilePicModalOpen(false)}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+			>
+				<Slide
+					direction="up"
+					in={profilePicModalOpen}
+					mountOnEnter
+					unmountOnExit
+				>
+					<Box className={styles.profilePicModal}>
+						<CloseIcon
+							onClick={() => setProfilePicModalOpen(false)}
+							className={styles.closeIcon}
+						/>
+						<div className={styles.profilePicGallery}>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic1.png`}
+								alt="Profile 1"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic1.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic2.png`}
+								alt="Profile 2"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic2.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic3.png`}
+								alt="Profile 3"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic3.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic4.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic4.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic5.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic5.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic6.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic6.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic7.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic7.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic8.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic8.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic9.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic9.png`
+									)
+								}
+							/>
+							<img
+								src={`${process.env.PUBLIC_URL}/images/pic10.png`}
+								alt="Profile 4"
+								onClick={() =>
+									handleProfilePicSelect(
+										`${process.env.PUBLIC_URL}/images/pic10.png`
+									)
+								}
+							/>
+							{/* Add more images as needed */}
+						</div>
+					</Box>
+				</Slide>
+			</Modal>
 		</nav>
 	);
 };
