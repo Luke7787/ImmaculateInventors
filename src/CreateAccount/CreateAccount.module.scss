@@ -1,11 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
+
 .button {
-	background-color: #6a4b4b;
-	border-radius: 6px;
-	color: #ffffff;
-	width: 100px;
-	height: 40px;
-	margin-top: 28px;
+	background-color: #f0e793;
+	border-radius: 90px;
+	color: black;
+	border: 0px #838383 solid;
+	width: 150px;
+	height: 55px;
+	margin-top: 10px;
 	margin-bottom: 12px;
+	font-family: 'Sniglet', cursive;
+	font-size: 24px;
 
 	&:hover {
 		cursor: pointer;
@@ -13,6 +18,8 @@
 }
 
 .container {
+	position: relative;
+	overflow: hidden;
 	padding: 10px 0px;
 	display: flex;
 	justify-content: center;
@@ -20,7 +27,7 @@
 
 .grid {
 	display: grid;
-	grid-template-rows: repeat(5, 75px);
+	grid-template-rows: repeat(5, 45px);
 	grid-template-columns: repeat(4, 130px);
 	grid-template-areas:
 		'first first last last'
@@ -29,9 +36,21 @@
 		'user user user user'
 		'pass pass confirmPass confirmPass';
 	gap: 35px;
-	input {
-		background-color: #e4e4e4;
-		border-radius: 6px;
+
+	.MuiFormControl-root .MuiInputBase-input,
+	.MuiFormControl-root .MuiInputBase-root {
+		background-color: #cdcdcd !important; // Background color for input field
+		border-radius: 90px !important; // Rounded borders for input field
+		font-family: 'Sniglet', cursive !important; // Font style for input text
+		color: white !important; // Text color for input text
+		font-size: 25px !important; // Text size for input text
+		box-shadow: none !important; // No shadow for any text field
+		overflow: visible;
+	}
+
+	.MuiFormControl-root .MuiInput-underline:before,
+	.MuiFormControl-root .MuiInput-underline:hover:not(.Mui-disabled):before {
+		box-shadow: none !important;
 	}
 
 	p {
@@ -47,40 +66,238 @@
 
 .first {
 	grid-area: first;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .last {
 	grid-area: last;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .email {
 	grid-area: email;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .country {
 	grid-area: country;
+	margin-top: 5px;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .state {
 	grid-area: state;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .city {
 	grid-area: city;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .zip {
 	grid-area: zip;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .user {
 	grid-area: user;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .pass {
 	grid-area: pass;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
 }
 
 .confirmPass {
 	grid-area: confirmPass;
+
+	* {
+		border: none !important;
+	}
+
+	*::before,
+	*::after {
+		border: none !important;
+	}
+}
+
+label {
+	color: white;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
+}
+
+.customRenderValue {
+	color: black;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
+}
+
+.customRenderValue2 {
+	color: white;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
+}
+
+.customInput {
+	background-color: #cdcdcd !important;
+	border-radius: 90px !important;
+	font-family: 'Sniglet', cursive !important;
+	color: white !important;
+	font-size: 25px !important;
+	box-shadow: none !important;
+	margin-top: 7.4px;
+	height: 50px;
+	padding-left: 5px;
+}
+
+.customInputLabel {
+	color: black;
+	font-size: 23.4px;
+	font-family: 'Sniglet', cursive;
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.container {
+	position: relative; // Essential for absolute positioning context
+	overflow: hidden; // Ensures nothing spills outside the container
+	padding: 10px 0px;
+	display: flex;
+	justify-content: center;
+
+	.bgImage {
+		position: absolute;
+		top: 168px; // 168
+		left: 35px; // Adjust as necessary, e.g., `50px` to move it right
+		width: 170px; // Full width of the container
+		height: 70px; // Maintain aspect ratio
+		z-index: -1; // Behind all other content
+	}
+}
+
+.notification {
+	position: fixed;
+	top: 7%;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 20px 30px;
+	border-radius: 10px;
+	color: white;
+	font-size: 20px;
+	font-family: 'Arial', sans-serif;
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	animation:
+		fadeInOut 5s forwards,
+		popIn 0.5s;
+}
+
+.notification.success {
+	background-color: #4caf50; /* Green */
+}
+
+.notification.error {
+	background-color: #f44336; /* Red */
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes popIn {
+	0% {
+		transform: translateX(-50%) scale(0.5);
+	}
+	50% {
+		transform: translateX(-50%) scale(1.1);
+	}
+	100% {
+		transform: translateX(-50%) scale(1);
+	}
 }

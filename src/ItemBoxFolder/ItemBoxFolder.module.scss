@@ -15,6 +15,10 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+.noShow {
+	visibility: hidden !important;
+}
+
 .outerContainer {
 	display: flex;
 	flex-direction: column;
@@ -105,11 +109,13 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 6px;
 
 	&:hover {
 		background-color: #fb9c9c;
 	}
 }
+
 .goBackButton {
 	padding-left: 15px;
 	background-color: transparent;
@@ -209,8 +215,12 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
+	border-radius: 5px !important;
 	height: 65vh;
 	transition: transform 0.3s;
+	& > img {
+		border-radius: 5px !important;
+	}
 
 	&:hover {
 		transform: scale(1.025);
@@ -225,15 +235,17 @@
 	height: 25%;
 	bottom: 0;
 	z-index: 1000;
+	border-bottom-left-radius: 5px !important;
+	border-bottom-right-radius: 5px !important;
 
 	* > p {
 		text-align: center;
-		font-size: 32px;
+		font-size: 1.6rem;
 	}
 
 	& > p {
 		text-align: center;
-		font-size: 24px;
+		font-size: 1.2rem;
 	}
 }
 

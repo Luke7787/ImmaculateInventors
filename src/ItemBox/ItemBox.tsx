@@ -28,35 +28,12 @@ const ItemBox = ({
 }: ItemBoxProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
-	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const { getUser } = useAuth();
 	return (
 		<>
-			<div
-				className={classNames(
-					styles.filterMode,
-					isFilterMode && styles.expandFilter
-				)}
-			>
-				{isFilterMode && (
-					<>
-						<LeftOptionNav />
-					</>
-				)}
-				<div
-					className={styles.closeSection}
-					onClick={() => setIsFilterMode(!isFilterMode)}
-				>
-					{isFilterMode ? (
-						<KeyboardDoubleArrowLeftIcon />
-					) : (
-						<KeyboardDoubleArrowRightIcon />
-					)}
-				</div>
-			</div>
-
 			<div className={styles.outerContainer}>
+				<div className={styles.boxHeader}></div>
 				<div className={styles.boxHeader}>
 					<button
 						className={classNames(styles.goBackButton)}
@@ -66,14 +43,6 @@ const ItemBox = ({
 							src="https://static.thenounproject.com/png/1881199-200.png"
 							height="80%"
 						/>
-					</button>
-				</div>
-				<div className={styles.boxHeader}>
-					<button
-						className={styles.addButton}
-						onClick={() => setIsFilterMode(!isFilterMode)}
-					>
-						Filter Items
 					</button>
 					<p>Your Items</p>
 					<button
@@ -124,6 +93,9 @@ const ItemBox = ({
 									<p>{item.name}</p>
 								</div>
 								<p>Qty: {item.quantity}</p>
+								<p>
+									<i>{item.note}</i>
+								</p>
 							</div>
 						</div>
 					))}

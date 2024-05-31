@@ -56,7 +56,7 @@ const users = {
 	users_list: [],
 };
 
-app.listen(port || process.env.PORT, () => {
+app.listen(process.env.PORT || port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 
@@ -187,6 +187,7 @@ app.get('/items/', async (req: any, res: any) => {
 
 app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
+	console.log(id);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
 });
