@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Header.module.scss';
 import { Box, Button, Modal, Slide, Backdrop, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,6 +27,10 @@ const Header = () => {
 		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<string>(
 		`${process.env.PUBLIC_URL}/images/penguin.png`
+	);
+
+	const [logoSrc, setLogoSrc] = useState<string>(
+		`${process.env.PUBLIC_URL}/images/newlogo.png`
 	);
 
 	const navigate = useNavigate();
@@ -63,6 +67,19 @@ const Header = () => {
 		setProfilePicModalOpen(false);
 	};
 
+	const handleLogoClick = () => {
+		setLogoSrc((prevLogoSrc) =>
+			prevLogoSrc === `${process.env.PUBLIC_URL}/images/newlogo.png`
+				? `${process.env.PUBLIC_URL}/images/minecraft.png`
+				: `${process.env.PUBLIC_URL}/images/newlogo.png`
+		);
+		setProfilePic((prevProfilePic) =>
+			prevProfilePic === `${process.env.PUBLIC_URL}/images/penguin.png`
+				? `${process.env.PUBLIC_URL}/images/creeper.png`
+				: `${process.env.PUBLIC_URL}/images/penguin.png`
+		);
+	};
+
 	return (
 		<nav className={styles.header}>
 			<div className={styles.headerLeft} onClick={() => navigate('/')}>
@@ -70,9 +87,10 @@ const Header = () => {
 					<h1>My Inventory</h1>
 				</div>
 				<img
-					src={`${process.env.PUBLIC_URL}/images/newlogo.png`}
+					src={logoSrc}
 					alt="Logo"
 					className={styles.logoImage}
+					onClick={handleLogoClick}
 				/>
 			</div>
 
