@@ -249,3 +249,53 @@ label {
 		z-index: -1; // Behind all other content
 	}
 }
+
+.notification {
+    position: fixed;
+    top: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 30px;
+    border-radius: 10px;
+    color: white;
+    font-size: 20px;
+    font-family: 'Arial', sans-serif;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 5s forwards, popIn 0.5s;
+}
+
+.notification.success {
+    background-color: #4caf50; /* Green */
+}
+
+.notification.error {
+    background-color: #f44336; /* Red */
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: translateX(-50%) scale(0.5);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.1);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+}
