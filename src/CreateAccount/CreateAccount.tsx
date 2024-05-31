@@ -40,6 +40,12 @@ const CreateAccount = () => {
 	const [cityErr, setCityErr] = useState<string>('');
 	const [zipErr, setZipErr] = useState<string>('');
 	const [createSubmitted, setCreateSubmitted] = useState<boolean>(false);
+	const [notificationVisible, setNotificationVisible] =
+		useState<boolean>(false);
+	const [notificationMessage, setNotificationMessage] = useState<string>('');
+	const [notificationType, setNotificationType] = useState<'success' | 'error'>(
+		'success'
+	);
 
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
@@ -189,8 +195,22 @@ const CreateAccount = () => {
 						}
 					);
 					console.log(response);
+					setNotificationVisible(false); // Reset visibility state
+					setTimeout(() => {
+						setNotificationMessage('Account successfully created!');
+						setNotificationType('success');
+						setNotificationVisible(true);
+					}, 100); // Small delay to ensure state reset
 				} catch (err) {
 					console.error('err', err);
+					setNotificationVisible(false); // Reset visibility state
+					setTimeout(() => {
+						setNotificationMessage(
+							'There was an error creating your account. Please try again.'
+						);
+						setNotificationType('error');
+						setNotificationVisible(true);
+					}, 100); // Small delay to ensure state reset
 				}
 				setData({
 					firstName: '',
@@ -539,9 +559,18 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 
-					<button className={styles.button} type="submit">
-						Create
-					</button>
+					<div className={styles.buttonContainer}>
+						<button className={styles.button} type="submit">
+							Create
+						</button>
+					</div>
+					{notificationVisible && (
+						<div
+							className={`${styles.notification} ${styles[notificationType]}`}
+						>
+							{notificationMessage}
+						</div>
+					)}
 				</div>
 			</div>
 		</form>
