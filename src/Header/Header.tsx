@@ -139,30 +139,6 @@ const Header = () => {
 									{isEditing ? (
 										<>
 											<TextField
-												name="username"
-												value={userInfo.username}
-												onChange={handleInputChange}
-												className={styles.textField}
-												label="Username"
-												variant="outlined"
-											/>
-											<TextField
-												name="email"
-												value={userInfo.email}
-												onChange={handleInputChange}
-												className={styles.textField}
-												label="Email"
-												variant="outlined"
-											/>
-											<TextField
-												name="phoneNumber"
-												value={userInfo.phoneNumber}
-												onChange={handleInputChange}
-												className={styles.textField}
-												label="Phone number"
-												variant="outlined"
-											/>
-											<TextField
 												name="about"
 												value={userInfo.about}
 												onChange={handleInputChange}
@@ -187,12 +163,10 @@ const Header = () => {
 												{getUsername().replace(/"/g, '')}
 											</h2>
 											<p onClick={handleEditClick}>
-												<span className={styles.label}>Email:</span>{' '}
-												{getEmail().replace(/"/g, '')}
+												<span>Email:</span> {getEmail().replace(/"/g, '')}
 											</p>
 											<p onClick={handleEditClick}>
-												<span className={styles.label}>Location:</span>{' '}
-												{getCountry().replace(/"/g, '')}
+												<span>Location:</span> {getCountry().replace(/"/g, '')}
 											</p>
 											<p onClick={handleEditClick}>
 												<span className={styles.label}>About me:</span>{' '}
@@ -231,12 +205,14 @@ const Header = () => {
 										</div>
 									</>
 								) : (
-									<div
-										className={styles.menuItem}
-										onClick={() => setSignInOpen(true)}
-									>
-										<LoginIcon className={styles.menuIcon} />
-										<span>Sign In</span>
+									<>
+										<div
+											className={styles.menuItem}
+											onClick={() => setSignInOpen(true)}
+										>
+											<LoginIcon className={styles.menuIcon} />
+											<span>Sign In</span>
+										</div>
 										<Modal
 											open={signInOpen}
 											onClose={() => setSignInOpen(false)}
@@ -273,7 +249,7 @@ const Header = () => {
 												</Box>
 											)}
 										</Modal>
-									</div>
+									</>
 								)}
 							</div>
 						</div>

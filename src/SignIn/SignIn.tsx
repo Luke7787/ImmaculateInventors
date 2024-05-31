@@ -1,4 +1,4 @@
-import styles from './SignIn.module.css';
+import styles from './SignIn.module.scss';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
@@ -79,7 +79,8 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				</div>
 				{signInErr && (
 					<p className={styles.signInErr}>
-						Your username or password is incorrect. Please try again.
+						Your username or password is incorrect.
+						<br /> Please try again.
 					</p>
 				)}
 				<button className={styles.button} type="submit">

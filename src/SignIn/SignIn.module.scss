@@ -97,9 +97,11 @@ input::placeholder {
 }
 
 .signInErr {
+	text-align: center;
 	color: red;
 	position: absolute;
-	padding: 12px 0px;
+	bottom: 20px;
+	padding-left: 12px;
 	margin: 0;
 }
 
