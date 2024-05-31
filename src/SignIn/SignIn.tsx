@@ -74,18 +74,29 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						Your username or password is incorrect. Please try again.
 					</p>
 				)}
-				<button className={styles.button} type="submit">Login</button>
-                <div className={styles.signUpSection}>
-                    <p className={styles.signUpGreeting}>Hey, new friend!</p>
-                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey!</p>
-                    <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
-                        Sign Up
-                    </button>
-					<img src="/images/SunFlower.png" alt="Decorative" className={styles.loginNewImage} />
-                </div>
-            </div>
-        </form>
-    );
+				<button className={styles.button} type="submit">
+					Login
+				</button>
+				<div className={styles.signUpSection}>
+					<p className={styles.signUpGreeting}>Hey, new friend!</p>
+					<p className={styles.signUpMessage}>
+						New to the Village? Sign Up and start your journey!
+					</p>
+					<button
+						className={styles.signUpLink}
+						onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}
+					>
+						Sign Up
+					</button>
+					<img
+						src="/images/SunFlower.png"
+						alt="Decorative"
+						className={styles.loginNewImage}
+					/>
+				</div>
+			</div>
+		</form>
+	);
 };
 
 export default SignIn;

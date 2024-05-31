@@ -15,6 +15,10 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+.noShow {
+	visibility: hidden !important;
+}
+
 .outerContainer {
 	display: flex;
 	flex-direction: column;
@@ -105,11 +109,13 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 6px;
 
 	&:hover {
 		background-color: #fb9c9c;
 	}
 }
+
 .goBackButton {
 	padding-left: 15px;
 	background-color: transparent;
@@ -228,12 +234,12 @@
 
 	* > p {
 		text-align: center;
-		font-size: 32px;
+		font-size: 1.6rem;
 	}
 
 	& > p {
 		text-align: center;
-		font-size: 24px;
+		font-size: 1.2rem;
 	}
 }
 

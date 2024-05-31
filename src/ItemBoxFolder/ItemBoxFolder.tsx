@@ -21,40 +21,13 @@ const ItemBoxFolder = ({
 }: ItemBoxFolderProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
-	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const { getUser } = useAuth();
 	return (
 		<>
-			<div
-				className={classNames(
-					styles.filterMode,
-					isFilterMode && styles.expandFilter
-				)}
-			>
-				{isFilterMode && (
-					<>
-						<LeftOptionNav />
-					</>
-				)}
-				<div
-					className={styles.closeSection}
-					onClick={() => setIsFilterMode(!isFilterMode)}
-				>
-					{isFilterMode ? (
-						<KeyboardDoubleArrowLeftIcon />
-					) : (
-						<KeyboardDoubleArrowRightIcon />
-					)}
-				</div>
-			</div>
-
 			<div className={styles.outerContainer}>
 				<div className={styles.boxHeader}>
-					<button
-						className={styles.addButton}
-						onClick={() => setIsFilterMode(!isFilterMode)}
-					>
+					<button className={classNames(styles.addButton, styles.noShow)}>
 						Filter Folders
 					</button>
 					<p>Your Folders</p>

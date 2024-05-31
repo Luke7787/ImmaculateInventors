@@ -1,160 +1,160 @@
 @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
 
 input::placeholder {
-    color: white; /* Making placeholder text white */
-    font-family: 'Sniglet', cursive; /* Ensuring the font family is Sniglet */
+	color: white; /* Making placeholder text white */
+	font-family: 'Sniglet', cursive; /* Ensuring the font family is Sniglet */
 }
 
 .body {
-    padding: 12px 42px;
+	padding: 12px 42px;
 
-    & > p {
-        font-size: 16px; /* Default size for other <p> tags, if any */
-    }
+	& > p {
+		font-size: 16px; /* Default size for other <p> tags, if any */
+	}
 
-    a {
-        text-decoration: underline;
-        color: blue;
-        cursor: pointer;
-    }
+	a {
+		text-decoration: underline;
+		color: blue;
+		cursor: pointer;
+	}
 }
 
 .username {
-    font-size: 18px;
-    position: relative;
-    z-index: 2;
+	font-size: 18px;
+	position: relative;
+	z-index: 2;
 
-    p {
-        font-size: 48px; /* New font size for "Sign In" */
-        font-family: 'Sniglet', cursive; /* New font family "Sniglet" */
+	p {
+		font-size: 48px; /* New font size for "Sign In" */
+		font-family: 'Sniglet', cursive; /* New font family "Sniglet" */
 		margin-left: 85px;
-        margin-top: 70px;
-        margin-bottom: 50px;
-    }
+		margin-top: 70px;
+		margin-bottom: 50px;
+	}
 
-    input {
-        background-image: url('../../public/images/User.png');
-        background-position: 27.5px center;
-        background-size: 22px 22px;
-        background-repeat: no-repeat;
-        background-color: #CDCDCD;
-        border-radius: 90px;
-        padding-top: 7px;
-        padding-left: 65px;
-        border: 0px #838383 solid;
+	input {
+		background-image: url('../../public/images/User.png');
+		background-position: 27.5px center;
+		background-size: 22px 22px;
+		background-repeat: no-repeat;
+		background-color: #cdcdcd;
+		border-radius: 90px;
+		padding-top: 7px;
+		padding-left: 65px;
+		border: 0px #838383 solid;
 		font-family: 'Sniglet', cursive;
-        width: 250px;
-        height: 55px;
+		width: 250px;
+		height: 55px;
 		font-size: 25px;
-        margin-bottom: -5px;
+		margin-bottom: -5px;
 		color: white;
-    }
+	}
 }
 
 .password {
-    font-size: 18px;
-    position: relative;
-    z-index: 2;
-    input {
-        background-image: url('../../public/images/lockIcon.png');
-        background-position: 25px center;
-        background-size: 28px 28px;
-        background-repeat: no-repeat;
-        background-color: #CDCDCD;
-        border-radius: 90px;
-        padding-top: 7px;
-        padding-left: 65px;
-        border: 0px #838383 solid;
+	font-size: 18px;
+	position: relative;
+	z-index: 2;
+	input {
+		background-image: url('../../public/images/lockIcon.png');
+		background-position: 25px center;
+		background-size: 28px 28px;
+		background-repeat: no-repeat;
+		background-color: #cdcdcd;
+		border-radius: 90px;
+		padding-top: 7px;
+		padding-left: 65px;
+		border: 0px #838383 solid;
 		font-family: 'Sniglet', cursive;
-        width: 250px;
-        height: 55px;
+		width: 250px;
+		height: 55px;
 		font-size: 25px;
 		color: white;
-    }
+	}
 }
 
 .button {
-    position: relative;
-    z-index: 2;
-    background-color: #CDCDCD;
-    border-radius: 90px;
+	position: relative;
+	z-index: 2;
+	background-color: #cdcdcd;
+	border-radius: 90px;
 	border: 0px #838383 solid;
-    color: #FBF29C;
-    width: 120px;
-    height: 55px;
-    margin-left: 90px;
-    margin-bottom: 12px;
+	color: #fbf29c;
+	width: 120px;
+	height: 55px;
+	margin-left: 90px;
+	margin-bottom: 12px;
 	font-family: 'Sniglet', cursive;
 	font-size: 24px;
 
-    &:hover {
-        cursor: pointer;
-    }
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .button:hover {
-    background-color: #bfbfbf; /* Slightly darker on hover to indicate interactivity */
+	background-color: #bfbfbf; /* Slightly darker on hover to indicate interactivity */
 }
 
 .signInErr {
-    color: red;
-    position: absolute;
-    padding: 12px 0px;
-    margin: 0;
+	color: red;
+	position: absolute;
+	padding: 12px 0px;
+	margin: 0;
 }
 
 .forgotPassword {
-    color: #797070; /* Adjust color as needed */
-    font-size: 16px;
-    width: 100%;
-    top: 60px;
-    margin-left: 75px;
-    font-family: 'Sniglet', cursive;
+	color: #797070; /* Adjust color as needed */
+	font-size: 16px;
+	width: 100%;
+	top: 60px;
+	margin-left: 75px;
+	font-family: 'Sniglet', cursive;
 }
 
 .signUpGreeting {
-    color: #000000;
-    font-size: 45px;
-    margin-left: 404px;
-    margin-top: -320px;
-    font-family: 'Sniglet', cursive;
-    white-space: nowrap;
+	color: #000000;
+	font-size: 45px;
+	margin-left: 404px;
+	margin-top: -320px;
+	font-family: 'Sniglet', cursive;
+	white-space: nowrap;
 }
 
 .signUpMessage {
-    color: #797070;
-    font-size: 16.5px;
-    font-family: 'Sniglet', cursive;
-    margin-top: -40px;
-    margin-left: 405px;
+	color: #797070;
+	font-size: 16.5px;
+	font-family: 'Sniglet', cursive;
+	margin-top: -40px;
+	margin-left: 405px;
 }
 
 .signUpLink {
-    position: relative;
-    z-index: 2;
-    background-color: #CDCDCD;
-    border-radius: 90px;
-    border: none; 
-    color: #FBF29C;
-    width: 120px;
-    height: 55px;
-    margin-left: 490px;
-    margin-bottom: 12px;
-    font-family: 'Sniglet', cursive;
-    font-size: 24px;
-    text-align: center; 
-    cursor: pointer;
+	position: relative;
+	z-index: 2;
+	background-color: #cdcdcd;
+	border-radius: 90px;
+	border: none;
+	color: #fbf29c;
+	width: 120px;
+	height: 55px;
+	margin-left: 490px;
+	margin-bottom: 12px;
+	font-family: 'Sniglet', cursive;
+	font-size: 24px;
+	text-align: center;
+	cursor: pointer;
 }
 
 .signUpLink:hover {
-    background-color: #bfbfbf;
+	background-color: #bfbfbf;
 }
 
 .loginNewImage {
-    width: 400.5px;
-    height: 200;
-    margin-top: -4.12px;
-    margin-left: 358px;
-    z-index: 0;  
-    position: relative;
+	width: 400.5px;
+	height: 200;
+	margin-top: -4.12px;
+	margin-left: 358px;
+	z-index: 0;
+	position: relative;
 }
