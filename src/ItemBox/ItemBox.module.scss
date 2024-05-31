@@ -212,6 +212,10 @@
 	justify-content: flex-end;
 	height: 65vh;
 	transition: transform 0.3s;
+	border-radius: 5px !important;
+	& > img {
+		border-radius: 5px !important;
+	}
 }
 
 .folderNameOverlay {
@@ -221,6 +225,8 @@
 	height: 25%;
 	bottom: 0;
 	z-index: 1000;
+	border-bottom-left-radius: 5px !important;
+	border-bottom-right-radius: 5px !important;
 
 	* > p {
 		text-align: center;
