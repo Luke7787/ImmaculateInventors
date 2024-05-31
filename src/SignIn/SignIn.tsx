@@ -38,7 +38,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 			}
 		} catch (err) {
 			console.error('err', err);
-			if (err.response.status === 404) {
+			if (err.response && err.response.status === 404) {
 				setSignInErr(true);
 			}
 		}
