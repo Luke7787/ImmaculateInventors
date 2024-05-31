@@ -215,8 +215,12 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-end;
+	border-radius: 5px !important;
 	height: 65vh;
 	transition: transform 0.3s;
+	& > img {
+		border-radius: 5px !important;
+	}
 
 	&:hover {
 		transform: scale(1.025);
