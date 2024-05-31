@@ -106,7 +106,7 @@ app.post('/register/', async (req: any, res: any) => {
 });
 
 // add item
-app.post('/items/', authenticateToken, async (req: any, res: any) => {
+app.post('/items/', async (req: any, res: any) => {
 	const item = req.body;
 	const savedItem = await itemServices.addItem(item);
 	if (savedItem) res.status(201).send(savedItem);
@@ -114,14 +114,14 @@ app.post('/items/', authenticateToken, async (req: any, res: any) => {
 });
 
 // delete item
-app.delete('/items/', authenticateToken, async (req: any, res: any) => {
+app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
 });
 
 // add or subtract number of items
-app.patch('/items/', authenticateToken, async (req: any, res: any) => {
+app.patch('/items/', async (req: any, res: any) => {
 	let result;
 	const id = req.query['id'];
 	const option = req.query['option'];
@@ -136,10 +136,9 @@ app.patch('/items/', authenticateToken, async (req: any, res: any) => {
 });
 
 // gets items from a user
-app.get('/items/', authenticateToken, async (req: any, res: any) => {
+app.get('/items/', async (req: any, res: any) => {
 	let result = null;
-	const user = await userServices.findUserByUsername(req.user.username);
-	const uid = user._id;
+	const uid = req.query['uid'];
 	const id = req.query['id'];
 	const itemName = req.query['itemName'];
 	if (uid && !id && !itemName) {
@@ -156,21 +155,6 @@ app.get('/items/', authenticateToken, async (req: any, res: any) => {
 		res.status(201).send(result);
 	} else {
 		res.status(404).send('item not found');
-	}
-});
-
-app.delete('/items/', async (req: any, res: any) => {
-	const id = req.query['id'];
-	console.log(id);
-	const result2 = await itemServices.deleteItem(id);
-	res.status(201).send(result2);
-});
-app.delete('/users/:id', async (req: any, res: any) => {
-	const id = req.params['id'];
-	if (await userServices.deleteUserById(id)) {
-		res.status(204).end();
-	} else {
-		res.status(404).send('Resource not found.');
 	}
 });
 
@@ -234,9 +218,8 @@ app.post(
 );
 
 // returns a list of folders associated with the user
-app.get('/folders/', authenticateToken, async (req: any, res: any) => {
-	const user = await userServices.findUserByUsername(req.user.username);
-	const userId = user._id;
+app.get('/folders/', async (req: any, res: any) => {
+	const userId = req.query['userId'];
 	try {
 		const c = await userServices.getFolders(userId);
 		res.status(200).send(c);
@@ -246,17 +229,16 @@ app.get('/folders/', authenticateToken, async (req: any, res: any) => {
 });
 
 // returns a list of items inside of a folder
-app.get('/folderGet/', authenticateToken, async (req: any, res: any) => {
+app.get('/folderGet/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const items = await userServices.getFolderContents(folderId);
 	res.status(201).send(items);
 });
 
 // adds a folder to the user and returns the id of the folder
-app.post('/folders/', authenticateToken, async (req: any, res: any) => {
+app.post('/folders/', async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
-	const user = await userServices.findUserByUsername(req.user.username);
-	const userId = user._id;
+	const userId = req.query['userId'];
 	const imageUrl = req.query['imageUrl'];
 	try {
 		const folderId = await userServices.addFolder(userId, folderName, imageUrl);
@@ -271,10 +253,9 @@ app.post('/folders/', authenticateToken, async (req: any, res: any) => {
 });
 
 // deletes a folder
-app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
+app.delete('/folders/', async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
-	const user = await userServices.findUserByUsername(req.user.username);
-	const userId = user._id;
+	const userId = req.query['userId'];
 	try {
 		const updatedUser = await userServices.deleteFolder(userId, folderName);
 		if (!updatedUser) {
@@ -288,7 +269,7 @@ app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 });
 
 // change the name of a folder
-app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
+app.patch('/folderName/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const newFolderName = req.query['newName'];
 	try {
@@ -303,7 +284,7 @@ app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
 	}
 });
 
-app.get('/sort/', authenticateToken, async (req: any, res: any) => {
+app.get('/sort/', async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const option = req.query['option'];
 	let items;
@@ -385,6 +366,15 @@ function authenticateToken(req: any, res: any, next: any) {
 		next();
 	});
 }
+
+app.get('/authenticate', async (req: any, res: any, next: any) => {
+	try {
+		authenticateToken(req, res, next);
+		res.sendStatus(200);
+	} catch {
+		res.sendStatus(403);
+	}
+});
 
 function generateAccessToken(user: any) {
 	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });

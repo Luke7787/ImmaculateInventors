@@ -37,10 +37,10 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				setSignInErr(false);
 				console.log(response);
 				login(
-					response.data.user[0]._id,
-					response.data.user[0].username,
-					response.data.user[0].email,
-					response.data.user[0].country
+					response.data.user._id,
+					response.data.user.username,
+					response.data.user.email,
+					response.data.user.country
 				);
 				navigate('/inventory');
 			}
