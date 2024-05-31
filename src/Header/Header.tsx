@@ -32,6 +32,7 @@ const Header = () => {
 	const [logoSrc, setLogoSrc] = useState<string>(
 		`${process.env.PUBLIC_URL}/images/newlogo.png`
 	);
+	const [headerBg, setHeaderBg] = useState<string>('');
 
 	const navigate = useNavigate();
 
@@ -78,10 +79,18 @@ const Header = () => {
 				? `${process.env.PUBLIC_URL}/images/creeper.png`
 				: `${process.env.PUBLIC_URL}/images/penguin.png`
 		);
+		setHeaderBg((prevHeaderBg) =>
+			prevHeaderBg === ''
+				? `url(${process.env.PUBLIC_URL}/images/dirt.jpg)`
+				: ''
+		);
 	};
 
 	return (
-		<nav className={styles.header}>
+		<nav
+			className={styles.header}
+			style={{ backgroundImage: headerBg, backgroundSize: 'cover' }}
+		>
 			<div className={styles.headerLeft} onClick={() => navigate('/')}>
 				<div style={{ cursor: 'pointer' }}>
 					<h1>My Inventory</h1>
