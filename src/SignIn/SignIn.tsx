@@ -33,17 +33,23 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 			const response = await axios.get(
 				`${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
 			);
-			if (response.status === 200) {
-				setSignInErr(false);
-				console.log(response);
-				login(
-					response.data.user._id,
-					response.data.user.username,
-					response.data.user.email,
-					response.data.user.country
-				);
-				navigate('/inventory');
-			}
+			const response2 = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/login`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
+			);
+			setSignInErr(false);
+			console.log(response2);
+			login(
+				response.data.user._id,
+				response.data.user.username,
+				response.data.user.email,
+				response.data.user.country,
+				response2.data.accessToken
+			);
+			navigate('/inventory');
 		} catch (err) {
 			console.error('err', err);
 			if (err.response && err.response.status === 404) {

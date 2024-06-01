@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './Header.module.scss';
 import { Box, Button, Modal, Slide, Backdrop, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,7 +22,8 @@ const Header = () => {
 		phoneNumber: '',
 		about: '',
 	});
-	const { logout, getUser, getUsername, getEmail, getCountry } = useAuth();
+	const { logout, getUser, getUsername, getEmail, getCountry, checkAuth } =
+		useAuth();
 	const [profilePicModalOpen, setProfilePicModalOpen] =
 		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<string>(
@@ -62,6 +63,15 @@ const Header = () => {
 		setProfilePic(pic);
 		setProfilePicModalOpen(false);
 	};
+
+	// useEffect(() => {
+	// 	const checkUserAuth = async () => {
+	// 		if (!(await checkAuth())) {
+	// 			logout();
+	// 		}
+	// 	};
+	// 	checkUserAuth();
+	// }, [checkAuth]);
 
 	return (
 		<nav className={styles.header}>

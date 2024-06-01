@@ -122,22 +122,22 @@ const CreateAccount = () => {
 	};
 
 	const validateUniqueUsername = async (username: string) => {
-		if (!username) {
-			return '';
-		}
-		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/uniqueUser/${username}`
-			);
-			if (response.status === 200) {
-				return '';
-			}
-		} catch (err) {
-			if (err.response.status === 409) {
-				return 'Username is already taken';
-			}
-			return 'Unknown Error. Please try again.';
-		}
+		// if (!username) {
+		// 	return '';
+		// }
+		// try {
+		// 	const response = await axios.get(
+		// 		`${process.env.REACT_APP_BACKEND}/uniqueUser/${username}`
+		// 	);
+		// 	if (response.status === 200) {
+		// 		return '';
+		// 	}
+		// } catch (err) {
+		// 	if (err.response.status === 409) {
+		// 		return 'Username is already taken';
+		// 	}
+		// 	return 'Unknown Error. Please try again.';
+		// }
 
 		return '';
 	};
@@ -181,7 +181,7 @@ const CreateAccount = () => {
 			) {
 				try {
 					const response = await axios.post(
-						`${process.env.REACT_APP_BACKEND}/users`,
+						`${process.env.REACT_APP_BACKEND}/register`,
 						{
 							firstName: data.firstName,
 							lastName: data.lastName,

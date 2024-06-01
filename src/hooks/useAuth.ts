@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const useAuth = () => {
 	// we can re export the user methods or object from this hook
 
@@ -5,12 +7,14 @@ export const useAuth = () => {
 		user: string,
 		username: string,
 		email: string,
-		country: string
+		country: string,
+		jwt: string
 	) => {
 		localStorage.setItem('user', JSON.stringify(user));
 		localStorage.setItem('username', JSON.stringify(username));
 		localStorage.setItem('email', JSON.stringify(email));
 		localStorage.setItem('country', JSON.stringify(country));
+		localStorage.setItem('jwt', JSON.stringify(jwt));
 	};
 
 	const logout = () => {
@@ -18,6 +22,7 @@ export const useAuth = () => {
 		localStorage.setItem('username', '');
 		localStorage.setItem('email', '');
 		localStorage.setItem('country', '');
+		localStorage.setItem('jwt', '');
 	};
 
 	const getUser = () => {
@@ -36,5 +41,21 @@ export const useAuth = () => {
 		return localStorage.getItem('country') || '';
 	};
 
-	return { login, logout, getUser, getUsername, getEmail, getCountry };
+	const getJwt = () => {
+		let res = localStorage.getItem('jwt');
+		if (res) {
+			res = res.replace(/['"]+/g, '');
+		}
+		return res || '';
+	};
+
+	return {
+		login,
+		logout,
+		getUser,
+		getUsername,
+		getEmail,
+		getCountry,
+		getJwt,
+	};
 };

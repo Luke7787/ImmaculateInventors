@@ -13,7 +13,7 @@ const Home = () => {
 	const [itemsData, setItemsData] = useState<FolderProps[]>([]);
 	const [updateFolders, setUpdateFolders] = useState(false);
 
-	const { getUser } = useAuth();
+	const { getUser, getJwt, logout } = useAuth();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -27,7 +27,12 @@ const Home = () => {
 		if (!userId) return;
 		try {
 			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}`
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
 			);
 			const dataArray = Object.values(response.data);
 			const formattedArray: any = dataArray.map(
@@ -43,6 +48,8 @@ const Home = () => {
 			console.log(userId);
 			setItemsData(formattedArray);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};
@@ -50,11 +57,18 @@ const Home = () => {
 	const handleDelete = async (userId: string, folderName: string) => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_BACKEND}/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`
+				`${process.env.REACT_APP_BACKEND}/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
 			);
 			console.log(response);
 			setUpdateFolders(!updateFolders);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};
@@ -66,11 +80,19 @@ const Home = () => {
 	) => {
 		try {
 			const response = await axios.post(
-				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}&folderName=${name}&imageUrl=${imageUrl}`
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}&folderName=${name}&imageUrl=${imageUrl}`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
 			);
 			console.log(response);
 			setUpdateFolders(!updateFolders);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};
