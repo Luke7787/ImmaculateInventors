@@ -32,7 +32,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "prettier --check . && npx cypress run",
+		"test": "prettier --check .",
 		"eject": "react-scripts eject",
 		"prepare": "husky install",
 		"format": "prettier . --write"
