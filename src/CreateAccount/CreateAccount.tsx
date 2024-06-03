@@ -40,6 +40,12 @@ const CreateAccount = () => {
 	const [cityErr, setCityErr] = useState<string>('');
 	const [zipErr, setZipErr] = useState<string>('');
 	const [createSubmitted, setCreateSubmitted] = useState<boolean>(false);
+	const [notificationVisible, setNotificationVisible] =
+		useState<boolean>(false);
+	const [notificationMessage, setNotificationMessage] = useState<string>('');
+	const [notificationType, setNotificationType] = useState<'success' | 'error'>(
+		'success'
+	);
 
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
@@ -64,13 +70,13 @@ const CreateAccount = () => {
 	const handleConfirmPassBlur = () => {
 		setConfirmPassErr(
 			validateFilled(confirmPassData) ||
-			validateConfirmPassword(data.password, confirmPassData)
+				validateConfirmPassword(data.password, confirmPassData)
 		);
 	};
 	const handleUsernameBlur = async () => {
 		setUserErr(
 			validateFilled(data.username) ||
-			(await validateUniqueUsername(data.username))
+				(await validateUniqueUsername(data.username))
 		);
 	};
 	const handleFirstBlur = () => {
@@ -189,8 +195,22 @@ const CreateAccount = () => {
 						}
 					);
 					console.log(response);
+					setNotificationVisible(false); // Reset visibility state
+					setTimeout(() => {
+						setNotificationMessage('Account successfully created!');
+						setNotificationType('success');
+						setNotificationVisible(true);
+					}, 100); // Small delay to ensure state reset
 				} catch (err) {
 					console.error('err', err);
+					setNotificationVisible(false); // Reset visibility state
+					setTimeout(() => {
+						setNotificationMessage(
+							'There was an error creating your account. Please try again.'
+						);
+						setNotificationType('error');
+						setNotificationVisible(true);
+					}, 100); // Small delay to ensure state reset
 				}
 				setData({
 					firstName: '',
@@ -212,7 +232,11 @@ const CreateAccount = () => {
 	return (
 		<form onSubmit={handleSubmit}>
 			<div className={styles.container}>
-			<img src="/images/backup.png" alt="Decorative Background" className={styles.bgImage} />
+				<img
+					src="/images/backup.png"
+					alt="Decorative Background"
+					className={styles.bgImage}
+				/>
 				<div className={styles.grid}>
 					<div className={styles.first}>
 						<FormControl fullWidth>
@@ -220,7 +244,17 @@ const CreateAccount = () => {
 								error={!!firstErr}
 								id="firstName-input"
 								helperText={firstErr ? firstErr : ''}
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>First Name</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										First Name
+									</span>
+								}
 								type="text"
 								variant="filled"
 								name="firstName"
@@ -242,7 +276,17 @@ const CreateAccount = () => {
 								error={!!lastErr}
 								id="lastName-input"
 								helperText={lastErr ? lastErr : ''}
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Last Name</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										Last Name
+									</span>
+								}
 								type="text"
 								variant="filled"
 								name="lastName"
@@ -264,7 +308,17 @@ const CreateAccount = () => {
 								error={!!emailErr}
 								id="email-input"
 								helperText={emailErr ? emailErr : ''}
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Email Address</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										Email Address
+									</span>
+								}
 								type="text"
 								variant="filled"
 								name="email"
@@ -287,16 +341,22 @@ const CreateAccount = () => {
 								onChange={handleUpdate}
 								displayEmpty
 								name="country"
-								renderValue={
-									(selected) => {
-										if (!selected) {
-											return <span className={styles.customRenderValue}>Country</span>;
-										}
-										return <span className={styles.customRenderValue2}>{selected}</span>;
+								renderValue={(selected) => {
+									if (!selected) {
+										return (
+											<span className={styles.customRenderValue}>Country</span>
+										);
 									}
-								}
+									return (
+										<span className={styles.customRenderValue2}>
+											{selected}
+										</span>
+									);
+								}}
 							>
-								<MenuItem value="" disabled>Country</MenuItem>
+								<MenuItem value="" disabled>
+									Country
+								</MenuItem>
 								<MenuItem value="Bangladesh">Bangladesh</MenuItem>
 								<MenuItem value="Brazil">Brazil</MenuItem>
 								<MenuItem value="Canada">Canada</MenuItem>
@@ -317,7 +377,17 @@ const CreateAccount = () => {
 							error={!!stateErr}
 							id="state-input"
 							helperText={stateErr ? stateErr : ''}
-							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>State</span>}
+							label={
+								<span
+									style={{
+										color: 'black',
+										fontSize: '25px',
+										fontFamily: 'Sniglet, cursive',
+									}}
+								>
+									State
+								</span>
+							}
 							type="text"
 							variant="filled"
 							name="state"
@@ -337,7 +407,17 @@ const CreateAccount = () => {
 							error={!!cityErr}
 							id="city-input"
 							helperText={cityErr ? cityErr : ''}
-							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>City</span>}
+							label={
+								<span
+									style={{
+										color: 'black',
+										fontSize: '25px',
+										fontFamily: 'Sniglet, cursive',
+									}}
+								>
+									City
+								</span>
+							}
 							type="text"
 							variant="filled"
 							name="city"
@@ -357,7 +437,17 @@ const CreateAccount = () => {
 							error={!!zipErr}
 							id="zipcode-input"
 							helperText={zipErr ? zipErr : ''}
-							label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Zip Code</span>}
+							label={
+								<span
+									style={{
+										color: 'black',
+										fontSize: '25px',
+										fontFamily: 'Sniglet, cursive',
+									}}
+								>
+									Zip Code
+								</span>
+							}
 							type="text"
 							variant="filled"
 							name="zipcode"
@@ -377,7 +467,17 @@ const CreateAccount = () => {
 							<TextField
 								error={!!userErr}
 								id="username-input"
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Username</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										Username
+									</span>
+								}
 								helperText={userErr ? userErr : ''}
 								type="text"
 								name="username"
@@ -401,7 +501,17 @@ const CreateAccount = () => {
 								helperText={passwordErr ? passwordErr : ''}
 								id="password-input"
 								variant="filled"
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Password</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										Password
+									</span>
+								}
 								type="password"
 								name="password"
 								onBlur={handlePasswordBlur}
@@ -423,7 +533,17 @@ const CreateAccount = () => {
 								variant="filled"
 								helperText={confirmPassErr ? confirmPassErr : ''}
 								id="confirmPassword-input"
-								label={<span style={{ color: 'black', fontSize: '25px', fontFamily: 'Sniglet, cursive' }}>Confirm Password</span>}
+								label={
+									<span
+										style={{
+											color: 'black',
+											fontSize: '25px',
+											fontFamily: 'Sniglet, cursive',
+										}}
+									>
+										Confirm Password
+									</span>
+								}
 								type="password"
 								name="confirmPass"
 								onChange={handleUpdate}
@@ -439,9 +559,18 @@ const CreateAccount = () => {
 						</FormControl>
 					</div>
 
-					<button className={styles.button} type="submit">
-						Create
-					</button>
+					<div className={styles.buttonContainer}>
+						<button className={styles.button} type="submit">
+							Create
+						</button>
+					</div>
+					{notificationVisible && (
+						<div
+							className={`${styles.notification} ${styles[notificationType]}`}
+						>
+							{notificationMessage}
+						</div>
+					)}
 				</div>
 			</div>
 		</form>

@@ -96,14 +96,76 @@
 }
 
 .placeholderBox {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #D3D3D3;  
-  border-radius: 8px;
-  margin: 0 auto;
-  height: 1000px;
-  width: 1225px;
-  background-image: url('../../public/images/HomePageTry.webp');
-  background-position: center; 
-  background-repeat: no-repeat;
-  background-size: cover;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #d3d3d3;
+	border-radius: 8px;
+	margin: 0 auto;
+	height: 1000px;
+	width: 1225px;
+	background-image: url('../../public/images/HomePageTry.webp');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.signInModal {
+	position: absolute;
+	top: 415px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 800px;
+	height: 500px;
+	background: linear-gradient(to right, #eadede 50%, #f0e793 50%);
+	border-radius: 40px;
+
+	&:focus-visible {
+		outline: none !important;
+	}
+}
+
+.closeIcon {
+	position: absolute;
+	right: 20px;
+	top: 25px;
+	cursor: pointer;
+	color: #000000;
+	font-size: 40px;
+}
+.createAccountModal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 738px;
+	height: 660px;
+	background-color: #eadede;
+	border-radius: 40px;
+
+	.modalHeader h1 {
+		font-family: 'Sniglet', cursive;
+		font-size: 30px;
+		text-align: center;
+		padding-top: 65px;
+		padding-bottom: 15px;
+	}
+}
+
+.loginNewImage {
+	position: absolute;
+	top: 9%;
+	left: 23.3%;
+	transform: translate(-50%, -50%) rotate(55deg);
+	z-index: -1;
+	width: 260px;
+	height: 260px;
+}
+
+.loginNewImage2 {
+	position: absolute;
+	top: 15%;
+	left: 84.8%;
+	transform: translate(-50%, -50%) rotate(350deg);
+	z-index: -1;
+	width: 210px;
+	height: 250px;
 }

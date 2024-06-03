@@ -47,7 +47,7 @@ const s3Storage = multerS3({
 const uploadImage = multer({ storage: s3Storage });
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 app.use(cors());
 app.use(express.json());
@@ -187,6 +187,7 @@ app.get('/items/', async (req: any, res: any) => {
 
 app.delete('/items/', async (req: any, res: any) => {
 	const id = req.query['id'];
+	console.log(id);
 	const result2 = await itemServices.deleteItem(id);
 	res.status(201).send(result2);
 });

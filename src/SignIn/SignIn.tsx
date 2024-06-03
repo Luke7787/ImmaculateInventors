@@ -1,8 +1,8 @@
-import styles from './SignIn.module.css';
+import styles from './SignIn.module.scss';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
-
+import { useNavigate } from 'react-router-dom';
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -17,7 +17,8 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		password: '',
 	});
 	const [signInErr, setSignInErr] = useState<boolean>(false);
-	const { getUser, login } = useAuth();
+	const { login } = useAuth();
+	const navigate = useNavigate();
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
 		setSignInData((prev) => ({
@@ -31,20 +32,27 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		try {
 			const response = await axios.post(
 				// `${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
-				`${process.env.REACT_APP_BACKEND}login`, {
+				`${process.env.REACT_APP_BACKEND}/login`,
+				{
 					username: signInData.username,
-					password: signInData.password
+					password: signInData.password,
 				}
 			);
-			console.log("response: ", response);
+			console.log('response: ', response);
 			if (response.status === 200) {
 				setSignInErr(false);
-				console.log(response.data.user._id);
-				login(response.data.user._id);
+				console.log(response);
+				login(
+					response.data.user._id,
+					response.data.user.username,
+					response.data.user.email,
+					response.data.user.country
+				);
+				navigate('/inventory');
 			}
 		} catch (err) {
 			console.error('err', err);
-			if (err.response.status === 404) {
+			if (err.response && err.response.status === 404) {
 				setSignInErr(true);
 			}
 		}
@@ -77,21 +85,33 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				</div>
 				{signInErr && (
 					<p className={styles.signInErr}>
-						Your username or password is incorrect. Please try again.
+						Your username or password is incorrect.
+						<br /> Please try again.
 					</p>
 				)}
-				<button className={styles.button} type="submit">Login</button>
-                <div className={styles.signUpSection}>
-                    <p className={styles.signUpGreeting}>Hey, new friend!</p>
-                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey!</p>
-                    <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
-                        Sign Up
-                    </button>
-					<img src="/images/SunFlower.png" alt="Decorative" className={styles.loginNewImage} />
-                </div>
-            </div>
-        </form>
-    );
+				<button className={styles.button} type="submit">
+					Login
+				</button>
+				<div className={styles.signUpSection}>
+					<p className={styles.signUpGreeting}>Hey, new friend!</p>
+					<p className={styles.signUpMessage}>
+						New to the Village? Sign Up and start your journey!
+					</p>
+					<button
+						className={styles.signUpLink}
+						onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}
+					>
+						Sign Up
+					</button>
+					<img
+						src="/images/SunFlower.png"
+						alt="Decorative"
+						className={styles.loginNewImage}
+					/>
+				</div>
+			</div>
+		</form>
+	);
 };
 
 export default SignIn;

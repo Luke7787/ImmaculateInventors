@@ -1,3 +1,11 @@
+Current Build Status:
+
+Backend
+![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend.yml/badge.svg)
+
+Frontend
+![frontend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/azure-static-web-apps-mango-island-08612f41e.yml/badge.svg)
+
 Tech Spec:
 
 - https://docs.google.com/document/d/1fUS2zrTxD0w0niQnnfbotn-kzLkxvs0bqQsI_z_p2YA/edit?usp=sharing
@@ -23,6 +31,7 @@ Back-end (./express-backend):
 `npm run dev`<br/>
 `npm run test`<br/>
 `npm run test:coverage`
+`npm run format`
 
 Code coverage (with date and time):
 ![image](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/d837d239-5380-491c-91fb-447fdef2bea3)

@@ -61,7 +61,7 @@ const AddFolder = ({ isOpen, onClose, onAdd }: AddFolderProps) => {
 			<div className={styles.modalContent}>
 				<form onSubmit={handleSubmit}>
 					<div className={styles.formGroup}>
-						<label htmlFor="folderName">Item Name:</label>
+						<label htmlFor="folderName">Folder Name:</label>
 						<input
 							id="folderName"
 							type="text"

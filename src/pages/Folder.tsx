@@ -23,15 +23,7 @@ interface ItemBoxProps {
 const Folder = () => {
 	const { id } = useParams();
 	const { getUser } = useAuth();
-	const [folderData, setFolderData] = useState<ItemProps[]>([
-		{
-			name: '',
-			quantity: 0,
-			imageUrl: '',
-			id: '',
-			folder: '',
-		},
-	]);
+	const [folderData, setFolderData] = useState<ItemProps[]>([]);
 	const [updateItems, setUpdateItems] = useState(false);
 
 	useEffect(() => {
@@ -71,6 +63,7 @@ const Folder = () => {
 		imageUrl: string
 	) => {
 		try {
+			const userId = getUser().replace(/^"|"$/g, '');
 			const response = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/items/`,
 				{
@@ -80,7 +73,7 @@ const Folder = () => {
 					note: note,
 					folder: id,
 					date: Date.now(),
-					userId: getUser(),
+					userId: userId,
 				}
 			);
 			setUpdateItems(!updateItems);
