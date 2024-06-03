@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './Header.module.scss';
 import { Box, Button, Modal, Slide, Backdrop, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,13 +22,17 @@ const Header = () => {
 		phoneNumber: '',
 		about: '',
 	});
-	const { logout, getUser, getUsername, getEmail, getCountry, checkAuth } =
-		useAuth();
+	const { logout, getUser, getUsername, getEmail, getCountry } = useAuth();
 	const [profilePicModalOpen, setProfilePicModalOpen] =
 		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<string>(
 		`${process.env.PUBLIC_URL}/images/penguin.png`
 	);
+
+	const [logoSrc, setLogoSrc] = useState<string>(
+		`${process.env.PUBLIC_URL}/images/newlogo.png`
+	);
+	const [headerBg, setHeaderBg] = useState<string>('');
 
 	const navigate = useNavigate();
 
@@ -64,25 +68,42 @@ const Header = () => {
 		setProfilePicModalOpen(false);
 	};
 
-	// useEffect(() => {
-	// 	const checkUserAuth = async () => {
-	// 		if (!(await checkAuth())) {
-	// 			logout();
-	// 		}
-	// 	};
-	// 	checkUserAuth();
-	// }, [checkAuth]);
+	const handleLogoClick = () => {
+		setLogoSrc((prevLogoSrc) =>
+			prevLogoSrc === `${process.env.PUBLIC_URL}/images/newlogo.png`
+				? `${process.env.PUBLIC_URL}/images/minecraft.png`
+				: `${process.env.PUBLIC_URL}/images/newlogo.png`
+		);
+		setProfilePic((prevProfilePic) =>
+			prevProfilePic === `${process.env.PUBLIC_URL}/images/penguin.png`
+				? `${process.env.PUBLIC_URL}/images/creeper.png`
+				: `${process.env.PUBLIC_URL}/images/penguin.png`
+		);
+		setHeaderBg((prevHeaderBg) =>
+			prevHeaderBg === ''
+				? `url(${process.env.PUBLIC_URL}/images/dirt.jpg)`
+				: ''
+		);
+	};
 
 	return (
-		<nav className={styles.header}>
+		<nav
+			className={styles.header}
+			style={{ backgroundImage: headerBg, backgroundSize: 'cover' }}
+		>
 			<div className={styles.headerLeft} onClick={() => navigate('/')}>
 				<div style={{ cursor: 'pointer' }}>
-					<h1>My Inventory</h1>
+					<h1
+						style={{ fontWeight: headerBg && 1500, color: headerBg && 'white' }}
+					>
+						My Inventory
+					</h1>
 				</div>
 				<img
-					src={`${process.env.PUBLIC_URL}/images/newlogo.png`}
+					src={logoSrc}
 					alt="Logo"
 					className={styles.logoImage}
+					onClick={handleLogoClick}
 				/>
 			</div>
 
@@ -90,12 +111,14 @@ const Header = () => {
 				<Button
 					className={styles.signInButton}
 					onClick={() => navigate('/about')}
+					style={{ fontWeight: headerBg && 1000, color: headerBg && 'white' }}
 				>
 					ABOUT
 				</Button>
 				<Button
 					className={styles.signInButton}
 					onClick={() => navigate('/contact')}
+					style={{ fontWeight: headerBg && 1000, color: headerBg && 'white' }}
 				>
 					CONTACT
 				</Button>
@@ -104,6 +127,10 @@ const Header = () => {
 						<Button
 							className={styles.signInButton}
 							onClick={() => navigate('/inventory')}
+							style={{
+								fontWeight: headerBg && 1000,
+								color: headerBg && 'white',
+							}}
 						>
 							INVENTORY
 						</Button>
