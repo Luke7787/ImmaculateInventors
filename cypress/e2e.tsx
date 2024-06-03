@@ -1,6 +1,6 @@
 describe('sign in', () => {
 	it('signs in properly', () => {
-		cy.visit('http://localhost:3000');
+		cy.visit('https://mango-island-08612f41e.5.azurestaticapps.net/');
 		cy.contains('button', 'REGISTER NOW').should('be.visible').click();
 		cy.get('input[name="username"]').should('be.visible').type('Dwglawg');
 		cy.get('input[name="password"]').should('be.visible').type('1234567890!A');

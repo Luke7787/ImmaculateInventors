@@ -1,4 +1,4 @@
-const BACKEND_URL = 'http://localhost:8000';
+const BACKEND_URL = 'https://immaculate-backend.azurewebsites.net';
 
 describe('Backend is listening', () => {
 	//GET request
@@ -21,28 +21,44 @@ describe('API takes a user and adds it to the Data Base (then deletes it)', () =
 	//POST request
 	context('Successful post', () => {
 		before(() => {});
-		let user = {};
+		let user = {
+			username: 'jbakdlfdjwzzzz',
+			password: '1234567890!A',
+			email: 'asdfkj@gmai.com',
+			country: 'China',
+			state: 'CA',
+			zipcode: '93407',
+			city: 'SLO',
+			firstName: 'asd',
+			lastName: 'asfd',
+		};
 
-		it('GIVEN the user has valid fields', () => {
-			user = {
-				username: 'TestingUser',
-				password: 'ImmaculateInventors123!',
-				email: 'joshhall408@gmail.com',
-				country: 'United States',
-				state: 'California',
-				zipcode: '93407',
-				city: 'San Luis Obispo',
-				firstName: 'Test',
-				lastName: 'User',
-			};
-		});
+		// it('GIVEN the user has valid fields', () => {
+		// 	user = {
+		// 		username: 'jbakdlfdjwzzzz',
+		// 		password: '1234567890!A',
+		// 		email: 'asdfkj@gmai.com',
+		// 		country: 'China',
+		// 		state: 'CA',
+		// 		zipcode: '93407',
+		// 		city: 'SLO',
+		// 		firstName: 'asd',
+		// 		lastName: 'asfd',
+		// 	};
+		// });
 
 		it('WHEN I post the user', () => {
-			cy.request('POST', `${BACKEND_URL}/register/`, user).then((response) => {
+			cy.request({
+				method: 'POST',
+				url: `${BACKEND_URL}/register/`,
+				body: user,
+				failOnStatusCode: false,
+			}).then((response) => {
+				console.log(response);
 				assert.equal(
 					response.status,
 					201,
-					'THEN I receive a successfull response coode: 201'
+					'THEN I receive a successful response coode: 201'
 				);
 				assert.exists(
 					response.body._id,
