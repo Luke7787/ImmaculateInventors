@@ -15,6 +15,10 @@ export const useAuth = () => {
 		localStorage.setItem('email', JSON.stringify(email));
 		localStorage.setItem('country', JSON.stringify(country));
 		localStorage.setItem('jwt', JSON.stringify(jwt));
+		localStorage.setItem(
+			'profile',
+			JSON.stringify(`${process.env.PUBLIC_URL}/images/penguin.png`)
+		);
 	};
 
 	const logout = () => {
@@ -49,6 +53,18 @@ export const useAuth = () => {
 		return res || '';
 	};
 
+	const setProfile = (pic: string) => {
+		localStorage.setItem('profile', pic);
+	};
+
+	const getProfile = () => {
+		let res = localStorage.getItem('profile');
+		if (res) {
+			res = res.replace(/['"]+/g, '');
+		}
+		return res || '';
+	};
+
 	return {
 		login,
 		logout,
@@ -57,5 +73,7 @@ export const useAuth = () => {
 		getEmail,
 		getCountry,
 		getJwt,
+		setProfile,
+		getProfile,
 	};
 };
