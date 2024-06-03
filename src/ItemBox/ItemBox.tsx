@@ -30,6 +30,14 @@ const ItemBox = ({
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
 	const navigate = useNavigate();
 	const { getUser } = useAuth();
+	function makeLinksClickable(text) {
+		const urlPattern = /(https?:\/\/[^\s]+)/g;
+		const safeText = text.replace(
+			urlPattern,
+			'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+		);
+		return { __html: safeText };
+	}
 	return (
 		<>
 			<div className={styles.outerContainer}>
@@ -94,7 +102,7 @@ const ItemBox = ({
 								</div>
 								<p>Qty: {item.quantity}</p>
 								<p>
-									<i>{item.note}</i>
+									<i dangerouslySetInnerHTML={makeLinksClickable(item.note)} />
 								</p>
 							</div>
 						</div>

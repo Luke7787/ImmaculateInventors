@@ -112,7 +112,6 @@ const AddItem = ({ isOpen, onClose, onAdd }: AddItemProps) => {
 							type="text"
 							value={note}
 							onChange={(e) => setNote(e.target.value)}
-							required
 						/>
 					</div>
 					<div className={styles.buttonGroup}>
