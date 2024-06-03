@@ -38,4 +38,5 @@
 `npm run format`
 
 ### Code coverage (with date and time):
-![image](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/d837d239-5380-491c-91fb-447fdef2bea3)
+![coverage](https://github.com/Luke7787/ImmaculateInventors/assets/121963264/c2a60e61-384c-4ee3-9774-a6b0ac9b97f4)
+
