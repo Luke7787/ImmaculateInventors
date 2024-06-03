@@ -9,6 +9,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
 
 const jwt = require('jsonwebtoken');
 dotenv.config();
@@ -83,6 +84,32 @@ app.get('/users', async (req: any, res: any) => {
 		}
 	} catch (error) {
 		return res.status(500).send('An error occurred in the server.');
+	}
+});
+
+app.post('/checkUser', async (req: any, res: any) => {
+	const { username, password } = req.body;
+
+	try {
+		const user = await userServices.findUserByUsername(username);
+		if (!user) {
+			return res.status(404).send('User not found');
+		}
+		//since findUserByUsername() returns an array
+
+		console.log('User: ', user); //debug
+		console.log('Password: ', password); //debug
+		console.log('user.password: ', user.password); //debug
+
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.status(404).send('Incorrect username or password');
+		}
+
+		res.status(200).send({ user });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Server error');
 	}
 });
 
@@ -347,7 +374,7 @@ app.delete('/logout', async (req: any, res: any) => {
 app.post('/login', async (req: any, res: any) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	const user = await userServices.findUserByUserAndPass(username, password);
+	const user = await userServices.findUserByUsername(username);
 	if (user == null) {
 		return res.status(400).send('Cannot find user');
 	}

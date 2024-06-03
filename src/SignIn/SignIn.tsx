@@ -30,8 +30,12 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/checkUser`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
 			);
 			const response2 = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/login`,
@@ -41,6 +45,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				}
 			);
 			setSignInErr(false);
+			console.log(response);
 			console.log(response2);
 			login(
 				response.data.user._id,
