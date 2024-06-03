@@ -22,11 +22,19 @@ const Header = () => {
 		phoneNumber: '',
 		about: '',
 	});
-	const { logout, getUser, getUsername, getEmail, getCountry } = useAuth();
+	const {
+		logout,
+		getUser,
+		getUsername,
+		getEmail,
+		getCountry,
+		setProfile,
+		getProfile,
+	} = useAuth();
 	const [profilePicModalOpen, setProfilePicModalOpen] =
 		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<string>(
-		`${process.env.PUBLIC_URL}/images/penguin.png`
+		getProfile() || `${process.env.PUBLIC_URL}/images/penguin.png`
 	);
 
 	const [logoSrc, setLogoSrc] = useState<string>(
@@ -64,6 +72,7 @@ const Header = () => {
 	};
 
 	const handleProfilePicSelect = (pic: string) => {
+		setProfile(pic);
 		setProfilePic(pic);
 		setProfilePicModalOpen(false);
 	};
