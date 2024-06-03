@@ -181,6 +181,37 @@ describe('item services', () => {
     });
   });
 
+  describe('testUsers', () => {
+    it('all items', async () => {
+      const UserModel = conn.model('User', UserSchema, 'users');
+      const folder = mongoose.Types.ObjectId();
+      const newUser = new UserModel({
+        firstName: 'John',
+          lastName: 'Doe',
+          email: 'john.doe@example1234.com',
+          country: 'France',
+          state: 'California',
+          city: 'Los Angeles',
+          zipcode: '90001',
+          username: 'johndoe69420',
+          password: '123456',
+          folders: [folder],
+      });
+
+      try {
+        const savedUser = await newUser.save();
+        // If the save is successful (which it shouldn't be), fail the test
+        fail('Expected validation error was not thrown');
+      } catch (error) {
+        // Check that the error is a validation error
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+        // Check that the error message contains the expected text
+        //expect(error.errors.password.message).toBe('Password must be 10 characters long, have a special character, uppercase character, and a number');
+      }
+      expect('Toe').toEqual('Toe');
+    });
+  });
+
   describe('getItems', () => {
     it('all items', async () => {
       const itemList = [{ name: 'pentagon', quantity: 3 }, { name: 'Foot', quantity: 5 }];
@@ -258,6 +289,7 @@ describe('item services', () => {
       expect(result).toEqual(mockConn);
     });
   });
+
 });
 
 describe('dbc', () => {
