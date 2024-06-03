@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from "./Input.module.scss"
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
     label: string;
+    name: string;
+    type: string;
+    onChange: any;
     error?: string;
 }
 
-const Input = ({ label, error, type, name, onChange }: InputProps) => {
+const Input = ({ label, name, type, onChange, error }: InputProps) => {
 
     return (
         <div className={styles.container}>

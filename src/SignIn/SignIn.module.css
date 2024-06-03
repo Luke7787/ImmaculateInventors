@@ -112,7 +112,7 @@ input::placeholder {
 	}
 }
 
-.button {
+.button, .forgotPassword {
     position: relative;
     z-index: 2;
     background-color: #CDCDCD;
@@ -131,7 +131,7 @@ input::placeholder {
     }
 }
 
-.button:hover {
+.button:hover, .forgotPassword:hover {
     background-color: #bfbfbf; /* Slightly darker on hover to indicate interactivity */
 }
 

@@ -1,5 +1,5 @@
-import ResetPassword from '@/app/components/Auth/ResetPassword'
-import { ResetPasswordProps } from '@/app/types'
+import ResetPassword from '../../../ForgetPassword/ResetPassword'
+import { ResetPasswordProps } from '../../../passwordTypes'
 import React from 'react'
 
 const page = ({ params }: ResetPasswordProps) => {

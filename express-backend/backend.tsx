@@ -2,6 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
+global.Headers = require('node-fetch').Headers;
+
+const crypt = require('crypto');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+const EmailTemplate = require('../src/Email/forgotTemplate');
+
+const mongoose = require('mongoose');
+const UserSchema = require('./models/user');
+const ForgotPasswordToken = require('./models/token');
+
 // const upload = require('./models/aws-config');
 const AWS = require('aws-sdk');
 const multer = require('multer');
@@ -376,3 +387,88 @@ app.get('/sort/', async (req: any, res: any) => {
 	}
 	res.status(201).send(items);
 });
+
+app.post('/forgot-password', async (req: any, res: any) => {
+	try {
+	  // find the user with email
+	  const { email } = req.body;
+	  const user = await userServices.findUserByEmail(email);
+	  if (!user) {
+		return res.status(404).json({ success: false, error: "User with this email does not exist" });
+	  }
+  
+	  // create a reset token
+	  const resetToken = `${crypt.randomUUID()}${crypt.randomUUID()}`.replace(/-/g, '');
+  
+	  // save the reset token
+	  const tokenRes = await ForgotPasswordToken.create({
+		userId: user._id,
+		token: resetToken,
+		resetAt: null
+	  });
+  
+	  // send reset password link in email
+	  const resetPasswordLink = `${process.env.BASE_URL}/reset-password/${tokenRes.token}`;
+	  const data = await resend.emails.send({
+		from: 'Acme <onboarding@resend.dev>',
+		to: [user.email],
+		subject: 'Forgot Password',
+		react: EmailTemplate({ name: user.name, resetLink: resetPasswordLink }),
+	  });
+  
+	  res.json({
+		success: true,
+		msg: 'Please follow instructions to reset password. If email is not received please check spam folder.'
+	  });
+	} catch (error) {
+	  res.status(520).json({ success: false, error });
+	}
+  });
+
+  app.post('/reset-password', async (req: any, res: any) => {
+	let session;
+  
+	try {
+	  const { password, resetToken } = req.body;
+  
+	  const passResetToken = await ForgotPasswordToken.findOne({
+		token: resetToken,
+		resetAt: null,
+		createdAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 2) }
+	  });
+  
+	  if (!passResetToken) {
+		return res.status(401).json({ success: false, error: "Either this link is expired or it's invalid" });
+	  }
+  
+	  session = await mongoose.startSession();
+	  session.startTransaction();
+  
+	  passResetToken.resetAt = new Date();
+	  await passResetToken.save({ session });
+  
+	  const user = await UserSchema.findById(passResetToken.userId);
+	  user.password = password;
+	  await user.save({ session });
+  
+	  await session.commitTransaction();
+	  session.endSession();
+  
+	  return res.json({
+		success: true,
+		msg: "Password Updated successfully"
+	  });
+	} catch (error: any) {
+	  session?.abortTransaction();
+  
+	  if (error instanceof mongoose.Error.ValidationError) {
+		for (let field in error.errors) {
+		  const msg = error.errors[field].message;
+		  return res.status(403).json({ success: false, error: msg });
+		}
+	  }
+  
+	  return res.status(520).json({ success: false, error });
+	}
+  });
+  

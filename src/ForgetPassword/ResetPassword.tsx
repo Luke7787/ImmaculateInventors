@@ -42,7 +42,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
             setValidationError({ confirmPassword: "Passwords don't match" })
         }
         else if (data.password.length < 6) {
-            setValidationError({ password: "Password should be atleast 6 characters long" })
+            setValidationError({ password: "Password should be at least 6 characters long" })
         }
         else {
             setValidationError({ password: "" })

@@ -5,6 +5,8 @@ import { useAuth } from '../hooks/useAuth';
 import { Box, Modal } from '@mui/material';
 import ForgetPassword from '../ForgetPassword/ForgetPassword';
 import CloseIcon from "@mui/icons-material/Close";
+import { Link } from 'react-router-dom';
+
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -72,30 +74,11 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						name="password"
 						value={signInData.password}
 					/>
-					<p className={styles.forgotPassword}>Forgot your password?</p>
+					
 				</div>
-				{setForgetPasswordOpen && (
-						<span
-							onClick={() => {
-								setForgetPasswordOpen(true);
-							}}
-						>
-							{' '}
-							<a>Forgot Password</a>
-						</span>
-				)}
-				<Modal open={forgetPasswordOpen} onClose={() => setForgetPasswordOpen(false)}>
-					<Box className={styles.forgotPasswordModal}>
-						<div className={styles.modalHeader}>
-							<h1>Password Recovery</h1>
-						</div>
-						<CloseIcon
-							onClick={() => setForgetPasswordOpen(false)}
-							className={styles.closeIcon}
-						/>
-						<ForgetPassword/>
-					</Box>
-				</Modal>
+				<Link className={styles.forgotPassword} to="/forgot-password">
+					Forgot Password?
+				</Link>
 				
 				{signInErr && (
 					<p className={styles.signInErr}>

@@ -8,6 +8,7 @@ import ContactPage from './Header/ContactPage.tsx';
 import AboutPage from './Header/AboutPage.tsx';
 import { AuthContext } from './context/AuthContext.tsx';
 import { useAuth } from './hooks/useAuth.ts';
+import ForgetPassword from './ForgetPassword/ForgetPassword.tsx';
 
 const MyApp = () => {
 	const { user, login, logout, setUser } = useAuth();
@@ -22,6 +23,7 @@ const MyApp = () => {
 					<Route path="/inventory/folder/:id" element={<Folder />} />
 					<Route path="/contact" element={<ContactPage />} />
 					<Route path="/about" element={<AboutPage />} />
+					<Route path="/forgot-password" element={<ForgetPassword />} />
 				</Routes>
 			</Router>
 		</AuthContext.Provider>
