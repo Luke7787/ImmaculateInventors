@@ -2,16 +2,19 @@ const express = require('express');
 const cors = require('cors');
 const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
+const refreshTokenServices = require('./models/refreshTokens-services');
 global.Headers = require('node-fetch').Headers;
+global.fetch = require('node-fetch');
 
 const crypt = require('crypto');
+const axios = require('axios');
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
-const EmailTemplate = require('../src/Email/forgotTemplate');
+const resend = new Resend(process.env.RESEND_API_KEY, { request: axios });
+const EmailTemplate = require('../src/Email/forgotTemplate').default;
 
 const mongoose = require('mongoose');
 const UserSchema = require('./models/user');
-const ForgotPasswordToken = require('./models/token');
+const Token = require('./models/token');
 
 // const upload = require('./models/aws-config');
 const AWS = require('aws-sdk');
@@ -19,6 +22,9 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv');
+const bcrypt = require('bcrypt');
+
+const jwt = require('jsonwebtoken');
 dotenv.config();
 
 const s3client = new S3Client({
@@ -57,9 +63,10 @@ const s3Storage = multerS3({
 const uploadImage = multer({ storage: s3Storage });
 
 const app = express();
-const port = 8080;
+const port = 8000;
 
 app.use(cors());
+app.use(express.json());
 app.use(express.json());
 
 const users = {
@@ -70,7 +77,6 @@ app.listen(process.env.PORT || port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 
-// test
 app.get('/', async (req: any, res: any) => {
 	res.send('Hello World!');
 });
@@ -105,22 +111,13 @@ app.get('/users/:username', async (req: any, res: any) => {
 	}
 });
 
-app.get('/users/email/:email', async (req: any, res: any) => {
-	const email = req.params['email'];
-	const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserByEmail(email, conn);
-	if (result === undefined || result === null)
-		res.status(404).send('Resource not found.');
-	else {
-		res.send({ users_list: result });
-	}
-});
-
-app.post('/users/', async (req: any, res: any) => {
+// register a user (creates a new user to the database)
+app.post('/register/', async (req: any, res: any) => {
+	//previously was /users/
 	const user1 = req.body['username'];
 	const userData = req.body;
 	const user2 = await userServices.findUserByUsername(user1);
-	if (user2.length > 0) {
+	if (user2) {
 		res.status(409).send('username already taken');
 	} else {
 		const savedUser = await userServices.addUser(userData);
@@ -133,71 +130,51 @@ app.post('/users/', async (req: any, res: any) => {
 	}
 });
 
-app.get('/uniqueUser/:username', async (req: any, res: any) => {
-	const username = req.params.username;
-	//const conn = await userServices.getDbConnection();
-	const result = await userServices.findUserByUsername(username);
-	if (result.length > 0) res.status(409).send('Username already taken');
-	else {
-		res.status(200).send('Valid username');
-	}
-});
-
-app.post('/items/', async (req: any, res: any) => {
+// add item
+app.post('/items/', authenticateToken, async (req: any, res: any) => {
 	const item = req.body;
 	const savedItem = await itemServices.addItem(item);
 	if (savedItem) res.status(201).send(savedItem);
 	else res.status(409).end();
 });
 
-app.patch('/itemToUser/', async (req: any, res: any) => {
-	const item = req.body;
-	const uid = item.userId;
-	const savedItem = await itemServices.addItem(item);
-	const id = savedItem._id;
-	const user = await userServices.addItemToUser(uid, id);
-	if (user) {
-		res.status(201).send(user);
-	} else res.status(409).end();
-});
-
-app.patch('/items/', async (req: any, res: any) => {
-	const uid = req.query['uid'];
+// delete item
+app.delete('/items/', authenticateToken, async (req: any, res: any) => {
 	const id = req.query['id'];
-	const option = req.query['option']; // add or subtract from existing quantity
-	const quantity = req.query['quantity']; // amount to increment or decrement by
-	if (option === 'add' || option === 'sub') {
-		//const conn = await userServices.getDbConnection();
-		const result = await userServices.updateItemFromUser(
-			uid,
-			id,
-			quantity,
-			option
-		);
-		if (result) {
-			res.status(201).send(result);
-		} else {
-			res.status(404).send('function: updateItemFromUser');
-		}
-	} else {
-		res.status(404).send('Wrong Option! (Use add or subtract)');
-	}
+	const result2 = await itemServices.deleteItem(id);
+	res.status(201).send(result2);
 });
 
-app.get('/items/', async (req: any, res: any) => {
+// add or subtract number of items
+app.patch('/items/', authenticateToken, async (req: any, res: any) => {
+	let result;
+	const id = req.query['id'];
+	const option = req.query['option'];
+	const quantity = req.query['quantity'];
+	if (option === 'add') {
+		result = await itemServices.incQuantity(id, quantity);
+	} else if (option === 'sub') {
+		result = await itemServices.decQuantity(id, quantity);
+	}
+	if (!result) res.sendStatus(404);
+	res.status(201).send(result);
+});
+
+// gets items from a user
+app.get('/items/', authenticateToken, async (req: any, res: any) => {
 	let result = null;
 	const uid = req.query['uid'];
 	const id = req.query['id'];
 	const itemName = req.query['itemName'];
-	//const conn = await userServices.getDbConnection();
-	if (!id && !uid && !itemName) {
-		result = await itemServices.getItems(); // gets all items from item database
-	} else if (uid && !id) {
-		result = await itemServices.getItemsFromUser(uid); // gets items specific to the user
-	} else if (!uid && !id && itemName) {
-		result = await itemServices.findItemByName(itemName); // get items with the name
-	} else {
-		result = await userServices.getItemFromUser(uid, id); // get a specific item from a user
+	if (uid && !id && !itemName) {
+		// get all items from a user
+		result = await itemServices.getItemsFromUser(uid);
+	} else if (uid && !id && itemName) {
+		// get an item by name
+		result = await itemServices.findItemByName(itemName, uid);
+	} else if (id && !itemName) {
+		// get an item by id
+		result = await itemServices.findItemById(id);
 	}
 	if (result) {
 		res.status(201).send(result);
@@ -206,11 +183,6 @@ app.get('/items/', async (req: any, res: any) => {
 	}
 });
 
-app.delete('/items/', async (req: any, res: any) => {
-	const id = req.query['id'];
-	const result2 = await itemServices.deleteItem(id);
-	res.status(201).send(result2);
-});
 app.delete('/users/:id', async (req: any, res: any) => {
 	const id = req.params['id'];
 	if (await userServices.deleteUserById(id)) {
@@ -223,7 +195,6 @@ app.delete('/users/:id', async (req: any, res: any) => {
 app.patch('/items/:id', async (req: any, res: any) => {
 	const { id } = req.params;
 	const updates = req.body; //gets the entire item body so this can be used to update any field ("note": "Updated note" -- or -- "quantity": 4)
-	//const conn = await itemServices.getDbConnection();
 	try {
 		const updatedItem = await itemServices.updateItem(id, updates);
 		if (!updatedItem) {
@@ -233,6 +204,16 @@ app.patch('/items/:id', async (req: any, res: any) => {
 	} catch (error) {
 		console.error(error);
 		res.status(400).send('Error updating item');
+	}
+});
+
+// delete a user
+app.delete('/users/:id', async (req: any, res: any) => {
+	const id = req.params['id'];
+	if (await userServices.deleteUserById(id)) {
+		res.status(204).end();
+	} else {
+		res.status(404).send('Resource not found.');
 	}
 });
 
@@ -270,22 +251,26 @@ app.post(
 	}
 );
 
-app.get('/folders/', async (req: any, res: any) => {
+// returns a list of folders associated with the user
+app.get('/folders/', authenticateToken, async (req: any, res: any) => {
 	const userId = req.query['userId'];
-	if (!userId) {
-		res.status(400).send('error: userid not provided');
-	}
 	try {
 		const c = await userServices.getFolders(userId);
 		res.status(200).send(c);
 	} catch (error) {
-		console.log('error', error);
 		res.status(400).send('error');
 	}
 });
 
-app.post('/folders/', async (req: any, res: any) => {
-	// when making a folder return the id
+// returns a list of items inside of a folder
+app.get('/folderGet/', authenticateToken, async (req: any, res: any) => {
+	const folderId = req.query['folderId'];
+	const items = await userServices.getFolderContents(folderId);
+	res.status(201).send(items);
+});
+
+// adds a folder to the user and returns the id of the folder
+app.post('/folders/', authenticateToken, async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
 	const imageUrl = req.query['imageUrl'];
@@ -301,7 +286,8 @@ app.post('/folders/', async (req: any, res: any) => {
 	}
 });
 
-app.delete('/folders/', async (req: any, res: any) => {
+// deletes a folder
+app.delete('/folders/', authenticateToken, async (req: any, res: any) => {
 	const folderName = req.query['folderName'];
 	const userId = req.query['userId'];
 	try {
@@ -316,38 +302,8 @@ app.delete('/folders/', async (req: any, res: any) => {
 	}
 });
 
-app.patch('/folders/', async (req: any, res: any) => {
-	const option = req.query['option'];
-	const folderName = req.query['folderName'];
-	const itemId = req.query['itemId'];
-	console.log(folderName);
-	try {
-		if (option === 'add') {
-			const updatedFolder = await userServices.addItemToFolder(
-				folderName,
-				itemId
-			);
-			if (!updatedFolder) {
-				return res.status(404).send('Folder not found');
-			}
-			res.send(updatedFolder);
-		} else if (option === 'delete') {
-			const updatedFolder = await userServices.deleteItemFromFolder(
-				folderName,
-				itemId
-			);
-			if (!updatedFolder) {
-				return res.status(404).send('Folder not found');
-			}
-			res.send(updatedFolder);
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(400).send('Error updating folder');
-	}
-});
-
-app.patch('/folderName/', async (req: any, res: any) => {
+// change the name of a folder
+app.patch('/folderName/', authenticateToken, async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const newFolderName = req.query['newName'];
 	try {
@@ -362,13 +318,7 @@ app.patch('/folderName/', async (req: any, res: any) => {
 	}
 });
 
-app.get('/folderGet/', async (req: any, res: any) => {
-	const folderId = req.query['folderId'];
-	const items = await userServices.getFolderContents(folderId);
-	res.status(201).send(items);
-});
-
-app.get('/sort/', async (req: any, res: any) => {
+app.get('/sort/', authenticateToken, async (req: any, res: any) => {
 	const folderId = req.query['folderId'];
 	const option = req.query['option'];
 	let items;
@@ -391,51 +341,84 @@ app.get('/sort/', async (req: any, res: any) => {
 app.post('/forgot-password', async (req: any, res: any) => {
 	try {
 	  // find the user with email
-	  const { email } = req.body;
+	  const { email }  = req.body;
 	  const user = await userServices.findUserByEmail(email);
+	  console.log(user);
 	  if (!user) {
 		return res.status(404).json({ success: false, error: "User with this email does not exist" });
-	  }
-  
+	  }  
 	  // create a reset token
 	  const resetToken = `${crypt.randomUUID()}${crypt.randomUUID()}`.replace(/-/g, '');
   
+	  const userId = user[0]._id;
+	  console.log("User ID is ", userId);
+
 	  // save the reset token
-	  const tokenRes = await ForgotPasswordToken.create({
-		userId: user._id,
+	  const tokenData = {
+		userId: userId,
 		token: resetToken,
-		resetAt: null
-	  });
+		createdAt: Date.now(),
+	  };
+
+	  console.log("Token data:", tokenData);
+	  
+	  try {
+		const tokenRes = await Token.create(tokenData);
+		console.log("Created token:", tokenRes);
   
-	  // send reset password link in email
-	  const resetPasswordLink = `${process.env.BASE_URL}/reset-password/${tokenRes.token}`;
-	  const data = await resend.emails.send({
-		from: 'Acme <onboarding@resend.dev>',
-		to: [user.email],
-		subject: 'Forgot Password',
-		react: EmailTemplate({ name: user.name, resetLink: resetPasswordLink }),
-	  });
+	  	// send reset password link in email
+	  	const resetPasswordLink = `${process.env.BASE_URL}/reset-password/${tokenRes.token}`;
+
+		console.log("Reset link created");
+
+	  	const data = await resend.emails.send({
+			from: 'Acme <onboarding@resend.dev>',
+			to: [user[0].email],
+			subject: 'My Inventory Password Recovery',
+			html: EmailTemplate({ name: user[0].firstName, resetLink: resetPasswordLink }),
+	  	});
+
+		  const requestOptions = {
+			method: 'POST',
+			headers: {
+			  "Content-Type": "application/json",
+			  "Authorization": `${process.env.RESEND_API_KEY}`
+			},
+			body: JSON.stringify(data)
+		  };
+
+		  fetch("https://api.resend.com/emails", requestOptions)
+  			.then((response: { text: () => any; }) => response.text())
+  			.then((result: any) => console.log(result))
+  			.catch((error: any) => console.log('error', error));
+		  
   
-	  res.json({
-		success: true,
-		msg: 'Please follow instructions to reset password. If email is not received please check spam folder.'
-	  });
+	  	/**res.json({
+			success: true,
+			msg: 'Please follow instructions to reset password. If email is not received please check spam folder.'
+	 	 });**/
+	  } catch (error) {
+		console.error("Error creating token:", error);
+		throw error;
+	  }
 	} catch (error) {
 	  res.status(520).json({ success: false, error });
 	}
   });
 
-  app.post('/reset-password', async (req: any, res: any) => {
+  app.post('/reset-password/:token', async (req: any, res: any) => {
 	let session;
   
 	try {
 	  const { password, resetToken } = req.body;
   
-	  const passResetToken = await ForgotPasswordToken.findOne({
+	  const passResetToken = await Token.findOne({
 		token: resetToken,
 		resetAt: null,
 		createdAt: { $gt: new Date(Date.now() - 1000 * 60 * 60 * 2) }
 	  });
+
+	  console.log("Password reset token found")
   
 	  if (!passResetToken) {
 		return res.status(401).json({ success: false, error: "Either this link is expired or it's invalid" });
@@ -443,9 +426,13 @@ app.post('/forgot-password', async (req: any, res: any) => {
   
 	  session = await mongoose.startSession();
 	  session.startTransaction();
+
+	  console.log("Session started")
   
 	  passResetToken.resetAt = new Date();
 	  await passResetToken.save({ session });
+
+
   
 	  const user = await UserSchema.findById(passResetToken.userId);
 	  user.password = password;
@@ -472,3 +459,69 @@ app.post('/forgot-password', async (req: any, res: any) => {
 	}
   });
   
+// User Authentication
+app.get('/posts', authenticateToken, async (req: any, res: any) => {
+	const user = await userServices.findUserByUsername(req.user.username);
+	res.json(user);
+});
+
+app.post('/token', async (req: any, res: any) => {
+	const refreshToken = req.body.token;
+	if (refreshToken == null) return res.sendStatus(401);
+	if (!(await refreshTokenServices.getRefreshToken(refreshToken)))
+		return res.sendStatus(403);
+	jwt.verify(
+		refreshToken,
+		process.env.REFRESH_TOKEN_SECRET,
+		(err: any, user: any) => {
+			if (err) return res.sendStatus(403);
+			const user2 = {
+				username: user.username,
+				password: user.password,
+			};
+			const accessToken = generateAccessToken(user2);
+			res.json({ accessToken: accessToken });
+		}
+	);
+});
+
+app.delete('/logout', async (req: any, res: any) => {
+	await refreshTokenServices.deleteRefreshToken(req.body.token);
+	res.sendStatus(204);
+});
+
+app.post('/login', async (req: any, res: any) => {
+	const username = req.body.username;
+	const password = req.body.password;
+	const user = await userServices.findUserByUsername(username);
+	if (user == null) {
+		return res.status(400).send('Cannot find user');
+	}
+	try {
+		const user2 = {
+			username: username,
+			password: password,
+		};
+		const accessToken = generateAccessToken(user2);
+		const refreshToken = jwt.sign(user2, process.env.REFRESH_TOKEN_SECRET);
+		await refreshTokenServices.addRefreshToken(refreshToken);
+		res.json({ accessToken: accessToken, refreshToken: refreshToken });
+	} catch {
+		res.status(500).send();
+	}
+});
+
+function authenticateToken(req: any, res: any, next: any) {
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(' ')[1];
+	if (token == null) return res.sendStatus(401);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, user: any) => {
+		if (err) return res.sendStatus(403);
+		req.user = user;
+		next();
+	});
+}
+
+function generateAccessToken(user: any) {
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m' });
+}

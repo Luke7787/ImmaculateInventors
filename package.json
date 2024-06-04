@@ -16,6 +16,7 @@
 		"aws-sdk": "^2.1595.0",
 		"axios": "^1.6.5",
 		"classnames": "^2.5.1",
+		"cypress": "^13.10.0",
 		"dotenv": "^16.4.5",
 		"husky": "^9.0.11",
 		"mongoose": "^8.1.1",
@@ -33,7 +34,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "prettier --check .",
+		"test": "prettier --check . && npx cypress run",
 		"eject": "react-scripts eject",
 		"prepare": "husky install",
 		"format": "prettier . --write"

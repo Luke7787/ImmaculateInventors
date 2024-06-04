@@ -1,14 +1,20 @@
-import React from 'react';
-import { Typography, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Button, Box, Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header/Header.tsx';
 import { ThemeProvider } from '@mui/material';
 import theme from '../theme.tsx';
 import styles from './Homepage.module.scss';
+import CloseIcon from '@mui/icons-material/Close';
+import SignIn from '../SignIn/SignIn.tsx';
+import CreateAccount from '../CreateAccount/CreateAccount.tsx';
+import { useAuth } from '../hooks/useAuth.ts';
 
 const Homepage = () => {
 	const navigate = useNavigate();
-
+	const { getUser } = useAuth();
+	const [signInOpen, setSignInOpen] = useState<boolean>(false);
+	const [createAccountOpen, setCreateAccountOpen] = useState<boolean>(false);
 	return (
 		<ThemeProvider theme={theme}>
 			<Header />
@@ -48,20 +54,71 @@ const Homepage = () => {
 					>
 						Optimizing Your Storage: Effortless Inventory <br /> Management
 					</Typography>
-					<Button
-						variant="contained"
-						style={{
-							backgroundColor: '#FFC700',
-							color: 'white',
-							fontWeight: 'bold',
-							marginLeft: '25px',
-							fontSize: '1.20rem',
-							padding: '15px 35px',
-						}}
-						onClick={() => navigate('/inventory')}
-					>
-						TRY NOW
-					</Button>
+					{getUser() ? (
+						<Button
+							variant="contained"
+							style={{
+								backgroundColor: '#FFC700',
+								color: 'white',
+								fontWeight: 'bold',
+								marginLeft: '25px',
+								fontSize: '1.20rem',
+								padding: '15px 35px',
+							}}
+							onClick={() => navigate('/inventory')}
+						>
+							EXPLORE NOW
+						</Button>
+					) : (
+						<Button
+							variant="contained"
+							style={{
+								backgroundColor: '#FFC700',
+								color: 'white',
+								fontWeight: 'bold',
+								marginLeft: '25px',
+								fontSize: '1.20rem',
+								padding: '15px 35px',
+							}}
+							onClick={() => setSignInOpen(true)}
+						>
+							REGISTER NOW
+						</Button>
+					)}
+
+					<Modal open={signInOpen} onClose={() => setSignInOpen(false)}>
+						{!createAccountOpen ? (
+							<Box className={styles.signInModal}>
+								<div className={styles.modalHeader}></div>
+								<CloseIcon
+									onClick={() => setSignInOpen(false)}
+									className={styles.closeIcon}
+								/>
+								<SignIn setCreateAccountOpen={setCreateAccountOpen} />
+							</Box>
+						) : (
+							<Box className={styles.createAccountModal}>
+								<div className={styles.modalHeader}>
+									<img
+										src="/images/part1.png"
+										alt="Decorative"
+										className={styles.loginNewImage}
+									/>
+									<img
+										src="/images/part2.png"
+										alt="Decorative"
+										className={styles.loginNewImage2}
+									/>
+									<h1>Create Account</h1>
+								</div>
+								<CloseIcon
+									onClick={() => setCreateAccountOpen(false)}
+									className={styles.closeIcon}
+								/>
+								<CreateAccount />
+							</Box>
+						)}
+					</Modal>
 				</Box>
 				<div className={styles.featureSection}>
 					<Typography
@@ -135,9 +192,16 @@ const Homepage = () => {
 					className={styles.tryOurProductTitle}
 					style={{ fontWeight: 'bold', marginBottom: '15px' }}
 				>
-					Try Our Product
+					Overview of Our Product
 				</Typography>
-				<div className={styles.placeholderBox}></div>
+				<iframe
+					width="1300"
+					height="764"
+					src="https://www.loom.com/embed/75faca4e598b4a4ba7b73c5c7d6a4ff8?sid=b40c6891-de69-4285-a923-ce36ad600f2a"
+					frameBorder="0"
+					allowFullScreen
+				/>
+				{/* <div className={styles.placeholderBox}></div> */}
 			</div>
 		</ThemeProvider>
 	);

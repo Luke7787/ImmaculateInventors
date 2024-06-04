@@ -1,17 +1,17 @@
 "use client"
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React, { use, useState } from 'react'
+import {Link, useNavigate, useParams} from 'react-router-dom'
 import Button from './common/Button/Button.tsx'
 import Input from './common/Input/Input.tsx'
 import styles from './Auth.module.scss'
 import { InputError, ResetPasswordProps } from '../passwordTypes'
 import axios, { AxiosError } from 'axios'
 import { RESET_PASSWORD_API_URL } from '../passwordConstants';
-import { useRouter } from 'next/navigation'
 import ErrorText from './common/ErrorText/ErrorText.tsx'
 
 const ResetPassword = ({ params }: ResetPasswordProps) => {
-    const router = useRouter()
+    const navigate = useNavigate();
+    const { token } = useParams<{ token: string }>();
 
     const [data, setData] = useState({
         password: "",
@@ -53,12 +53,15 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
 
                 const apiRes = await axios.post(RESET_PASSWORD_API_URL, {
                     password: data.password,
-                    resetToken: params.token
+                    resetToken: token
                 })
+
+                console.log("api post sent");
 
                 if (apiRes?.data.success) {
                     setSubmitError("")
-                    router.push("/")
+                    console.log("reset success");
+                    navigate("/")
                 }
             } catch (error) {
                 if (error instanceof AxiosError) {
@@ -73,7 +76,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
 
     return (
         <div className={styles.mainContainer}>
-            <Link className={styles.applogo} href={"/"} >
+            <Link className={styles.applogo} to={"/"} >
                 TechRise
             </Link>
 

@@ -2,11 +2,9 @@ import styles from './SignIn.module.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
-import { Box, Modal } from '@mui/material';
-import ForgetPassword from '../ForgetPassword/ForgetPassword';
-import CloseIcon from "@mui/icons-material/Close";
 import { Link } from 'react-router-dom';
 
+import { useNavigate } from 'react-router-dom';
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -16,14 +14,14 @@ interface signInData {
 	password: string;
 }
 const SignIn = ({ setCreateAccountOpen }: signInProps) => {
-	const [forgetPasswordOpen, setForgetPasswordOpen] = useState<boolean>(false);
 
 	const [signInData, setSignInData] = useState<signInData>({
 		username: '',
 		password: '',
 	});
 	const [signInErr, setSignInErr] = useState<boolean>(false);
-	const { getUser, login } = useAuth();
+	const { login } = useAuth();
+	const navigate = useNavigate();
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
 		setSignInData((prev) => ({
@@ -35,17 +33,34 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/users?username=${signInData.username}&password=${signInData.password}`
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/checkUser`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
 			);
-			if (response.status === 200) {
-				setSignInErr(false);
-				console.log(response.data.user[0]._id);
-				login(response.data.user[0]._id);
-			}
+			const response2 = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/login`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
+			);
+			setSignInErr(false);
+			console.log(response);
+			console.log(response2);
+			login(
+				response.data.user._id,
+				response.data.user.username,
+				response.data.user.email,
+				response.data.user.country,
+				response2.data.accessToken
+			);
+			navigate('/inventory');
 		} catch (err) {
 			console.error('err', err);
-			if (err.response.status === 404) {
+			if (err.response && err.response.status === 404) {
 				setSignInErr(true);
 			}
 		}
@@ -82,21 +97,33 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 				
 				{signInErr && (
 					<p className={styles.signInErr}>
-						Your username or password is incorrect. Please try again.
+						Your username or password is incorrect.
+						<br /> Please try again.
 					</p>
 				)}
-				<button className={styles.button} type="submit">Login</button>
-                <div className={styles.signUpSection}>
-                    <p className={styles.signUpGreeting}>Hey, new friend!</p>
-                    <p className={styles.signUpMessage}>New to the Village? Sign Up and start your journey!</p>
-                    <button className={styles.signUpLink} onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}>
-                        Sign Up
-                    </button>
-					<img src="/images/SunFlower.png" alt="Decorative" className={styles.loginNewImage} />
-                </div>
-            </div>
-        </form>
-    );
+				<button className={styles.button} type="submit">
+					Login
+				</button>
+				<div className={styles.signUpSection}>
+					<p className={styles.signUpGreeting}>Hey, new friend!</p>
+					<p className={styles.signUpMessage}>
+						New to the Village? Sign Up and start your journey!
+					</p>
+					<button
+						className={styles.signUpLink}
+						onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}
+					>
+						Sign Up
+					</button>
+					<img
+						src="/images/SunFlower.png"
+						alt="Decorative"
+						className={styles.loginNewImage}
+					/>
+				</div>
+			</div>
+		</form>
+	);
 };
 
 export default SignIn;

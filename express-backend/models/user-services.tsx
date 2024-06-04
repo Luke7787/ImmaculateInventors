@@ -29,9 +29,9 @@ async function findUserById(id: any) {
 
 async function findUserByEmail(email: any, conn: any) {
 	try {
-		const userModel = conn.model('User', UserSchema);
+		//const userModel = conn.model('User', UserSchema);
 		console.log("entering findUserByEmail");
-		return await userModel.find({ email: email });
+		return await UserSchema.find({ email: email });
 	} catch (error) {
 		console.log(error);
 		return undefined;
@@ -43,7 +43,7 @@ async function getFolders(userId: any) {
 	return folders;
 }
 
-async function addFolder(userId: any, folderName: any, imageUrl: string) {
+async function addFolder(userId: any, folderName: String, imageUrl: string) {
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToAdd = new FolderSchema({
 		name: folderName,
@@ -225,11 +225,16 @@ async function updateItemFromUser(
 }
 
 async function findUserByUsername(username: string) {
-	return await UserSchema.find({ username: username });
+	const user = await UserSchema.find({ username: username });
+	return user[0];
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
-	return await UserSchema.find({ username: username, password: password });
+	const user = await UserSchema.find({
+		username: username,
+		password: password,
+	});
+	return user[0];
 }
 
 async function deleteUserById(id: any) {

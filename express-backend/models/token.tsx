@@ -1,6 +1,7 @@
 import { Schema, model, models } from "mongoose"
+const mongoose = require('mongoose');
 
-const TokenSchema = new Schema({
+const TokenSchema = new mongoose.Schema({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -13,13 +14,11 @@ const TokenSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        expires: 7200,     
     },
-    resetAt: {
-        type: Date
-    }
-})
+});
 
-const Token = models.Token || model("Token", TokenSchema)
+const Token = mongoose.model('Token', TokenSchema);
 
-export default Token
+module.exports = Token;

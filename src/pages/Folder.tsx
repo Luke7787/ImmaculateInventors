@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../Header/Header.tsx';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ItemBox from '../ItemBox/ItemBox.tsx';
 import styles from './Folder.module.scss';
 import axios from 'axios';
@@ -23,25 +23,27 @@ interface ItemBoxProps {
 const Folder = () => {
 	const { id } = useParams();
 	const { getUser } = useAuth();
-	const [folderData, setFolderData] = useState<ItemProps[]>([
-		{
-			name: '',
-			quantity: 0,
-			imageUrl: '',
-			id: '',
-			folder: '',
-		},
-	]);
+	const [folderData, setFolderData] = useState<ItemProps[]>([]);
 	const [updateItems, setUpdateItems] = useState(false);
-
+	const { getJwt, logout } = useAuth();
+	const navigate = useNavigate();
 	useEffect(() => {
 		fetchItems(id || '');
 	}, [id, updateItems]);
 	const fetchItems = async (folderId: string) => {
 		try {
 			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND}/folderGet?folderId=${folderId}`
+				`${process.env.REACT_APP_BACKEND}/folderGet`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+					params: {
+						folderId: folderId,
+					},
+				}
 			);
+			console.log(response);
 			const dataArray = Object.values(response.data);
 			const formattedArray: any = dataArray.map(
 				(item: any) =>
@@ -60,6 +62,8 @@ const Folder = () => {
 			);
 			setFolderData(formattedArray);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};
@@ -71,6 +75,7 @@ const Folder = () => {
 		imageUrl: string
 	) => {
 		try {
+			const userId = getUser().replace(/^"|"$/g, '');
 			const response = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/items/`,
 				{
@@ -80,12 +85,19 @@ const Folder = () => {
 					note: note,
 					folder: id,
 					date: Date.now(),
-					userId: getUser(),
+					userId: userId,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
 				}
 			);
 			setUpdateItems(!updateItems);
 			console.log(response);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};
@@ -93,11 +105,18 @@ const Folder = () => {
 	const handleDelete: any = async (item: ItemProps) => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_BACKEND}/items?id=${item.id}`
+				`${process.env.REACT_APP_BACKEND}/items?id=${item.id}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
 			);
 			setUpdateItems(!updateItems);
 			console.log(response);
 		} catch (err) {
+			logout();
+			navigate('/');
 			console.error('err', err);
 		}
 	};

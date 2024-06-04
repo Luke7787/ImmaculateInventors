@@ -9,11 +9,13 @@ import AboutPage from './Header/AboutPage.tsx';
 import { AuthContext } from './context/AuthContext.tsx';
 import { useAuth } from './hooks/useAuth.ts';
 import ForgetPassword from './ForgetPassword/ForgetPassword.tsx';
+import ResetPassword from './ForgetPassword/ResetPassword.tsx';
+import InfoText from './ForgetPassword/InfoText.tsx';
+import ErrorText from './ForgetPassword/common/ErrorText/ErrorText.tsx';
 
 const MyApp = () => {
-	const { user, login, logout, setUser } = useAuth();
 	return (
-		<AuthContext.Provider value={{ user, setUser }}>
+		
 			<Router>
 				<Routes>
 					<Route path="/" element={<Homepage />} />
@@ -23,10 +25,15 @@ const MyApp = () => {
 					<Route path="/inventory/folder/:id" element={<Folder />} />
 					<Route path="/contact" element={<ContactPage />} />
 					<Route path="/about" element={<AboutPage />} />
+					<Route path="/error" element={<ErrorText text={'an error occurred'} />} />
 					<Route path="/forgot-password" element={<ForgetPassword />} />
+					<Route path="/reset-password/:token" element={<ResetPassword params={{
+						token: ''
+					}} />} />
+					<Route path="/info-text" element={<InfoText text={'info'} linkHref={'/'} linkTitle={'info'} />} />
 				</Routes>
 			</Router>
-		</AuthContext.Provider>
+		
 	);
 };
 

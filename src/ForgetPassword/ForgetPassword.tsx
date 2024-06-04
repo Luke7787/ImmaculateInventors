@@ -1,6 +1,6 @@
 import { InputError } from '../passwordTypes';
 import React, { useState } from 'react';
-import { FORGOT_PASSWORD_API_URL } from '../passwordConstants/index';
+import { FORGOT_PASSWORD_API_URL } from '../passwordConstants';
 import axios, { AxiosError } from 'axios';
 import {Link} from 'react-router-dom'
 import Button from './common/Button/Button'
@@ -17,7 +17,6 @@ const ForgetPassword = () => {
 	const [emailData, setEmailData] = useState<emailData>({
 		email: ''
 	});
-	const [emailErr, setEmailErr] = useState<boolean>(false);
 	const [validationError, setValidationError] = useState<InputError>({})
     const [submitError, setSubmitError] = useState<string>("")
     const [apiSuccessMsg, setApiSuccessMsg] = useState<string>("")
@@ -42,19 +41,21 @@ const ForgetPassword = () => {
 
             try {
                 setLoading(true)
-                const apiRes = await axios.post(FORGOT_PASSWORD_API_URL, { emailData })
+				console.log(emailData);
+                const apiRes = await axios.post(FORGOT_PASSWORD_API_URL, emailData)
 
                 if (apiRes?.data?.success) {
                     setApiSuccessMsg(apiRes?.data.msg)
-                    setSubmitError("")
+                    setSubmitError("An API Error occurred")
                 }
 
             } catch (error) {
                 setApiSuccessMsg("")
 
                 if (error instanceof AxiosError) {
-                    const errorMsg = error.response?.data?.error
-                    setSubmitError(errorMsg)
+                    const errorData = error.response?.data?.error;
+                    const errorMsg = typeof errorData === 'string' ? errorData : JSON.stringify(errorData);
+                    setSubmitError(errorMsg);
                 }
             }
 
@@ -73,13 +74,14 @@ const ForgetPassword = () => {
                 className={`${styles.form} ${styles.forgotPasswordForm}`}
                 onSubmit={handleForgotPassword}
             >
-                <h2 className={styles.title}> Forgot Password </h2>
+                <h2 className={styles.title}> Enter Your Email </h2>
 
                 <Input
 					label={"Email"}
 					name={"email"}
 					onChange={handleInputChange}
-					error={validationError.email} type={''}                />
+					error={validationError.email} 
+                    type={'email'} />
 
                 <Button
                     type={"submit"}

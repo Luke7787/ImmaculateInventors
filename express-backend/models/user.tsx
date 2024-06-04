@@ -1,5 +1,6 @@
 //const mongoose = require('mongoose');
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 //import mongoose from 'mongoose';
 import {Schema, model, models}  from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
@@ -23,11 +24,13 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			trim: true,
+			unique: true,
 		},
 		country: {
 			type: String,
 			required: true,
 			trim: true,
+			unique: true,
 		},
 		state: {
 			type: String,
@@ -81,12 +84,20 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.pre('save', async function (next) {
-    if (!this.isModified("password")) {
-        return next()
-    }
-	const salt = await bcryptjs.genSalt(10);
-    this.password = bcryptjs.hash(this.password, salt);
-})
+	//pre() makes it so that this is done before the user gets saved to the database
+	if (!this.isModified('password')) return next(); //only hash password if it is new or just modified (implementing for if we allow users to change their passsword in the future)
+
+	try {
+		const salt = await bcrypt.genSalt(10); //salting password
+		const hashedPassword = await bcrypt.hash(this.password, salt); //hash the password with the salt
+		this.password = hashedPassword; //replace the current password with the hashed password
+		next(); //allows this item to be added to the database
+	} catch (error) {
+		next(error as mongoose.CallbackError); //pass the error to next() to handle it gracefully
+	}
+});
+
+
 
 const User = mongoose.model("User", UserSchema);
 
