@@ -33,6 +33,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			console.log("enter try block")
 			const response = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/checkUser`,
 				{
@@ -40,6 +41,7 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					password: signInData.password,
 				}
 			);
+			console.log("entering login")
 			const response2 = await axios.post(
 				`${process.env.REACT_APP_BACKEND}/login`,
 				{

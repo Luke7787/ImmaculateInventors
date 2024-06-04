@@ -100,6 +100,34 @@ app.get('/users', async (req: any, res: any) => {
 	}
 });
 
+app.post('/checkUser', async (req: any, res: any) => {
+	const { username, password } = req.body;
+	console.log(username)
+	console.log(password)
+
+	try {
+		const user = await userServices.findUserByUsername(username);
+		if (!user) {
+			return res.status(404).send('User not found');
+		}
+		//since findUserByUsername() returns an array
+
+		console.log('User: ', user); //debug
+		console.log('Password: ', password); //debug
+		console.log('user.password: ', user.password); //debug
+
+		const isMatch = await bcrypt.compare(password, user.password);
+		if (!isMatch) {
+			return res.status(404).send('Incorrect username or password');
+		}
+
+		res.status(200).send({ user });
+	} catch (error) {
+		console.error(error);
+		res.status(500).send('Server error');
+	}
+});
+
 app.get('/users/:username', async (req: any, res: any) => {
 	const id = req.params['id'];
 	//const conn = await userServices.getDbConnection();
@@ -433,7 +461,6 @@ app.post('/forgot-password', async (req: any, res: any) => {
 	  await passResetToken.save({ session });
 
 
-  
 	  const user = await UserSchema.findById(passResetToken.userId);
 	  user.password = password;
 	  await user.save({ session });
