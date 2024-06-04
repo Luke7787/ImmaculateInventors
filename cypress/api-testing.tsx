@@ -1,4 +1,5 @@
 const BACKEND_URL = 'https://immaculate-backend.azurewebsites.net';
+// const BACKEND_URL = 'http://localhost:8000';
 
 describe('Backend is listening', () => {
 	//GET request
@@ -22,15 +23,15 @@ describe('API takes a user and adds it to the Data Base (then deletes it)', () =
 	context('Successful post', () => {
 		before(() => {});
 		let user = {
-			username: 'jbakdlfdjwzzzz',
-			password: '1234567890!A',
-			email: 'asdfkj@gmai.com',
-			country: 'China',
-			state: 'CA',
-			zipcode: '93407',
-			city: 'SLO',
-			firstName: 'asd',
-			lastName: 'asfd',
+			username: "TestsWork",
+			password: "1234567890!A",
+			email: "notjoshhall408@gmail.com",
+			country: "America",
+			state: "CA",
+			zipcode: "93407",
+			city: "SLO",
+			firstName: "test",
+			lastName: "user"
 		};
 
 		// it('GIVEN the user has valid fields', () => {
