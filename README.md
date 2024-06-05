@@ -16,7 +16,7 @@ https://immaculate-backend.azurewebsites.net/
 
 ## Tech Spec
 
-[Tech Spec.pdf](https://github.com/user-attachments/files/15573506/Immaculate.Inventors.Tech.Spec.1.pdf)
+[Access link](https://docs.google.com/document/d/1EFLiKhDMEDcJ7IihSaMdZ7rkF60yQxpHlStZ_-mVsHo/edit?usp=sharing)
 
 ## UI Spec:
 
@@ -44,5 +44,6 @@ Note: There are environment variables on the frontend and backend that are requi
 
 ### Code coverage (backend models):
 
-![Code Coverage](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/21f57ab9-5e88-4ad9-8acc-a6fd1c156645)
+![Code Coverage](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/fb1bf3da-4d30-4cfd-b017-036883e44c80)
+
 
