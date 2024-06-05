@@ -27,6 +27,8 @@ const {
   sortByDateDes,
   sortByNameAsc,
   sortByNameDes,
+  setConnection,
+  getDbConnection,
 } = require('./user-services.tsx');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
@@ -255,7 +257,6 @@ describe('getUsers', () => {
   });
 });
 
-// ... (previous code)
 
 describe('findUserById', () => {
 	test('Testing findUserById', async () => {
@@ -715,5 +716,189 @@ describe('findUserById', () => {
 	  expect(result[0].quantity).toBeLessThanOrEqual(result[1].quantity);
 	});
   });
+
+  describe('findUserByUserAndPass', () => {
+	test('Testing findUserByUserAndPass with valid credentials', async () => {
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan98@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  await user.save();
+  
+	  const result = await findUserByUserAndPass('liluzi', 'a1234567890!AA');
+  
+	  expect(result).toBeDefined();
+	  expect(result.username).toBe('liluzi');
+	  expect(result.password).not.toBe('a1234567890!AA'); // Password should be hashed
+	});
+  
+	test('Testing findUserByUserAndPass with invalid credentials', async () => {
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan98@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  await user.save();
+  
+	  const result = await findUserByUserAndPass('liluzi', 'wrongpassword');
+  
+	  expect(result).toBeUndefined();
+	});
+  });
+  
+  describe('sortByQuantityDes', () => {
+	test('Testing sortByQuantityDes', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const item1 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 5,
+		folder: folderId,
+	  });
+	  const item2 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 2',
+		quantity: 3,
+		folder: folderId,
+	  });
+	  await item1.save();
+	  await item2.save();
+  
+	  const result = await sortByQuantityDes(folderId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].quantity).toBeGreaterThanOrEqual(result[1].quantity);
+	});
+  });
+  
+  describe('sortByDateAsc', () => {
+	test('Testing sortByDateAsc', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const item1 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 5,
+		folder: folderId,
+		date: new Date('2023-05-01'),
+	  });
+	  const item2 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 2',
+		quantity: 3,
+		folder: folderId,
+		date: new Date('2023-05-15'),
+	  });
+	  await item1.save();
+	  await item2.save();
+  
+	  const result = await sortByDateAsc(folderId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].date).toBeLessThanOrEqual(result[1].date);
+	});
+  });
+  
+  describe('setConnection', () => {
+	test('should set the database connection', () => {
+	  const mockConnection = {};
+	  const result = setConnection(mockConnection);
+	  expect(result).toBe(mockConnection);
+	});
+  });
+  
+  describe('getDbConnection', () => {
+	test('should create a new connection if none exists', () => {
+	  const originalDbConnection = getDbConnection();
+	  expect(originalDbConnection).toBeDefined();
+	});
+  
+	test('should return the existing connection', () => {
+	  const mockConnection = {};
+	  setConnection(mockConnection);
+	  const result = getDbConnection();
+	  expect(result).toBe(mockConnection);
+	});
+  });
+  
+  describe('delUser', () => {
+	test('should delete a user successfully', async () => {
+	  const user = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'Password123!@#',
+	  });
+	  const savedUser = await user.save();
+  
+	  const result = await delUser(savedUser);
+  
+	  expect(result).toBe(true);
+	});
+  
+	test('should handle errors when deleting a user', async () => {
+	  const spy = jest.spyOn(UserModel, 'deleteOne').mockRejectedValueOnce(new Error('Failed to delete user'));
+  
+	  const user = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'Password123!@#',
+	  });
+  
+	  const result = await delUser(user);
+  
+	  expect(result).toBe(false);
+	  spy.mockRestore();
+	});
+  });
+  
+  describe('sortByQuantity', () => {
+	test('should sort items by quantity in ascending order', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const item1 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 5,
+		folder: folderId,
+	  });
+	  const item2 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 2',
+		quantity: 3,
+		folder: folderId,
+	  });
+	  await item1.save();
+	  await item2.save();
+  
+	  const result = await sortByQuantityAsc(folderId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].quantity).toBeLessThanOrEqual(result[1].quantity);
+	});
+  });
+
   
 });
