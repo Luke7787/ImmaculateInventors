@@ -8,6 +8,22 @@ dotenv.config();
 
 mongoose.set('debug', true);
 
+let dbConnection: any;
+function setConnection(newConn: any) {
+	dbConnection = newConn;
+	return dbConnection;
+}
+
+function getDbConnection() {
+	if (!dbConnection) {
+		dbConnection = mongoose.createConnection(process.env.MONGODB_URI, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		});
+	}
+	return dbConnection;
+}
+
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, {
 	useNewUrlParser: true, //useFindAndModify: false,
@@ -15,7 +31,8 @@ mongoose.connect(uri, {
 });
 
 async function getUsers() {
-	return await UserSchema.find();
+	const UserModel = getDbConnection().model('User', UserSchema);
+	return await UserModel.find();
 }
 
 async function findUserById(id: any) {
@@ -28,45 +45,52 @@ async function findUserById(id: any) {
 }
 
 async function getFolders(userId: any) {
-	const folders = await FolderSchema.find({ userId: userId });
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const folders = await FolderModel.find({ userId: userId });
 	return folders;
 }
 
 async function addFolder(userId: any, folderName: String, imageUrl: string) {
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToAdd = new FolderSchema({
+	const folderToAdd = new FolderModel({
 		name: folderName,
 		userId: objUID,
 		image: imageUrl,
 	});
 	const savedFolder = await folderToAdd.save();
-	const user = await UserSchema.findByIdAndUpdate(userId, {
+	const user = await UserModel.findByIdAndUpdate(userId, {
 		$push: { folders: mongoose.Types.ObjectId(folderToAdd._id) },
 	});
 	return folderToAdd._id;
 }
 
 async function getFolderContents(folderId: any) {
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	console.log(folderId);
-	const items = await ItemSchema.find({ folder: folderId });
+	const items = await ItemModel.find({ folder: folderId });
 	console.log(items);
 	return items;
 }
 
 async function sortByQuantity(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
 	return items;
 }
 
 async function deleteFolder(userId: any, folderName: any) {
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const objUID = mongoose.Types.ObjectId(userId);
-	const folderToDel = await FolderSchema.find({ name: folderName });
-	const user = await UserSchema.findByIdAndUpdate(userId, {
+	const folderToDel = await FolderModel.find({ name: folderName });
+	const user = await UserModel.findByIdAndUpdate(userId, {
 		$pull: { folders: mongoose.Types.ObjectId(folderToDel[0]._id) },
 	});
-	await FolderSchema.findByIdAndDelete(folderToDel[0]._id);
+	await FolderModel.findByIdAndDelete(folderToDel[0]._id);
 	return user;
 }
 
@@ -83,13 +107,15 @@ async function deleteFolder(userId: any, folderName: any) {
 // 	return true;
 // }
 async function addItemToFolder(folderId: any, itemId: any) {
-	const folder = await FolderSchema.findByIdAndUpdate(
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const folder = await FolderModel.findByIdAndUpdate(
 		mongoose.Types.ObjectId(folderId),
 		{
 			$push: { items: mongoose.Types.ObjectId(itemId) },
 		}
 	);
-	const itemToUpdate = await ItemSchema.findByIdAndUpdate(
+	const itemToUpdate = await ItemModel.findByIdAndUpdate(
 		itemId,
 		{ folder: mongoose.Types.ObjectId(folderId) },
 		{ new: true }
@@ -98,11 +124,13 @@ async function addItemToFolder(folderId: any, itemId: any) {
 }
 
 async function deleteItemFromFolder(folderName: any, itemId: any) {
-	const folderToUpdate = await FolderSchema.find({ name: folderName });
-	const folder = await FolderSchema.findByIdAndUpdate(folderToUpdate[0]._id, {
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const folderToUpdate = await FolderModel.find({ name: folderName });
+	const folder = await FolderModel.findByIdAndUpdate(folderToUpdate[0]._id, {
 		$pull: { items: mongoose.Types.ObjectId(itemId) },
 	});
-	const itemToUpdate = await ItemSchema.findByIdAndUpdate(
+	const itemToUpdate = await ItemModel.findByIdAndUpdate(
 		itemId,
 		{ folder: null },
 		{ new: true }
@@ -111,7 +139,8 @@ async function deleteItemFromFolder(folderName: any, itemId: any) {
 }
 
 async function updateFolderName(folderId: any, newName: any) {
-	const folderToUpdate = await FolderSchema.findByIdAndUpdate(
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const folderToUpdate = await FolderModel.findByIdAndUpdate(
 		folderId,
 		{ name: newName },
 		{ new: true }
@@ -121,9 +150,9 @@ async function updateFolderName(folderId: any, newName: any) {
 
 async function addUser(user: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
-		const userToAdd = new UserSchema(user);
+		const userToAdd = new UserModel(user);
 		const savedUser = await userToAdd.save();
 		return savedUser;
 	} catch (error: any) {
@@ -141,8 +170,9 @@ async function addUser(user: any) {
 }
 
 async function delUser(user: any) {
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
-		await UserSchema.deleteOne(user);
+		await UserModel.deleteOne(user);
 		return true;
 	} catch (err) {
 		console.error(err);
@@ -151,34 +181,39 @@ async function delUser(user: any) {
 }
 
 async function addItemToUser(user_id: any, item_id: any) {
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	// connect to user collection and item collection databases
 	// find user with matching id
-	const user = await UserSchema.findById(user_id);
+	const user = await UserModel.findById(user_id);
 	// initialize array for user items if it doesnt exist already
 	user.items = [];
 	if (user) console.log(user.username);
-	const itemToAdd = await ItemSchema.find({ _id: item_id });
+	const itemToAdd = await ItemModel.find({ _id: item_id });
 	if (itemToAdd) console.log(item_id);
 	//user.items.push({items: item_id});
 	// push id onto item list of user
-	const updatedUser = await UserSchema.findByIdAndUpdate(user_id, {
+	const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
 		$push: { items: mongoose.Types.ObjectId(item_id) },
 	});
 	return updatedUser;
 }
 
 async function getItemFromUser(userId: any, itemId: any) {
-	const user = await UserSchema.findById(userId);
-	const userItem = await UserSchema.find({ items: itemId });
-	return await ItemSchema.find({ _id: itemId });
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const user = await UserModel.findById(userId);
+	const userItem = await UserModel.find({ items: itemId });
+	return await ItemModel.find({ _id: itemId });
 }
 
 async function deleteItemFromUser(userId: any, itemId: any) {
-	const user = await UserSchema.findById(userId);
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const user = await UserModel.findById(userId);
 	if (user) console.log(user.username);
-	const userItem = await UserSchema.find({ items: itemId });
+	const userItem = await UserModel.find({ items: itemId });
 	if (userItem) console.log('Item found');
-	const updatedUser = await UserSchema.findByIdAndUpdate(userId, {
+	const updatedUser = await UserModel.findByIdAndUpdate(userId, {
 		$pull: { items: itemId },
 	});
 	return updatedUser;
@@ -190,22 +225,24 @@ async function updateItemFromUser(
 	quantity: any,
 	option: any
 ) {
-	const user = await UserSchema.findById(userId);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const user = await UserModel.findById(userId);
 	if (option === 'add') {
-		const incItem = await ItemSchema.findByIdAndUpdate(itemId, {
+		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
 			$inc: { quantity: quantity },
 		});
 		return incItem;
 	} else {
-		const tempItem = await ItemSchema.findById(itemId);
+		const tempItem = await ItemModel.findById(itemId);
 		if (tempItem.quantity - quantity <= 0) {
-			const updatedUser = await ItemSchema.findByIdAndUpdate(userId, {
+			const updatedUser = await ItemModel.findByIdAndUpdate(userId, {
 				$pull: { items: itemId },
 			});
 			const delItem = await itemServices.deleteItem(itemId);
 			return delItem;
 		} else {
-			const decItem = await ItemSchema.findByIdAndUpdate(itemId, {
+			const decItem = await ItemModel.findByIdAndUpdate(itemId, {
 				$inc: { quantity: -quantity },
 			});
 			return decItem;
@@ -214,12 +251,14 @@ async function updateItemFromUser(
 }
 
 async function findUserByUsername(username: string) {
-	const user = await UserSchema.find({ username: username });
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const user = await UserModel.find({ username: username });
 	return user[0];
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
-	const user = await UserSchema.find({
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const user = await UserModel.find({
 		username: username,
 		password: password,
 	});
@@ -227,8 +266,9 @@ async function findUserByUserAndPass(username: any, password: any) {
 }
 
 async function deleteUserById(id: any) {
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
-		if (await UserSchema.findByIdAndDelete(id)) return true;
+		if (await UserModel.findByIdAndDelete(id)) return true;
 	} catch (error) {
 		console.log(error);
 		return false;
@@ -236,36 +276,42 @@ async function deleteUserById(id: any) {
 }
 
 async function sortByQuantityAsc(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
 	return items;
 }
 
 async function sortByQuantityDes(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: -1,
 	});
 	return items;
 }
 
 async function sortByDateAsc(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({ date: 1 });
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({ date: 1 });
 	return items;
 }
 
 async function sortByDateDes(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({ date: -1 });
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({ date: -1 });
 	return items;
 }
 
 async function sortByNameAsc(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({ name: 1 });
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({ name: 1 });
 	return items;
 }
 
 async function sortByNameDes(folderId: any) {
-	const items = await ItemSchema.find({ folder: folderId }).sort({ name: -1 });
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const items = await ItemModel.find({ folder: folderId }).sort({ name: -1 });
 	return items;
 }
 

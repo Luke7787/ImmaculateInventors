@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "backend.tsx",
 	"scripts": {
-		"test": "prettier --check .",
+		"test": "prettier --check . && npm run test:coverage",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "node node_modules/ts-node/dist/bin.js backend.tsx",
 		"start": "node node_modules/ts-node/dist/bin.js backend.tsx",
@@ -29,6 +29,7 @@
 		"typescript": "^5.4.2"
 	},
 	"devDependencies": {
+		"mongodb-memory-server": "^9.2.0",
 		"@types/bcrypt": "^5.0.2",
 		"@types/jest": "^29.5.12",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
