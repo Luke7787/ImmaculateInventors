@@ -2,12 +2,12 @@
 
 ### Backend<br/>
 
-![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend.yml/badge.svg)
+![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend.yml/badge.svg) <br/>
 https://mango-island-08612f41e.5.azurestaticapps.net/
 
 ### Frontend<br/>
 
-![frontend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/azure-static-web-apps-mango-island-08612f41e.yml/badge.svg)
+![frontend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/azure-static-web-apps-mango-island-08612f41e.yml/badge.svg) <br/>
 https://immaculate-backend.azurewebsites.net/
 
 ## Architecture
@@ -16,19 +16,17 @@ https://immaculate-backend.azurewebsites.net/
 
 ## Tech Spec
 
-[Tech Spec](https://docs.google.com/document/d/1fUS2zrTxD0w0niQnnfbotn-kzLkxvs0bqQsI_z_p2YA/edit?usp=sharing)
+[Tech Spec.pdf](https://github.com/user-attachments/files/15573506/Immaculate.Inventors.Tech.Spec.1.pdf)
 
-## UI Specs:
+## UI Spec:
 
-- [Profile](https://www.figma.com/file/mT2JmMxlXnZyGe46WS3Fcr/Profile-Page?type=design&node-id=0%3A1&mode=design&t=dqftU3QwoQ0M4JGl-1)
-- [Sign In / Create Account](https://www.figma.com/file/AE3t3fUj0nMRRtUQX3BBbT/UI-Design---Sign-In-Modal?type=design&mode=design&t=dqftU3QwoQ0M4JGl-1)
-- [Home Page](https://www.figma.com/file/XP0UJUNIP8dEv6lqgWMQEg/UI-Design?type=design&mode=design&t=dqftU3QwoQ0M4JGl-1)
-
-## Style guide: https://google.github.io/styleguide/tsguide.html
+[User-Interface Spec](https://www.figma.com/design/XP0UJUNIP8dEv6lqgWMQEg/UI-Design?node-id=0-1&t=hve2J0VRqWqqReb1-1)
 
 ### New Developers:
 
-`npm install`
+`npm install` <br/>
+
+Note: There are environment variables on the frontend and backend that are required for the functionality of this app. Contact ajta@calpoly.edu to obtain these.
 
 ### Front-end (root):
 
@@ -44,6 +42,7 @@ https://immaculate-backend.azurewebsites.net/
 `npm run test:coverage`<br/>
 `npm run format`
 
-### Code coverage (with date and time):
+### Code coverage (backend models):
 
-![coverage](https://github.com/Luke7787/ImmaculateInventors/assets/121963264/c2a60e61-384c-4ee3-9774-a6b0ac9b97f4)
+![Code Coverage](https://github.com/Luke7787/ImmaculateInventors/assets/48562217/21f57ab9-5e88-4ad9-8acc-a6fd1c156645)
+
