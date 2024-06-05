@@ -147,7 +147,7 @@ async function updateFolderName(folderId: any, newName: any) {
 }
 
 async function addUser(user: any) {
-	// userModel is a Model, a subclass of mongoose.Model
+	// userModel is a Model, a subclass of mongoose.Model 
 	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
 		const userToAdd = new UserModel(user);
