@@ -2,7 +2,6 @@ import styles from './SignIn.module.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
-import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -28,6 +27,10 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 			...prev,
 			[name]: value,
 		}));
+	};
+
+	const handleForgotPasswordClick = () => {
+		navigate('/forgot-password');
 	};
 
 	const handleSubmit = async (e) => {
@@ -93,10 +96,10 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					/>
 					
 				</div>
-				<Link className={styles.forgotPassword} to="/forgot-password">
+				<div className={styles.forgotPassword} onClick={handleForgotPasswordClick}>
 					Forgot Password?
-				</Link>
-				
+				</div>
+
 				{signInErr && (
 					<p className={styles.signInErr}>
 						Your username or password is incorrect.

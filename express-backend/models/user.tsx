@@ -5,8 +5,6 @@ import bcrypt from 'bcrypt';
 import {Schema, model, models}  from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
 //const Item = require('./item.tsx');
-const bcryptjs = require('bcryptjs');
-
 
 const UserSchema = new mongoose.Schema(
 	{

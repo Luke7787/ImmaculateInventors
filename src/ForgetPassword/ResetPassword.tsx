@@ -77,7 +77,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
     return (
         <div className={styles.mainContainer}>
             <Link className={styles.applogo} to={"/"} >
-                TechRise
+                Enter a New Password
             </Link>
 
             <form
