@@ -14,7 +14,10 @@ import InfoText from './ForgetPassword/InfoText.tsx';
 import ErrorText from './ForgetPassword/common/ErrorText/ErrorText.tsx';
 
 const MyApp = () => {
+	const { user, login, logout, setUser } = useAuth();
 	return (
+		<AuthContext.Provider value={{ user, setUser }}>
+
 		
 			<Router>
 				<Routes>
@@ -33,6 +36,9 @@ const MyApp = () => {
 					<Route path="/info-text" element={<InfoText text={'info'} linkHref={'/'} linkTitle={'info'} />} />
 				</Routes>
 			</Router>
+
+			</AuthContext.Provider>
+
 		
 	);
 };
