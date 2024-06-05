@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongoos = require('mongoose');
+const { MongoMemoryServer: CustomMongoServer } = require('mongodb-memory-server');
 const {
 	getRefreshToken,
 	addRefreshToken,
 	deleteRefreshToken,
-	setConnection,
-	getDbConnection,
+	getDbConnection: getDb,
 } = require('./refreshTokens-services');
 const RefreshTokenSchema = require('./refreshTokens');
 const refreshToken_Services = require('./refreshTokens-services');
@@ -15,15 +14,15 @@ describe('refreshToken services', () => {
 	let conn: any;
 
 	beforeAll(async () => {
-		mongoServer = await MongoMemoryServer.create();
+		mongoServer = await CustomMongoServer.create();
 		const uri = mongoServer.getUri();
 
-		const mongooseOpts = {
+		const mongoosOpts = {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		};
 
-		conn = await mongoose.createConnection(uri, mongooseOpts);
+		conn = await mongoos.createConnection(uri, mongoosOpts);
 
 		refreshToken_Services.setConnection(conn);
 	});
@@ -81,5 +80,5 @@ describe('refreshToken services', () => {
 });
 
 describe('dbc', () => {
-	getDbConnection();
+	getDb();
 });

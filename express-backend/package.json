@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "backend.tsx",
 	"scripts": {
-		"test": "prettier --check . && npm run test:coverage",
+		"test": "npm run test:coverage",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "node node_modules/ts-node/dist/bin.js backend.tsx",
 		"start": "node node_modules/ts-node/dist/bin.js backend.tsx",

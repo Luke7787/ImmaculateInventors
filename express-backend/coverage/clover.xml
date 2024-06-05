@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1717605758455" clover="3.2.0">
-  <project timestamp="1717605758455" name="All files">
+<coverage generated="1717606145833" clover="3.2.0">
+  <project timestamp="1717606145833" name="All files">
     <metrics statements="283" coveredstatements="263" conditionals="15" coveredconditionals="12" methods="47" coveredmethods="43" elements="345" coveredelements="318" complexity="0" loc="283" ncloc="283" packages="1" files="7" classes="7"/>
     <file name="folder.tsx" path="C:\Users\adamt\OneDrive\Documents\Cal Poly SLO\CSC 308\ImmaculateInventors\express-backend\models\folder.tsx">
       <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
