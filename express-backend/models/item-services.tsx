@@ -15,7 +15,7 @@ function setConnection(newConn: any) {
 
 function getDbConnection() {
 	if (!dbConnection) {
-		dbConnection = mongoose.createConnection(process.env.MONGODB_URI, {
+		dbConnection = mongoose.createConnection(process.env.MONGODBURI, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		});
@@ -23,7 +23,7 @@ function getDbConnection() {
 	return dbConnection;
 }
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODBURI;
 mongoose.connect(uri, {
 	useNewUrlParser: true, //useFindAndModify: false,
 	useUnifiedTopology: true,
