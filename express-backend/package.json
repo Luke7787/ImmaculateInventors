@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "backend.tsx",
 	"scripts": {
-		"test": "prettier --check . && npm run test:coverage",
+		"test": "MONGODBURI=mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory && prettier --check . && npm run test:coverage",
 		"test:coverage": "jest --runInBand --detectOpenHandles --forceExit --coverage",
 		"dev": "node node_modules/ts-node/dist/bin.js backend.tsx",
 		"start": "node node_modules/ts-node/dist/bin.js backend.tsx",
