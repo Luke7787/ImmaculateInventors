@@ -12,15 +12,19 @@ function setConnection(newConn: any) {
 
 function getDbConnection() {
 	if (!dbConnection) {
-		dbConnection = mongoose.createConnection(process.env.MONGODB_URI, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
+		dbConnection = mongoose.createConnection(
+			'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory',
+			{
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			}
+		);
 	}
 	return dbConnection;
 }
 
-const uri = process.env.MONGODB_URI;
+const uri =
+	'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory';
 mongoose.connect(uri, {
 	useNewUrlParser: true, //useFindAndModify: false,
 	useUnifiedTopology: true,
