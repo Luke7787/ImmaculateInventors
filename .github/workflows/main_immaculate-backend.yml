@@ -30,11 +30,8 @@ jobs:
 
       - name: npm install, build, and test
         env:
-          MONGODB_URI: '${{ secrets.MONGODB_URI }}'
+          MONGODB_URI: 'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory'
         run: |
-          touch .env
-          echo MONGODBURI=mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory >> .env
-          cat .env
           npm install
           npm run build --if-present
           npm run test --if-present
