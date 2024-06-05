@@ -87,6 +87,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
                 <h2 className={styles.title}> Reset Password </h2>
 
                 <Input
+                    className={styles.input}
                     label={"New Password"}
                     name={"password"}
                     type={"password"}
@@ -95,6 +96,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
                 />
 
                 <Input
+                    className={styles.input}
                     label={"Confirm Password"}
                     name={"confirmPassword"}
                     type={"password"}
@@ -103,7 +105,7 @@ const ResetPassword = ({ params }: ResetPasswordProps) => {
                 />
 
                 <Button type={"submit"} loading={loading}>
-                    Reset
+                    <div className={styles.button}>Reset</div>
                 </Button>
 
                 {

@@ -87,7 +87,7 @@ const ForgetPassword = () => {
                     type={"submit"}
                     loading={loading}
                 >
-                    Submit
+                    <div className={styles.button}>Submit</div>
                 </Button>
 
                 {
