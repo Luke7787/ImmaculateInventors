@@ -6,8 +6,6 @@ const itemServices = require('./item-services.tsx');
 const dotenv = require('dotenv');
 dotenv.config();
 
-mongoose.set('debug', true);
-
 let dbConnection: any;
 function setConnection(newConn: any) {
 	dbConnection = newConn;
@@ -39,7 +37,7 @@ async function findUserById(id: any) {
 	try {
 		return await findUserByUsername(id);
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return undefined;
 	}
 }
@@ -68,9 +66,9 @@ async function addFolder(userId: any, folderName: String, imageUrl: string) {
 
 async function getFolderContents(folderId: any) {
 	const ItemModel = getDbConnection().model('Item', ItemSchema);
-	console.log(folderId);
+	// console.log(folderId);
 	const items = await ItemModel.find({ folder: folderId });
-	console.log(items);
+	// console.log(items);
 	return items;
 }
 
@@ -160,22 +158,22 @@ async function addUser(user: any) {
 			const errorMessage = error.errors.password
 				? error.errors.password.message
 				: error.errors; //This truncates the error message to just be what is wanted -> Error: Password must be 5 or more characters long.
-			console.log(errorMessage); //return the error message to handle it in response
+			// console.log(errorMessage); //return the error message to handle it in response
 			return { error: true, message: errorMessage };
 		} else {
-			console.log(error);
+			// console.log(error);
 			return { error: true, message: 'An unexpected error occurred' };
 		}
 	}
 }
 
 async function delUser(user: any) {
-	const UserModel = getDbConnection().model('User', UserSchema);
+	const UserModel = (getDbConnection() as any).model('User', UserSchema);
 	try {
 		await UserModel.deleteOne(user);
 		return true;
 	} catch (err) {
-		console.error(err);
+		// console.error(err);
 		return false;
 	}
 }
@@ -188,9 +186,9 @@ async function addItemToUser(user_id: any, item_id: any) {
 	const user = await UserModel.findById(user_id);
 	// initialize array for user items if it doesnt exist already
 	user.items = [];
-	if (user) console.log(user.username);
+	// if (user) console.log(user.username);
 	const itemToAdd = await ItemModel.find({ _id: item_id });
-	if (itemToAdd) console.log(item_id);
+	// if (itemToAdd) console.log(item_id);
 	//user.items.push({items: item_id});
 	// push id onto item list of user
 	const updatedUser = await UserModel.findByIdAndUpdate(user_id, {
@@ -210,9 +208,9 @@ async function getItemFromUser(userId: any, itemId: any) {
 async function deleteItemFromUser(userId: any, itemId: any) {
 	const UserModel = getDbConnection().model('User', UserSchema);
 	const user = await UserModel.findById(userId);
-	if (user) console.log(user.username);
+	// if (user) console.log(user.username);
 	const userItem = await UserModel.find({ items: itemId });
-	if (userItem) console.log('Item found');
+	// if (userItem) console.log('Item found');
 	const updatedUser = await UserModel.findByIdAndUpdate(userId, {
 		$pull: { items: itemId },
 	});
@@ -270,13 +268,13 @@ async function deleteUserById(id: any) {
 	try {
 		if (await UserModel.findByIdAndDelete(id)) return true;
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return false;
 	}
 }
 
 async function sortByQuantityAsc(folderId: any) {
-	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const ItemModel = (getDbConnection() as any).model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
@@ -339,4 +337,6 @@ exports.addItemToFolder = addItemToFolder;
 exports.deleteItemFromFolder = deleteItemFromFolder;
 exports.updateFolderName = updateFolderName;
 exports.getFolderContents = getFolderContents;
+exports.getDbConnection = getDbConnection;
+exports.setConnection = setConnection;
 export {};

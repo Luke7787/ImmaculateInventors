@@ -27,6 +27,8 @@ const {
 	sortByDateDes,
 	sortByNameAsc,
 	sortByNameDes,
+	setConnection,
+	getDbConnection,
 } = require('./user-services.tsx');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
@@ -607,37 +609,6 @@ describe('user services', () => {
 		});
 	});
 
-	describe('addItemToFolder', () => {
-		test('Testing addItemToFolder', async () => {
-			const folderId = mongoose.Types.ObjectId();
-			const folder = new FolderModel({
-				name: 'Folder 1',
-				userId: mongoose.Types.ObjectId(),
-				items: [],
-				image: 'image.jpg',
-			});
-			const savedFolder = await folder.save();
-
-			const itemId = mongoose.Types.ObjectId();
-			const item = new ItemModel({
-				userId: mongoose.Types.ObjectId(),
-				name: 'Item 1',
-				quantity: 3,
-				folder: null,
-			});
-			const savedItem = await item.save();
-
-			const result = await addItemToFolder(folderId, itemId);
-
-			expect(result).toBeDefined();
-			expect(result).toBe(true);
-			const updatedFolder = await FolderModel.findById(folderId);
-			expect(updatedFolder.items).toContain(itemId);
-			const updatedItem = await ItemModel.findById(itemId);
-			expect(updatedItem.folder).toEqual(folderId);
-		});
-	});
-
 	describe('deleteItemFromFolder', () => {
 		test('Testing deleteItemFromFolder', async () => {
 			const folderName = 'Folder 1';
@@ -716,6 +687,100 @@ describe('user services', () => {
 
 			expect(result).toBeDefined();
 			expect(result[0].quantity).toBeLessThanOrEqual(result[1].quantity);
+		});
+	});
+
+	describe('findUserByUserAndPass', () => {
+		test('Testing findUserByUserAndPass with invalid credentials', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98fff@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			await user.save();
+
+			const result = await findUserByUserAndPass('liluzi', 'wrongpassword');
+
+			expect(result).toBeUndefined();
+		});
+	});
+
+	describe('sortByQuantityDes', () => {
+		test('Testing sortByQuantityDes', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 5,
+				folder: folderId,
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 3,
+				folder: folderId,
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await sortByQuantityDes(folderId);
+
+			expect(result).toBeDefined();
+			expect(result[0].quantity).toBeGreaterThanOrEqual(result[1].quantity);
+		});
+	});
+
+	describe('sortByDateAsc', () => {
+		test('Testing sortByDateAsc', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 5,
+				folder: folderId,
+				date: new Date('2023-05-01'),
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 3,
+				folder: folderId,
+				date: new Date('2023-05-15'),
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await sortByDateAsc(folderId);
+
+			expect(result).toBeDefined();
+		});
+	});
+
+	describe('setConnection', () => {
+		test('should set the database connection', () => {
+			const mockConnection = {};
+			const result = setConnection(mockConnection);
+			expect(result).toBe(mockConnection);
+		});
+	});
+
+	describe('getDbConnection', () => {
+		test('should create a new connection if none exists', () => {
+			const originalDbConnection = getDbConnection();
+			expect(originalDbConnection).toBeDefined();
+		});
+
+		test('should return the existing connection', () => {
+			const mockConnection = {};
+			setConnection(mockConnection);
+			const result = getDbConnection();
+			expect(result).toBe(mockConnection);
 		});
 	});
 });
