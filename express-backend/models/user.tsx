@@ -62,6 +62,11 @@ const UserSchema = new mongoose.Schema(
 					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
 			},
 		},
+		password__token: {
+			type: String,
+			required: false,
+			trim: true,
+		},
 		items: [
 			{
 				type: Schema.Types.ObjectId,
