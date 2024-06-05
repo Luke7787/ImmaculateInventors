@@ -3,7 +3,7 @@
 ### Backend<br/>
 
 ![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend.yml/badge.svg)
-https://mango-island-08612f41e.5.azurestaticapps.net/ 
+https://mango-island-08612f41e.5.azurestaticapps.net/
 
 ### Frontend<br/>
 
