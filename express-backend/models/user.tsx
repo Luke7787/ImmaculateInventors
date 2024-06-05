@@ -28,7 +28,6 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			trim: true,
-			// unique: true,
 		},
 		state: {
 			type: String,
@@ -62,6 +61,11 @@ const UserSchema = new mongoose.Schema(
 				message: (props: any) =>
 					'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
 			},
+		},
+		password__token: {
+			type: String,
+			required: false,
+			trim: true,
 		},
 		items: [
 			{
@@ -100,3 +104,4 @@ UserSchema.pre('save', async function (next) {
 const User = mongoose.model("User", UserSchema);
 
 module.exports = User;
+module.exports = UserSchema;

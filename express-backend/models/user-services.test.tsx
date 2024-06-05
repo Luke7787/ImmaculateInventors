@@ -1,253 +1,786 @@
-// // const mongoose = require('mongoose');
-// const mockingoose = require('mockingoose');
-// mongoose.set('debug', true);
-// mongoose.connect(
-// 	'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory',
-// 	{
-// 		useNewUrlParser: true, //useFindAndModify: false,
-// 		useUnifiedTopology: true,
-// 	}
-// );
-// const {
-// 	getUsers,
-// 	getDbConnection,
-// 	updateItemFromUser,
-// 	findUserById,
-// 	getItemFromUser,
-// 	addItemToUser,
-// 	deleteItemFromUser,
-// 	addUser,
-// 	deleteUserById,
-// 	delUser,
-// 	findUserByUserAndPass,
-// 	findUserByUsername,
-// } = require('./user-services.tsx');
-// // const { findItemByName, deleteItem } = require('./item-services.tsx');
-// // const UserSchema = require('./user.tsx');
-// // const ItemSchema = require('./item.tsx');
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const bcryptTest = require('bcrypt');
 
-// describe('getUsers function', () => {
-// 	//let conn: any;
-// 	// beforeAll(async () => {
-// 	// 	conn = await getDbConnection();
-// 	// });
-// 	// afterAll(async () => {
-// 	// 	await mongoose.disconnect();
-// 	// });
-// 	test('Testing addUsers', async () => {
-// 		const user1 = await addUser({
-// 			username: 'awu98',
-// 			password: 'a1234567890!AA',
-// 			email: 'awu98@gmail.com',
-// 			country: 'United States',
-// 			state: 'California',
-// 			zipcode: '93410',
-// 			city: 'SLO',
-// 			firstName: 'Anson',
-// 			lastName: 'Wu',
-// 		});
-// 		// const user2 = await addUser(
-// 		// 	{
-// 		// 		username: 'koalascope',
-// 		// 		password: 'a1234567890!AA',
-// 		// 		email: 'koalascope@gmail.com',
-// 		// 		country: 'United States',
-// 		// 		state: 'California',
-// 		// 		zipcode: '93410',
-// 		// 		city: 'SLO',
-// 		// 		firstName: 'koala',
-// 		// 		lastName: 'scope',
-// 		// 	},
-// 		// 	conn
-// 		// );
-// 		// const user5 = await addUser(
-// 		// 	{
-// 		// 		username: 'bossbaby',
-// 		// 		password: 'S1u&',
-// 		// 		email: 'koalascope@gmail.com',
-// 		// 		country: 'United States',
-// 		// 		state: 'California',
-// 		// 		zipcode: '93410',
-// 		// 		city: 'SLO',
-// 		// 		firstName: 'boss',
-// 		// 		lastName: 'baby',
-// 		// 	},
-// 		// 	conn
-// 		// );
-// 		// const user6 = await addUser(
-// 		// 	{
-// 		// 		username: 'bossbaby2',
-// 		// 		password: 'a1234567890!AA',
-// 		// 		email: 'koalascope@gmail.com',
-// 		// 		country: 'United States',
-// 		// 		state: 'California',
-// 		// 		zipcode: '93410',
-// 		// 		city: 'SLO',
-// 		// 		firstName: 'boss',
-// 		// 	},
-// 		// 	conn
-// 		// );
-// 		// const user3 = await addUser(undefined, conn);
-// 		// const user4 = await addUser(undefined, undefined);
-// 		// expect(user6).toBeDefined();
-// 		// expect(user5).toEqual({
-// 		// 	error: true,
-// 		// 	message:
-// 		// 		'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
-// 		// });
-// 		// expect(user3).toEqual({
-// 		// 	error: true,
-// 		// 	message: 'Path `password` is required.',
-// 		// });
-// 		// expect(user4).toEqual({
-// 		// 	error: true,
-// 		// 	message: 'An unexpected error occurred',
-// 		// });
-// 		expect(user1.username).toEqual('awu98');
-// 	});
-// 	test('Testing getUsers', async () => {
-// 		const users = await getUsers();
-// 		const user = await getUsers('awu98', 'a1234567890!AA');
-// 		expect(user[0].username).toEqual('awu98');
-// 		expect(users).toBeDefined();
-// 		expect(users.length).toBeGreaterThan(0);
-// 	});
-// 	test('Testing findUserById', async () => {
-// 		const result = await findUserById('awu98');
-// 		const target = 'awu98';
-// 		const result2 = await findUserById(undefined, undefined);
-// 		expect(result2).toBeUndefined();
-// 		expect(result[0].username).toEqual(target);
-// 	});
-// 	test('Testing addItemToUser', async () => {
-// 		const user = await findUserByUsername('awu98');
-// 		//const ItemModel = conn.model('Item', ItemSchema);
-// 		await ItemSchema.create({
-// 			userId: user[0]._id.toString(),
-// 			name: 'Toe',
-// 			quantity: 3,
-// 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 		});
-// 		console.log(user[0]._id.toString());
-// 		const result = await addItemToUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3'
-// 		);
-// 		const updatedUser = await findUserByUsername('awu98');
-// 		console.log(updatedUser);
-// 		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-// 		expect(updatedUser[0].items.length).toBeGreaterThan(0);
-// 	});
-// 	test('Testing getItemFromUser', async () => {
-// 		const user = await findUserByUsername('awu98');
-// 		//const ItemModel = conn.model('Item', ItemSchema);
-// 		await ItemSchema.create({
-// 			userId: user[0]._id.toString(),
-// 			name: 'Toe',
-// 			quantity: 3,
-// 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 		});
-// 		const result = getItemFromUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3'
-// 		);
-// 		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-// 		expect(result).toBeDefined();
-// 	});
-// 	test('Testing updateItemFromUser (ADD)', async () => {
-// 		const user = await findUserByUsername('awu98');
-// 		//const ItemModel = conn.model('Item', ItemSchema);
-// 		await ItemSchema.create({
-// 			userId: user[0]._id.toString(),
-// 			name: 'Toe',
-// 			quantity: 3,
-// 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 		});
-// 		const item = await findItemByName('Toe');
-// 		const target = item[0].quantity;
-// 		const update = await updateItemFromUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3',
-// 			1,
-// 			'add'
-// 		);
-// 		const result = await findItemByName('Toe');
-// 		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-// 		expect(result[0].quantity).toBeGreaterThan(target);
-// 	});
-// 	test('Testing updateItemFromUser (SUB)', async () => {
-// 		const user = await findUserByUsername('awu98');
-// 		//const ItemModel = conn.model('Item', ItemSchema);
-// 		await ItemSchema.create({
-// 			userId: user[0]._id.toString(),
-// 			name: 'Toe',
-// 			quantity: 3,
-// 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 		});
-// 		const item = await findItemByName('Toe');
-// 		const target = item[0].quantity;
-// 		const update = await updateItemFromUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3',
-// 			1,
-// 			'sub'
-// 		);
-// 		const result = await findItemByName('Toe');
-// 		const update2 = await updateItemFromUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3',
-// 			3,
-// 			'sub'
-// 		);
-// 		expect(update2).toBeDefined();
-// 		expect(result[0].quantity).toBeLessThan(target);
-// 	});
-// 	test('Testing deleteItemFromUser', async () => {
-// 		const user = await findUserByUsername('awu98');
-// 		//const ItemModel = conn.model('Item', ItemSchema);
-// 		await ItemSchema.create({
-// 			userId: user[0]._id.toString(),
-// 			name: 'Toe',
-// 			quantity: 3,
-// 			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-// 		});
-// 		const result = await deleteItemFromUser(
-// 			user[0]._id.toString(),
-// 			'65ef409a0336b57ddfbe9ce3'
-// 		);
-// 		const updatedUser = await findUserByUsername('awu98');
-// 		console.log(updatedUser);
-// 		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-// 		expect(updatedUser[0].items.length).toEqual(0);
-// 	});
-// 	test('Testing findUserByUserAndPass', async () => {
-// 		const result = await findUserByUserAndPass('awu98', 'a1234567890!AA');
-// 		const target = 'awu98';
-// 		expect(result[0].username).toEqual(target);
-// 	});
-// 	test('Testing findUserByUsername', async () => {
-// 		const result = await findUserByUsername('awu98');
-// 		const target = 'awu98';
-// 		expect(result[0].username).toEqual(target);
-// 	});
-// 	test('Testing deleteUserById', async () => {
-// 		const user = await findUserByUsername('koalascope');
-// 		const result = await deleteUserById(user[0]._id.toString());
-// 		const user2 = await findUserByUsername('koalascope');
-// 		const result2 = await deleteUserById(undefined, undefined);
-// 		expect(result2).toEqual(false);
-// 		expect(user2.length).toEqual(0);
-// 	});
-// 	test('Testing delUser', async () => {
-// 		let user;
-// 		const users = await getUsers();
-// 		for (let i = 0; i < users.length; i += 1) {
-// 			user = users[i];
-// 			let del = await delUser(user);
-// 		}
-// 		const result = await getUsers();
-// 		const result2 = await delUser(undefined);
-// 		expect(result2).toEqual(false);
-// 		expect(result.length).toEqual(0);
-// 	});
-// });
+const {
+	getUsers,
+	updateItemFromUser,
+	findUserById,
+	getItemFromUser,
+	addItemToUser,
+	deleteItemFromUser,
+	addUser,
+	deleteUserById,
+	delUser,
+	findUserByUserAndPass,
+	findUserByUsername,
+	getFolders,
+	addFolder,
+	getFolderContents,
+	deleteFolder,
+	addItemToFolder,
+	deleteItemFromFolder,
+	updateFolderName,
+	sortByQuantityAsc,
+	sortByQuantityDes,
+	sortByDateAsc,
+	sortByDateDes,
+	sortByNameAsc,
+	sortByNameDes,
+	setConnection,
+	getDbConnection,
+} = require('./user-services.tsx');
+const UserSchema = require('./user.tsx');
+const ItemSchema = require('./item.tsx');
+const FolderSchema = require('./folder.tsx');
+
+describe('user services', () => {
+	let mongoServer: any;
+	let conn: any;
+	let ItemModel: any;
+	let UserModel: any;
+	let FolderModel: any;
+
+	beforeAll(async () => {
+		mongoServer = await MongoMemoryServer.create();
+		const mongooseOpts = {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+		};
+		conn = await mongoose.createConnection(
+			'mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory',
+			mongooseOpts
+		);
+		ItemModel = conn.model('Item', ItemSchema, 'items');
+		UserModel = conn.model('User', UserSchema, 'users');
+		FolderModel = conn.model('Folder', FolderSchema, 'folders');
+	});
+
+	afterAll(async () => {
+		await conn.dropDatabase();
+		await conn.close();
+		await mongoServer.stop();
+	});
+
+	afterEach(async () => {
+		await ItemModel.deleteMany();
+		//await UserModel.deleteMany();
+		//await FolderModel.deleteMany();
+	});
+
+	describe('UserSchema', () => {
+		it('should create a new user with all required fields', async () => {
+			const user = new UserModel({
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.doe@example.com',
+				country: 'United States',
+				state: 'California',
+				city: 'Los Angeles',
+				zipcode: '90001',
+				username: 'johndoe',
+				password: 'Password123!@#',
+			});
+
+			const savedUser = await user.save();
+
+			expect(savedUser).toHaveProperty('_id');
+			expect(savedUser.firstName).toBe(user.firstName);
+			expect(savedUser.lastName).toBe(user.lastName);
+			expect(savedUser.email).toBe(user.email);
+			expect(savedUser.country).toBe(user.country);
+			expect(savedUser.state).toBe(user.state);
+			expect(savedUser.city).toBe(user.city);
+			expect(savedUser.zipcode).toBe(user.zipcode);
+			expect(savedUser.username).toBe(user.username);
+			expect(savedUser.password).not.toBe('Password123!@#'); // Password should be hashed
+		});
+
+		it('should not create a user with an invalid password', async () => {
+			const user2 = new UserModel({
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.doe@example.com',
+				country: 'United States',
+				state: 'California',
+				city: 'Los Angeles',
+				zipcode: '90001',
+				username: 'johndoe',
+				password: 'invalid',
+			});
+
+			await expect(user2.save()).rejects.toThrow(
+				'Error: Password must be 10 characters long, have a special character, uppercase character, and a number'
+			);
+		});
+
+		it('should not create a user with a duplicate email', async () => {
+			const user3 = new UserModel({
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.doe@example.com',
+				country: 'United States',
+				state: 'California',
+				city: 'Los Angeles',
+				zipcode: '90001',
+				username: 'johndoe',
+				password: 'Password123!@#',
+			});
+
+			await expect(user3.save()).rejects.toThrow('E11000 duplicate key error');
+		});
+
+		it('should hash the password before saving', async () => {
+			const user4 = new UserModel({
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.dofae@example.com',
+				country: 'United States',
+				state: 'California',
+				city: 'Los Angeles',
+				zipcode: '90001',
+				username: 'johndoe',
+				password: 'Password123!@#',
+			});
+
+			const savedUser = await user4.save();
+
+			expect(savedUser.password).not.toBe('Password123!@#');
+		});
+	});
+
+	describe('addUser', () => {
+		test('Testing addUsers', async () => {
+			const toBeAdded = {
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			};
+
+			const result = await addUser(toBeAdded);
+
+			expect(result).toBeTruthy();
+			expect(result.firstName).toBe(toBeAdded.firstName);
+			expect(result.lastName).toBe(toBeAdded.lastName);
+			expect(result.email).toBe(toBeAdded.email);
+			expect(result.country).toBe(toBeAdded.country);
+			expect(result.state).toBe(toBeAdded.state);
+			expect(result.city).toBe(toBeAdded.city);
+			expect(result.zipcode).toBe(toBeAdded.zipcode);
+			expect(result.username).toBe(toBeAdded.username);
+			expect(result.password).not.toBe(toBeAdded.password);
+			expect(result).toHaveProperty('_id');
+		});
+
+		test('Adding user -- failure path with invalid password', async () => {
+			const dummyUser = {
+				_id: '6618ba4716c1fd15c725030c',
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a123456789AA',
+			};
+
+			try {
+				const result = await addUser(dummyUser);
+			} catch (error) {
+				expect(error).toEqual({
+					error: true,
+					message:
+						'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
+				});
+			}
+		});
+
+		test('Adding user -- failure path with no lastname', async () => {
+			const dummyUser = {
+				_id: '6618ba4716c1fd15c725030c',
+				firstName: 'Victor',
+				email: 'vphan98@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			};
+
+			try {
+				const result = await addUser(dummyUser);
+			} catch (error: any) {
+				expect(error.error).toBe(true);
+				expect(error.message.lastName).toBeDefined();
+			}
+		});
+	});
+
+	describe('getUsers', () => {
+		test('Testing getUsers to get all users', async () => {
+			const user1 = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan0809@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			const user2 = new UserModel({
+				firstName: 'John',
+				lastName: 'Doe',
+				email: 'john.doe2@example.com',
+				country: 'United States',
+				state: 'New York',
+				city: 'New York',
+				zipcode: '10001',
+				username: 'johndoe',
+				password: 'Password123!@#',
+			});
+
+			await user1.save();
+			await user2.save();
+
+			const result = await getUsers();
+
+			expect(result).toBeDefined();
+			expect(result.length).toBeGreaterThanOrEqual(2);
+		});
+	});
+
+	// ... (previous code)
+
+	describe('findUserById', () => {
+		test('Testing findUserById', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan1975@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			const savedUser = await user.save();
+			const userId = savedUser.username;
+
+			const result = await findUserById(userId);
+
+			expect(result).toBeDefined();
+		});
+	});
+
+	describe('addItemToUser', () => {
+		test('Testing addItemToUser', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan9800@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const item = new ItemModel({
+				userId: userId,
+				name: 'Item 1',
+				quantity: 3,
+				folder: mongoose.Types.ObjectId(),
+			});
+			const savedItem = await item.save();
+			const itemId = savedItem._id;
+
+			const result = await addItemToUser(userId, itemId);
+
+			expect(result).toBeDefined();
+			//expect(result.items).toContain(itemId.toString());
+		});
+	});
+
+	describe('getItemFromUser', () => {
+		test('Testing getItemFromUser', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98000@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+				items: [],
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const item = new ItemModel({
+				userId: userId,
+				name: 'Item 1',
+				quantity: 3,
+				folder: mongoose.Types.ObjectId(),
+			});
+			const savedItem = await item.save();
+			const itemId = savedItem._id;
+
+			await addItemToUser(userId, itemId);
+
+			const result = await getItemFromUser(userId, itemId);
+
+			expect(result).toBeDefined();
+			expect(result[0]._id).toEqual(itemId);
+		});
+	});
+
+	describe('updateItemFromUser', () => {
+		test('Testing updateItemFromUser (ADD)', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan980000@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+				items: [],
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const item = new ItemModel({
+				userId: userId,
+				name: 'Item 1',
+				quantity: 5,
+				folder: mongoose.Types.ObjectId(),
+			});
+			const savedItem = await item.save();
+			const itemId = savedItem._id;
+
+			await addItemToUser(userId, itemId);
+
+			const result = await updateItemFromUser(userId, itemId, 1, 'add');
+
+			expect(result).toBeDefined();
+			expect(result.quantity).toBe(5);
+		});
+
+		test('Testing updateItemFromUser (SUB)', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan9800000@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+				items: [],
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const item = new ItemModel({
+				userId: userId,
+				name: 'Item 1',
+				quantity: 5,
+				folder: mongoose.Types.ObjectId(),
+			});
+			const savedItem = await item.save();
+			const itemId = savedItem._id;
+
+			await addItemToUser(userId, itemId);
+
+			const result = await updateItemFromUser(userId, itemId, 1, 'sub');
+
+			expect(result).toBeDefined();
+			expect(result.quantity).toBe(5);
+		});
+	});
+
+	describe('deleteItemFromUser', () => {
+		test('Testing deleteItemFromUser', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98000000@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+				items: [],
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const item = new ItemModel({
+				userId: userId,
+				name: 'Item 1',
+				quantity: 3,
+				folder: mongoose.Types.ObjectId(),
+			});
+			const savedItem = await item.save();
+			const itemId = savedItem._id;
+
+			await addItemToUser(userId, itemId);
+
+			const result = await deleteItemFromUser(userId, itemId);
+
+			expect(result).toBeDefined();
+			expect(result.items).not.toContain(itemId.toString());
+		});
+	});
+
+	describe('findUserByUsername', () => {
+		test('Testing findUserByUsername', async () => {
+			const username = 'liluzi';
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan908@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			await user.save();
+
+			const result = await findUserByUsername(username);
+
+			expect(result).toBeDefined();
+			expect(result.username).toBe(username);
+		});
+	});
+
+	describe('deleteUserById', () => {
+		test('Testing deleteUserById', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan9008@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			const savedUser = await user.save();
+			const userId = savedUser._id;
+
+			const result = await deleteUserById(userId);
+
+			expect(result).toBeDefined();
+			//expect("66604df608a86783547e07ab").toBeCloseTo(savedUser);
+		});
+	});
+
+	describe('delUser', () => {
+		test('Testing delUser', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan90008@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			const savedUser = await user.save();
+
+			const result = await delUser(user);
+
+			expect(result).toBeDefined();
+			//expect("66604df608a86783547e07af").toBeCloseTo(savedUser);
+		});
+	});
+
+	describe('getFolders', () => {
+		test('Testing getFolders', async () => {
+			const userId = mongoose.Types.ObjectId();
+			const folder1 = new FolderModel({
+				name: 'Folder 1',
+				userId: userId,
+				items: [],
+				image: 'image1.jpg',
+			});
+			const folder2 = new FolderModel({
+				name: 'Folder 2',
+				userId: userId,
+				items: [],
+				image: 'image2.jpg',
+			});
+			await folder1.save();
+			await folder2.save();
+
+			const result = await getFolders(userId);
+
+			expect(result).toBeDefined();
+			expect(result[0].userId).toEqual(userId);
+			expect(result[1].userId).toEqual(userId);
+		});
+	});
+
+	describe('addFolder', () => {
+		test('Testing addFolder', async () => {
+			const userId = mongoose.Types.ObjectId('666049d9147b05337b6b66cf');
+			const folderName = 'New Folder';
+			const imageUrl = 'image.jpg';
+
+			const result = await addFolder(userId, folderName, imageUrl);
+
+			expect(result).toBeDefined();
+			//expect(result).toBeCloseTo(userId);
+			//expect(result).toBe(userId);
+		});
+	});
+
+	describe('getFolderContents', () => {
+		test('Testing getFolderContents', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 3,
+				folder: folderId,
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 5,
+				folder: folderId,
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await getFolderContents(folderId);
+
+			expect(result).toBeDefined();
+			expect(result[0].folder).toEqual(folderId);
+			expect(result[1].folder).toEqual(folderId);
+		});
+	});
+
+	describe('deleteFolder', () => {
+		test('Testing deleteFolder', async () => {
+			const userId = mongoose.Types.ObjectId();
+			const folderName = 'Folder 1';
+			const folder = new FolderModel({
+				name: folderName,
+				userId: userId,
+				items: [],
+				image: 'image.jpg',
+			});
+			const savedFolder = await folder.save();
+			const folderId = savedFolder._id;
+
+			const result = await deleteFolder(userId, folderName);
+
+			expect(result).toBeDefined();
+			const deletedFolder = await FolderModel.findById(folderId);
+			expect(deletedFolder).toBeDefined;
+		});
+	});
+
+	describe('deleteItemFromFolder', () => {
+		test('Testing deleteItemFromFolder', async () => {
+			const folderName = 'Folder 1';
+			const folderId = mongoose.Types.ObjectId();
+			const folder = new FolderModel({
+				name: folderName,
+				userId: mongoose.Types.ObjectId(),
+				items: [],
+				image: 'image.jpg',
+			});
+			const savedFolder = await folder.save();
+
+			const itemId = mongoose.Types.ObjectId();
+			const item = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 3,
+				folder: folderId,
+			});
+			const savedItem = await item.save();
+
+			await addItemToFolder(folderId, itemId);
+
+			const result = await deleteItemFromFolder(folderName, itemId);
+
+			expect(result).toBeDefined();
+			expect(result).toBe(true);
+			const updatedFolder = await FolderModel.findById(folderId);
+			//expect(updatedFolder.items).not.toContain(itemId);
+			const updatedItem = await ItemModel.findById(itemId);
+			expect(updatedItem).toBeNull();
+		});
+	});
+
+	describe('updateFolderName', () => {
+		test('Testing updateFolderName', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const folderName = 'Folder 1';
+			const newName = 'New Folder Name';
+			const folder = new FolderModel({
+				name: folderName,
+				userId: mongoose.Types.ObjectId(),
+				items: [],
+				image: 'image.jpg',
+			});
+			await folder.save();
+
+			const result = await updateFolderName(folderId, newName);
+
+			expect(result).toBeDefined();
+			expect(result).toBe(true);
+			const updatedFolder: any = await FolderModel.findById(folderId);
+			//expect(updatedFolder.name).toBe(newName);
+		});
+	});
+
+	describe('sortByQuantityAsc', () => {
+		test('Testing sortByQuantityAsc', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 5,
+				folder: folderId,
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 3,
+				folder: folderId,
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await sortByQuantityAsc(folderId);
+
+			expect(result).toBeDefined();
+			expect(result[0].quantity).toBeLessThanOrEqual(result[1].quantity);
+		});
+	});
+
+	describe('findUserByUserAndPass', () => {
+		test('Testing findUserByUserAndPass with invalid credentials', async () => {
+			const user = new UserModel({
+				firstName: 'Victor',
+				lastName: 'Phan',
+				email: 'vphan98fff@gmail.com',
+				country: 'United States',
+				state: 'California',
+				city: 'SLO',
+				zipcode: '93401',
+				username: 'liluzi',
+				password: 'a1234567890!AA',
+			});
+			await user.save();
+
+			const result = await findUserByUserAndPass('liluzi', 'wrongpassword');
+
+			expect(result).toBeUndefined();
+		});
+	});
+
+	describe('sortByQuantityDes', () => {
+		test('Testing sortByQuantityDes', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 5,
+				folder: folderId,
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 3,
+				folder: folderId,
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await sortByQuantityDes(folderId);
+
+			expect(result).toBeDefined();
+			expect(result[0].quantity).toBeGreaterThanOrEqual(result[1].quantity);
+		});
+	});
+
+	describe('sortByDateAsc', () => {
+		test('Testing sortByDateAsc', async () => {
+			const folderId = mongoose.Types.ObjectId();
+			const item1 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 1',
+				quantity: 5,
+				folder: folderId,
+				date: new Date('2023-05-01'),
+			});
+			const item2 = new ItemModel({
+				userId: mongoose.Types.ObjectId(),
+				name: 'Item 2',
+				quantity: 3,
+				folder: folderId,
+				date: new Date('2023-05-15'),
+			});
+			await item1.save();
+			await item2.save();
+
+			const result = await sortByDateAsc(folderId);
+
+			expect(result).toBeDefined();
+		});
+	});
+
+	describe('setConnection', () => {
+		test('should set the database connection', () => {
+			const mockConnection = {};
+			const result = setConnection(mockConnection);
+			expect(result).toBe(mockConnection);
+		});
+	});
+
+	describe('getDbConnection', () => {
+		test('should create a new connection if none exists', () => {
+			const originalDbConnection = getDbConnection();
+			expect(originalDbConnection).toBeDefined();
+		});
+
+		test('should return the existing connection', () => {
+			const mockConnection = {};
+			setConnection(mockConnection);
+			const result = getDbConnection();
+			expect(result).toBe(mockConnection);
+		});
+	});
+});

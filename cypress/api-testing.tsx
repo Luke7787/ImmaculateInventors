@@ -23,15 +23,15 @@ describe('API takes a user and adds it to the Data Base (then deletes it)', () =
 	context('Successful post', () => {
 		before(() => {});
 		let user = {
-			username: "TestsWork",
-			password: "1234567890!A",
-			email: "notjoshhall408@gmail.com",
-			country: "America",
-			state: "CA",
-			zipcode: "93407",
-			city: "SLO",
-			firstName: "test",
-			lastName: "user"
+			username: 'TestsWork',
+			password: '1234567890!A',
+			email: 'notjoshhall408@gmail.com',
+			country: 'America',
+			state: 'CA',
+			zipcode: '93407',
+			city: 'SLO',
+			firstName: 'test',
+			lastName: 'user',
 		};
 
 		// it('GIVEN the user has valid fields', () => {
