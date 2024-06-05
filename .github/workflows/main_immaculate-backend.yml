@@ -33,7 +33,7 @@ jobs:
           MONGODB_URI: '${{ secrets.MONGODB_URI }}'
         run: |
           touch .env
-          echo MONGODBURI={ secrets.MONGODB_URI }} >> .env
+          echo MONGODBURI=${{secrets.MONGODB_URI}} >> .env
           cat .env
           npm install
           npm run build --if-present
