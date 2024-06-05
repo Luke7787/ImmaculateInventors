@@ -12,8 +12,8 @@ const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_API_KEY, { request: axios });
 const EmailTemplate = require('../src/Email/forgotTemplate').default;
 
-const mongoose = require('mongoose');
-const UserSchema = require('./models/user');
+const mongoo = require('mongoose');
+const UserSchemas = require('./models/user');
 const Token = require('./models/token');
 
 // const upload = require('./models/aws-config');
@@ -454,7 +454,7 @@ app.post('/forgot-password', async (req: any, res: any) => {
 		return res.status(401).json({ success: false, error: "Either this link is expired or it's invalid" });
 	  }
   
-	  session = await mongoose.startSession();
+	  session = await mongoo.startSession();
 	  session.startTransaction();
 
 	  console.log("Session started")
@@ -463,7 +463,7 @@ app.post('/forgot-password', async (req: any, res: any) => {
 	  await passResetToken.save({ session });
 
 
-	  const user = await UserSchema.findById(passResetToken.userId);
+	  const user = await UserSchemas.findById(passResetToken.userId);
 	  user.password = password;
 	  await user.save({ session });
   
@@ -477,7 +477,7 @@ app.post('/forgot-password', async (req: any, res: any) => {
 	} catch (error: any) {
 	  session?.abortTransaction();
   
-	  if (error instanceof mongoose.Error.ValidationError) {
+	  if (error instanceof mongoo.Error.ValidationError) {
 		for (let field in error.errors) {
 		  const msg = error.errors[field].message;
 		  return res.status(403).json({ success: false, error: msg });
