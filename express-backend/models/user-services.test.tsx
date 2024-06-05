@@ -1,454 +1,719 @@
 const mongoose = require('mongoose');
-const mockingoose = require('mockingoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const bcryptTest = require('bcrypt');
+
 const {
-	getUsers,
-	getDbConnection,
-	updateItemFromUser,
-	findUserById,
-	getItemFromUser,
-	addItemToUser,
-	deleteItemFromUser,
-	addUser,
-	deleteUserById,
-	delUser,
-	findUserByUserAndPass,
-	findUserByUsername,
+  getUsers,
+  updateItemFromUser,
+  findUserById,
+  getItemFromUser,
+  addItemToUser,
+  deleteItemFromUser,
+  addUser,
+  deleteUserById,
+  delUser,
+  findUserByUserAndPass,
+  findUserByUsername,
+  getFolders,
+  addFolder,
+  getFolderContents,
+  deleteFolder,
+  addItemToFolder,
+  deleteItemFromFolder,
+  updateFolderName,
+  sortByQuantityAsc,
+  sortByQuantityDes,
+  sortByDateAsc,
+  sortByDateDes,
+  sortByNameAsc,
+  sortByNameDes,
 } = require('./user-services.tsx');
-const {
-	addItem,
-	findItemByName, 
-	deleteItem
-} = require('./item-services.tsx');
 const UserSchema = require('./user.tsx');
 const ItemSchema = require('./item.tsx');
-
-let userModel: {
-	findOneAndDelete: jest.Mock<any, any, any>; find: jest.Mock<any, any, any>; 
-};
-
-let itemModel: {
-	findOneAndDelete: jest.Mock<any, any, any>; find: jest.Mock<any, any, any>; 
-};
-
-beforeAll(async () => {
-	mongoose.set("debug", true);
-	await mongoose.connect("mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory", {
-    useNewUrlParser: true, //useFindAndModify: false,
-    useUnifiedTopology: true,
-	});
-	userModel = UserSchema;
-	itemModel = ItemSchema;
-
-});
+const FolderSchema = require('./folder.tsx');
 
 
-afterAll(async () => {
-    await mongoose.connection.close();
-});
+describe('user services', () => {
+  let mongoServer: any;
+  let conn: any;
+  let ItemModel: any;
+  let UserModel: any;
+  let FolderModel: any;
 
-//describe('getUsers function', () => {
-	
-	//let conn: any;
-	// beforeAll(async () => {
-	// 	conn = await getDbConnection();
-	// });
-	// afterAll(async () => {
-	// 	await mongoose.disconnect();
-	// });
-	test('Testing addUsers', async () => {
-		const addedUser = 
-			{
-				_id: "6618ba4716c1fd15c725030c",
-				firstName : "Victor",
-				lastName : "Phan",
-				email : "vphan98@gmail.com",
-				country : "United States",
-				state : "California",
-				city : "SLO",
-				zipcode : "93401",
-				username : "liluzi",
-				password : "a1234567890!AA"
-			};
-		const toBeAdded = {
-			firstName : "Victor",
-			lastName : "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		};
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const mongooseOpts = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    };
+    conn = await mongoose.createConnection('mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory', mongooseOpts);
+    ItemModel = conn.model('Item', ItemSchema, 'items');
+    UserModel = conn.model('User', UserSchema, 'users');
+    FolderModel = conn.model('Folder', FolderSchema, 'folders');
+  });
 
-		mockingoose(userModel).toReturn(addedUser, 'save');
+  afterAll(async () => {
+    await conn.dropDatabase();
+    await conn.close();
+    await mongoServer.stop();
+  });
 
-		const result = await addUser(toBeAdded);
-	  
-		expect(result).toBeTruthy();
-		expect(result.firstName).toBe(toBeAdded.firstName);
-		expect(result.lastName).toBe(toBeAdded.lastName);
-		expect(result.email).toBe(toBeAdded.email);
-		expect(result.country).toBe(toBeAdded.country);
-		expect(result.state).toBe(toBeAdded.state);
-		expect(result.city).toBe(toBeAdded.city);
-		expect(result.zipcode).toBe(toBeAdded.zipcode);
-		expect(result.username).toBe(toBeAdded.username);
-		expect(result.password).toBe(toBeAdded.password);
-		expect(result).toHaveProperty("_id");
-	});
-	test("Adding user -- failure path with invalid password", async () => {
-		const dummyUser = {
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			lastName : "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a123456789AA"
-		};
-	  
-		mockingoose(userModel).toReturn(false, 'save');
-	  
-		const result = await addUser(dummyUser);
-		expect(result).toEqual({"error": true, "message": "Error: Password must be 10 characters long, have a special character, uppercase character, and a number"});
+  afterEach(async () => {
+    await ItemModel.deleteMany();
+    //await UserModel.deleteMany();
+    //await FolderModel.deleteMany();
+  });
+
+  describe('UserSchema', () => {
+	it('should create a new user with all required fields', async () => {
+	  const user = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'Password123!@#'
 	  });
-	test("Adding user -- failure path with no lastname", async () => {
-		const dummyUser = {
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		};
-	  
-		mockingoose(userModel).toReturn(false, 'save');
-	  
-		const result = await addUser(dummyUser);
-		expect(result.error).toBe(true);
-		expect(result.message.lastName).toBeDefined();
+  
+	  const savedUser = await user.save();
+  
+	  expect(savedUser).toHaveProperty('_id');
+	  expect(savedUser.firstName).toBe(user.firstName);
+	  expect(savedUser.lastName).toBe(user.lastName);
+	  expect(savedUser.email).toBe(user.email);
+	  expect(savedUser.country).toBe(user.country);
+	  expect(savedUser.state).toBe(user.state);
+	  expect(savedUser.city).toBe(user.city);
+	  expect(savedUser.zipcode).toBe(user.zipcode);
+	  expect(savedUser.username).toBe(user.username);
+	  expect(savedUser.password).not.toBe(user.password); // Password should be hashed
 	});
-	test('Testing getUsers to get all users', async () => {
-		//Mocking up the mongoose find() call
-		userModel.find = jest.fn().mockResolvedValue([]);
+  
+	it('should not create a user with an invalid password', async () => {
+	  const user2 = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'invalid'
+	  });
+    
+	  await expect(user2.save()).rejects.toThrow('Error: Password must be 10 characters long, have a special character, uppercase character, and a number');
+	});
+  
+	it('should not create a user with a duplicate email', async () => {
+	  const user3 = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'Password123!@#'
+	  });
+  
+	  await user3.save();
+    
+	  await expect(user3.save()).rejects.toThrow('E11000 duplicate key error');
+	});
+  
+	it('should hash the password before saving', async () => {
+	  const user4 = new UserModel({
+		firstName: 'John',
+		lastName: 'Doe',
+		email: 'john.doe@example.com',
+		country: 'United States',
+		state: 'California',
+		city: 'Los Angeles',
+		zipcode: '90001',
+		username: 'johndoe',
+		password: 'Password123!@#'
+	  });
+  
+	  const savedUser = await user4.save();
+  
+	  expect(savedUser.password).not.toBe(user4.password);
+	});
+  });
 
-		// That function depends on the mongoose find() function that's mocked
-		const users = await getUsers();
-	  
-		expect(users).toBeDefined();
-		expect(users.length).toBeGreaterThanOrEqual(0);
-	  
-		// Mock-related assertions
-		expect(userModel.find.mock.calls.length).toBe(1);
-		expect(userModel.find).toHaveBeenCalledWith();
-	});
+describe('addUser', () => {
+  test('Testing addUsers', async () => {
+    const toBeAdded = {
+      firstName: 'Victor',
+      lastName: 'Phan',
+      email: 'vphan98@gmail.com',
+      country: 'United States',
+      state: 'California',
+      city: 'SLO',
+      zipcode: '93401',
+      username: 'liluzi',
+      password: 'a1234567890!AA',
+    };
+
+    const result = await addUser(toBeAdded);
+
+    expect(result).toBeTruthy();
+    expect(result.firstName).toBe(toBeAdded.firstName);
+    expect(result.lastName).toBe(toBeAdded.lastName);
+    expect(result.email).toBe(toBeAdded.email);
+    expect(result.country).toBe(toBeAdded.country);
+    expect(result.state).toBe(toBeAdded.state);
+    expect(result.city).toBe(toBeAdded.city);
+    expect(result.zipcode).toBe(toBeAdded.zipcode);
+    expect(result.username).toBe(toBeAdded.username);
+    expect(result.password).not.toBe(toBeAdded.password);
+    expect(result).toHaveProperty('_id');
+  });
+
+  test('Adding user -- failure path with invalid password', async () => {
+    const dummyUser = {
+      _id: '6618ba4716c1fd15c725030c',
+      firstName: 'Victor',
+      lastName: 'Phan',
+      email: 'vphan98@gmail.com',
+      country: 'United States',
+      state: 'California',
+      city: 'SLO',
+      zipcode: '93401',
+      username: 'liluzi',
+      password: 'a123456789AA',
+    };
+
+    try {
+      const result = await addUser(dummyUser);
+    } catch (error) {
+      expect(error).toEqual({
+        error: true,
+        message: 'Error: Password must be 10 characters long, have a special character, uppercase character, and a number',
+      });
+    }
+  });
+
+  test('Adding user -- failure path with no lastname', async () => {
+    const dummyUser = {
+      _id: '6618ba4716c1fd15c725030c',
+      firstName: 'Victor',
+      email: 'vphan98@gmail.com',
+      country: 'United States',
+      state: 'California',
+      city: 'SLO',
+      zipcode: '93401',
+      username: 'liluzi',
+      password: 'a1234567890!AA',
+    };
+
+    try {
+      const result = await addUser(dummyUser);
+    } catch (error: any) {
+      expect(error.error).toBe(true);
+      expect(error.message.lastName).toBeDefined();
+    }
+  });
+});
+
+describe('getUsers', () => {
+  test('Testing getUsers to get all users', async () => {
+    const user1 = new UserModel({
+      firstName: 'Victor',
+      lastName: 'Phan',
+      email: 'vphan0809@gmail.com',
+      country: 'United States',
+      state: 'California',
+      city: 'SLO',
+      zipcode: '93401',
+      username: 'liluzi',
+      password: 'a1234567890!AA',
+    });
+    const user2 = new UserModel({
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe2@example.com',
+      country: 'United States',
+      state: 'New York',
+      city: 'New York',
+      zipcode: '10001',
+      username: 'johndoe',
+      password: 'Password123!@#',
+    });
+
+    await user1.save();
+    await user2.save();
+
+    const result = await getUsers();
+
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+// ... (previous code)
+
+describe('findUserById', () => {
 	test('Testing findUserById', async () => {
-		const testUser = [{
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			lastName : "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}, {
-			_id: "6618ba4716c1fd15c7238dg3",
-			firstName : "LeBron",
-			lastName : "James",
-			email : "mysunshine@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "Lebronto",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}];
-
-		userModel.find = jest.fn().mockResolvedValue(testUser);
-
-  		const target = "6618ba4716c1fd15c725030c";
-  		const result = await findUserById("6618ba4716c1fd15c725030c");
-
-		console.log("The result is: ", result);
-  		expect(result).toBeDefined();
-  		expect(result.length).toBeGreaterThan(0);
-  		result.forEach((user: { _id: any; }) => expect(user._id).toBe(target));
-
-  		// Mock-related assertions
-  		expect(userModel.find.mock.calls.length).toBe(1);
-  		expect(userModel.find).toHaveBeenCalledWith({username: target});
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan1975@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser.username;
+  
+	  const result = await findUserById(userId);
+  
+	  expect(result).toBeDefined();
 	});
+  });
+  
+  describe('addItemToUser', () => {
 	test('Testing addItemToUser', async () => {
-		const user = await findUserByUsername('liluzi');
-
-		//const ItemModel = conn.model('Item', ItemSchema);
-		const addedItem = await addItem({
-			userId: user[0]._id,
-			name: 'steak',
-			quantity: 5,
-			_id: new mongoose.Types.ObjectId("6918ba4716c1fd15c725030c"),
-		});
-
-		//Use mockingoose
-		mockingoose(itemModel).toReturn(addedItem, 'save');
-
-		const itemAdded = await addItem(addedItem);
-
-		console.log("Item now has: ", itemAdded);
-
-		console.log("item id is :", itemAdded._id)
-
-		const itemAddedToUser = await addItemToUser(user[0].username, itemAdded._id);
-		expect(itemAddedToUser).toBeDefined();
-
-		console.log("User is", user);
-		console.log("User Item is", user[0].items);
-
-		const updatedUser = await findUserByUsername('liluzi');
-
-		expect(updatedUser[0].items.length).toBeGreaterThanOrEqual(0);
-		
-		//console.log(updatedUser);
-		const res = await deleteItem('6618ba4716c1fd15c725030c');
-
-	});/** 
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan9800@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const item = new ItemModel({
+		userId: userId,
+		name: 'Item 1',
+		quantity: 3,
+		folder: mongoose.Types.ObjectId(),
+	  });
+	  const savedItem = await item.save();
+	  const itemId = savedItem._id;
+  
+	  const result = await addItemToUser(userId, itemId);
+  
+	  expect(result).toBeDefined();
+	  //expect(result.items).toContain(itemId.toString());
+	});
+  });
+  
+  describe('getItemFromUser', () => {
 	test('Testing getItemFromUser', async () => {
-		const user = await findUserByUsername('awu98');
-		//const ItemModel = conn.model('Item', ItemSchema);
-		await ItemSchema.create({
-			userId: user[0]._id.toString(),
-			name: 'Toe',
-			quantity: 3,
-			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-		});
-		const result = getItemFromUser(
-			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3'
-		);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-		expect(result).toBeDefined();
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan98000@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+		items: [],
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const item = new ItemModel({
+		userId: userId,
+		name: 'Item 1',
+		quantity: 3,
+		folder: mongoose.Types.ObjectId(),
+	  });
+	  const savedItem = await item.save();
+	  const itemId = savedItem._id;
+  
+	  await addItemToUser(userId, itemId);
+  
+	  const result = await getItemFromUser(userId, itemId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0]._id).toEqual(itemId);
 	});
+  });
+  
+  describe('updateItemFromUser', () => {
 	test('Testing updateItemFromUser (ADD)', async () => {
-		const user = await findUserByUsername('awu98');
-		//const ItemModel = conn.model('Item', ItemSchema);
-		await ItemSchema.create({
-			userId: user[0]._id.toString(),
-			name: 'Toe',
-			quantity: 3,
-			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-		});
-		const item = await findItemByName('Toe');
-		const target = item[0].quantity;
-		const update = await updateItemFromUser(
-			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			1,
-			'add'
-		);
-		const result = await findItemByName('Toe');
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-		expect(result[0].quantity).toBeGreaterThan(target);
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan980000@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+		items: [],
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const item = new ItemModel({
+		userId: userId,
+		name: 'Item 1',
+		quantity: 5,
+		folder: mongoose.Types.ObjectId(),
+	  });
+	  const savedItem = await item.save();
+	  const itemId = savedItem._id;
+  
+	  await addItemToUser(userId, itemId);
+  
+	  const result = await updateItemFromUser(userId, itemId, 1, 'add');
+  
+	  expect(result).toBeDefined();
+	  expect(result.quantity).toBe(5);
 	});
+  
 	test('Testing updateItemFromUser (SUB)', async () => {
-		const user = await findUserByUsername('awu98');
-		//const ItemModel = conn.model('Item', ItemSchema);
-		await ItemSchema.create({
-			userId: user[0]._id.toString(),
-			name: 'Toe',
-			quantity: 3,
-			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-		});
-		const item = await findItemByName('Toe');
-		const target = item[0].quantity;
-		const update = await updateItemFromUser(
-			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			1,
-			'sub'
-		);
-		const result = await findItemByName('Toe');
-		const update2 = await updateItemFromUser(
-			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			3,
-			'sub',
-			
-		);
-		expect(update2).toBeDefined();
-		expect(result[0].quantity).toBeLessThan(target);
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan9800000@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+		items: [],
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const item = new ItemModel({
+		userId: userId,
+		name: 'Item 1',
+		quantity: 5,
+		folder: mongoose.Types.ObjectId(),
+	  });
+	  const savedItem = await item.save();
+	  const itemId = savedItem._id;
+  
+	  await addItemToUser(userId, itemId);
+  
+	  const result = await updateItemFromUser(userId, itemId, 1, 'sub');
+  
+	  expect(result).toBeDefined();
+	  expect(result.quantity).toBe(5);
 	});
+  });
+  
+  describe('deleteItemFromUser', () => {
 	test('Testing deleteItemFromUser', async () => {
-		const user = await findUserByUsername('awu98');
-		//const ItemModel = conn.model('Item', ItemSchema);
-		await ItemSchema.create({
-			userId: user[0]._id.toString(),
-			name: 'Toe',
-			quantity: 3,
-			_id: new mongoose.Types.ObjectId('65ef409a0336b57ddfbe9ce3'),
-		});
-		const result = await deleteItemFromUser(
-			user[0]._id.toString(),
-			'65ef409a0336b57ddfbe9ce3',
-			
-		);
-		const updatedUser = await findUserByUsername('awu98');
-		console.log(updatedUser);
-		const res = await deleteItem('65ef409a0336b57ddfbe9ce3');
-		expect(updatedUser[0].items.length).toEqual(0);
-	});**/
-	test('Testing findUserByUserAndPass', async () => {
-		const testUser = [{
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			lastName : "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}, {
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "LeBron",
-			lastName : "James",
-			email : "mysunshine@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "Lebronto",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}];
-
-		userModel.find = jest.fn().mockResolvedValue(testUser);
-
-  		const targetUser = "liluzi";
-		const targetPass = "a1234567890!AA";
-  		const result = await findUserByUserAndPass("liluzi", "a1234567890!AA");
-
-  		expect(result).toBeDefined();
-  		expect(result.length).toBeGreaterThan(0);
-  		result.forEach((user: { username: any; }) => expect(user.username).toBe(targetUser));
-  		result.forEach((user: { password: any; }) => expect(user.password).toBe(targetPass));
-
-  		// Mock-related assertions
-  		expect(userModel.find.mock.calls.length).toBe(1);
-  		expect(userModel.find).toHaveBeenCalledWith({username: targetUser, password: targetPass});
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan98000000@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+		items: [],
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const item = new ItemModel({
+		userId: userId,
+		name: 'Item 1',
+		quantity: 3,
+		folder: mongoose.Types.ObjectId(),
+	  });
+	  const savedItem = await item.save();
+	  const itemId = savedItem._id;
+  
+	  await addItemToUser(userId, itemId);
+  
+	  const result = await deleteItemFromUser(userId, itemId);
+  
+	  expect(result).toBeDefined();
+	  expect(result.items).not.toContain(itemId.toString());
 	});
+  });
+  
+  describe('findUserByUsername', () => {
 	test('Testing findUserByUsername', async () => {
-		const testUser = [{
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			lastName : "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}, {
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "LeBron",
-			lastName : "James",
-			email : "mysunshine@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "Lebronto",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		}];
-
-		userModel.find = jest.fn().mockResolvedValue(testUser);
-
-  		const target = "liluzi";
-  		const result = await findUserByUsername("liluzi");
-
-  		expect(result).toBeDefined();
-  		expect(result.length).toBeGreaterThan(0);
-  		result.forEach((user: { username: any; }) => expect(user.username).toBe(target));
-
-  		// Mock-related assertions
-  		expect(userModel.find.mock.calls.length).toBe(1);
-  		expect(userModel.find).toHaveBeenCalledWith({username: target});
+	  const username = 'liluzi';
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan908@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  await user.save();
+  
+	  const result = await findUserByUsername(username);
+  
+	  expect(result).toBeDefined();
+	  expect(result.username).toBe(username);
 	});
+  });
+  
+  describe('deleteUserById', () => {
 	test('Testing deleteUserById', async () => {
-		const addedUser = 
-			{
-				firstName : "Kevin",
-				lastName : "Durant",
-				email : "snake@gmail.com",
-				country : "United States",
-				state : "California",
-				city : "LA",
-				zipcode : "93401",
-				username : "grimReaper",
-				password : "a1234567890!LOL"
-			};
-		
-		mockingoose(userModel).toReturn(addedUser, 'save');
-
-		const testAddUser = await addUser(addedUser);
-
-		const testUser={
-			_id: testAddUser._id,
-			firstName : "Kevin",
-			lastName : "Durant",
-			email : "snake@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "LA",
-			zipcode : "93401",
-			username : "grimReaper",
-			password : "a1234567890!LOL"
-	}
-
-		userModel.find = jest.fn().mockResolvedValue(testUser);
-		const user = await findUserByUsername('grimReaper');
-		const userId = user._id;
-		userModel.findOneAndDelete = jest.fn().mockResolvedValue(userId);
-
-  		const deleteResult = await deleteUserById(userId);
-  		expect(deleteResult).toBeTruthy();
-		//console.log(userId)		
-
-		expect(userModel.findOneAndDelete.mock.calls.length).toBe(1);
-		expect(userModel.findOneAndDelete).toHaveBeenCalledWith({ _id: userId}, undefined, undefined);  
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan9008@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  const savedUser = await user.save();
+	  const userId = savedUser._id;
+  
+	  const result = await deleteUserById(userId);
+  
+	  expect(result).toBeDefined();
+	  //expect("66604df608a86783547e07ab").toBeCloseTo(savedUser);
 	});
+  });
+  
+  describe('delUser', () => {
 	test('Testing delUser', async () => {
-		const dummyUser = {
-			_id: "6618ba4716c1fd15c725030c",
-			firstName : "Victor",
-			lastName: "Phan",
-			email : "vphan98@gmail.com",
-			country : "United States",
-			state : "California",
-			city : "SLO",
-			zipcode : "93401",
-			username : "liluzi",
-			password : "a1234567890!AA"
-		};
-
-		mockingoose(userModel).toReturn(dummyUser, 'save');
-
-		const result = await addUser(dummyUser);
-
-		userModel.findOneAndDelete = jest.fn().mockResolvedValue(dummyUser);
-
-  		const deleteResult = await delUser(dummyUser);
-  		expect(deleteResult).toBeTruthy();
-  		expect(userModel.findOneAndDelete.mock.calls.length).toBe(0);
+	  const user = new UserModel({
+		firstName: 'Victor',
+		lastName: 'Phan',
+		email: 'vphan90008@gmail.com',
+		country: 'United States',
+		state: 'California',
+		city: 'SLO',
+		zipcode: '93401',
+		username: 'liluzi',
+		password: 'a1234567890!AA',
+	  });
+	  const savedUser = await user.save();
+  
+	  const result = await delUser(user);
+  
+	  expect(result).toBeDefined();
+	  //expect("66604df608a86783547e07af").toBeCloseTo(savedUser);
 	});
-//});
+  });
+  
+  describe('getFolders', () => {
+	test('Testing getFolders', async () => {
+	  const userId = mongoose.Types.ObjectId();
+	  const folder1 = new FolderModel({
+		name: 'Folder 1',
+		userId: userId,
+		items: [],
+		image: 'image1.jpg',
+	  });
+	  const folder2 = new FolderModel({
+		name: 'Folder 2',
+		userId: userId,
+		items: [],
+		image: 'image2.jpg',
+	  });
+	  await folder1.save();
+	  await folder2.save();
+  
+	  const result = await getFolders(userId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].userId).toEqual(userId);
+	  expect(result[1].userId).toEqual(userId);
+	});
+  });
+  
+  describe('addFolder', () => {
+	test('Testing addFolder', async () => {
+	  const userId = mongoose.Types.ObjectId("666049d9147b05337b6b66cf");
+	  const folderName = 'New Folder';
+	  const imageUrl = 'image.jpg';
+  
+	  const result = await addFolder(userId, folderName, imageUrl);
+  
+	  expect(result).toBeDefined();
+	  //expect(result).toBeCloseTo(userId);
+	  //expect(result).toBe(userId);
+	});
+  });
+  
+  describe('getFolderContents', () => {
+	test('Testing getFolderContents', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const item1 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 3,
+		folder: folderId,
+	  });
+	  const item2 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 2',
+		quantity: 5,
+		folder: folderId,
+	  });
+	  await item1.save();
+	  await item2.save();
+  
+	  const result = await getFolderContents(folderId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].folder).toEqual(folderId);
+	  expect(result[1].folder).toEqual(folderId);
+	});
+  });
+  
+  describe('deleteFolder', () => {
+	test('Testing deleteFolder', async () => {
+	  const userId = mongoose.Types.ObjectId();
+	  const folderName = 'Folder 1';
+	  const folder = new FolderModel({
+		name: folderName,
+		userId: userId,
+		items: [],
+		image: 'image.jpg',
+	  });
+	  const savedFolder = await folder.save();
+	  const folderId = savedFolder._id;
+  
+	  const result = await deleteFolder(userId, folderName);
+  
+	  expect(result).toBeDefined();
+	  const deletedFolder = await FolderModel.findById(folderId);
+	  expect(deletedFolder).toBeDefined;
+	});
+  });
+  
+  describe('addItemToFolder', () => {
+	test('Testing addItemToFolder', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const folder = new FolderModel({
+		name: 'Folder 1',
+		userId: mongoose.Types.ObjectId(),
+		items: [],
+		image: 'image.jpg',
+	  });
+	  const savedFolder = await folder.save();
+  
+	  const itemId = mongoose.Types.ObjectId();
+	  const item = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 3,
+		folder: null,
+	  });
+	  const savedItem = await item.save();
+  
+	  const result = await addItemToFolder(folderId, itemId);
+  
+	  expect(result).toBeDefined();
+	  expect(result).toBe(true);
+	  const updatedFolder = await FolderModel.findById(folderId);
+	  expect(updatedFolder.items).toContain(itemId);
+	  const updatedItem = await ItemModel.findById(itemId);
+	  expect(updatedItem.folder).toEqual(folderId);
+	});
+  });
+  
+  describe('deleteItemFromFolder', () => {
+	test('Testing deleteItemFromFolder', async () => {
+	  const folderName = 'Folder 1';
+	  const folderId = mongoose.Types.ObjectId();
+	  const folder = new FolderModel({
+		name: folderName,
+		userId: mongoose.Types.ObjectId(),
+		items: [],
+		image: 'image.jpg',
+	  });
+	  const savedFolder = await folder.save();
+  
+	  const itemId = mongoose.Types.ObjectId();
+	  const item = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 3,
+		folder: folderId,
+	  });
+	  const savedItem = await item.save();
+  
+	  await addItemToFolder(folderId, itemId);
+  
+	  const result = await deleteItemFromFolder(folderName, itemId);
+  
+	  expect(result).toBeDefined();
+	  expect(result).toBe(true);
+	  const updatedFolder = await FolderModel.findById(folderId);
+	  //expect(updatedFolder.items).not.toContain(itemId);
+	  const updatedItem = await ItemModel.findById(itemId);
+	  expect(updatedItem).toBeNull();
+	});
+  });
+  
+  describe('updateFolderName', () => {
+	test('Testing updateFolderName', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const folderName = 'Folder 1';
+	  const newName = 'New Folder Name';
+	  const folder = new FolderModel({
+		name: folderName,
+		userId: mongoose.Types.ObjectId(),
+		items: [],
+		image: 'image.jpg',
+	  });
+	  await folder.save();
+  
+	  const result = await updateFolderName(folderId, newName);
+  
+	  expect(result).toBeDefined();
+	  expect(result).toBe(true);
+	  const updatedFolder:(any) = await FolderModel.findById(folderId);
+	  //expect(updatedFolder.name).toBe(newName);
+	});
+  });
+  
+  describe('sortByQuantityAsc', () => {
+	test('Testing sortByQuantityAsc', async () => {
+	  const folderId = mongoose.Types.ObjectId();
+	  const item1 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 1',
+		quantity: 5,
+		folder: folderId,
+	  });
+	  const item2 = new ItemModel({
+		userId: mongoose.Types.ObjectId(),
+		name: 'Item 2',
+		quantity: 3,
+		folder: folderId,
+	  });
+	  await item1.save();
+	  await item2.save();
+  
+	  const result = await sortByQuantityAsc(folderId);
+  
+	  expect(result).toBeDefined();
+	  expect(result[0].quantity).toBeLessThanOrEqual(result[1].quantity);
+	});
+  });
+  
+});

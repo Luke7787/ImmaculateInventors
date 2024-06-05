@@ -1,9 +1,8 @@
-import styles from './SignIn.module.css';
+import styles from './SignIn.module.scss';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Box, Modal } from '@mui/material';
-import CloseIcon from "@mui/icons-material/Close";
-import ForgotPassword from '../ForgotPassword/ForgotPassword';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -22,7 +21,8 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		password: '',
 	});
 	const [signInErr, setSignInErr] = useState<boolean>(false);
-
+	const { login } = useAuth();
+	const navigate = useNavigate();
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
 		setSignInData((prev) => ({
@@ -34,15 +34,34 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.get('http://localhost:8000/users', {
-				params: signInData,
-			});
-			if (response.status === 200) {
-				setSignInErr(false);
-			}
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/checkUser`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
+			);
+			const response2 = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/login`,
+				{
+					username: signInData.username,
+					password: signInData.password,
+				}
+			);
+			setSignInErr(false);
+			console.log(response);
+			console.log(response2);
+			login(
+				response.data.user._id,
+				response.data.user.username,
+				response.data.user.email,
+				response.data.user.country,
+				response2.data.accessToken
+			);
+			navigate('/inventory');
 		} catch (err) {
 			console.error('err', err);
-			if (err.response.status === 404) {
+			if (err.response && err.response.status === 404) {
 				setSignInErr(true);
 			}
 		}
@@ -53,9 +72,9 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		<form onSubmit={handleSubmit}>
 			<div className={styles.body}>
 				<div className={styles.username}>
-					<p>Username</p>
+					<p>Sign In</p>
 					<input
-						placeholder="Enter username"
+						placeholder="Username"
 						onChange={handleUpdate}
 						type="text"
 						name="username"
@@ -63,14 +82,15 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 					/>
 				</div>
 				<div className={styles.password}>
-					<p>Password</p>
+					<p> </p>
 					<input
-						placeholder="Enter password"
+						placeholder="Password"
 						onChange={handleUpdate}
 						type="password"
 						name="password"
 						value={signInData.password}
 					/>
+					<p className={styles.forgotPassword}>Forgot your password?</p>
 				</div>
 				{setForgotPasswordOpen && (
 					<span className={styles.forgot_password} onClick={() => {
@@ -96,25 +116,30 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 
 				{signInErr && (
 					<p className={styles.signInErr}>
-						Your username or password is incorrect. Please try again.
+						Your username or password is incorrect.
+						<br /> Please try again.
 					</p>
 				)}
 				<button className={styles.button} type="submit">
-					Sign In
+					Login
 				</button>
-				{setCreateAccountOpen && (
-					<p>
-						Not registered?
-						<span
-							onClick={() => {
-								setCreateAccountOpen(true);
-							}}
-						>
-							{' '}
-							<a>Create an account here</a>
-						</span>
+				<div className={styles.signUpSection}>
+					<p className={styles.signUpGreeting}>Hey, new friend!</p>
+					<p className={styles.signUpMessage}>
+						New to the Village? Sign Up and start your journey!
 					</p>
-				)}
+					<button
+						className={styles.signUpLink}
+						onClick={() => setCreateAccountOpen && setCreateAccountOpen(true)}
+					>
+						Sign Up
+					</button>
+					<img
+						src="/images/SunFlower.png"
+						alt="Decorative"
+						className={styles.loginNewImage}
+					/>
+				</div>
 			</div>
 		</form>
 	);

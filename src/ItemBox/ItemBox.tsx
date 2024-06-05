@@ -1,52 +1,58 @@
 import React, { useState } from 'react';
-import styles from './ItemBox.module.css';
-import AddItemModal from '../AddItemModal/AddItemModal.tsx';
+import styles from './ItemBox.module.scss';
 import classNames from 'classnames';
 import LeftOptionNav from '../LeftOptionNav/LeftOptionNav.tsx';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-
-interface ItemProps {
-	name: string;
-	quantity: number;
-	image: string;
-}
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth.ts';
+import { ItemProps } from '../interfaces/interfaces.tsx';
+import AddItem from '../AddItem/AddItem.tsx';
 
 interface ItemBoxProps {
 	items: ItemProps[];
-	onDelete: (name: string) => void;
-	onAddNewItem: (item: {
-		name: string;
-		image: string;
-		quantity: number;
-	}) => void;
+	onDelete: (item: ItemProps) => void;
+	onAddNewItem: (
+		name: string,
+		quantity: number,
+		note: string,
+		imageUrl: string
+	) => void;
+	onClickBox: () => void;
 }
-const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
+const ItemBox = ({
+	items,
+	onDelete,
+	onAddNewItem,
+	onClickBox,
+}: ItemBoxProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [isEditMode, setIsEditMode] = useState<boolean>(false);
-	const [isFilterMode, setIsFilterMode] = useState<boolean>(false);
-
+	const navigate = useNavigate();
+	const { getUser } = useAuth();
+	function makeLinksClickable(text) {
+		const urlPattern = /(https?:\/\/[^\s]+)/g;
+		const safeText = text.replace(
+			urlPattern,
+			'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+		);
+		return { __html: safeText };
+	}
 	return (
 		<>
-			{isFilterMode && (
-				<div className={styles.filterMode}>
-					<LeftOptionNav />
-					<div
-						className={styles.closeSection}
-						onClick={() => setIsFilterMode(!isFilterMode)}
-					>
-						<KeyboardDoubleArrowLeftIcon />
-					</div>
-				</div>
-			)}
 			<div className={styles.outerContainer}>
+				<div className={styles.boxHeader}></div>
 				<div className={styles.boxHeader}>
 					<button
-						className={styles.addButton}
-						onClick={() => setIsFilterMode(!isFilterMode)}
+						className={classNames(styles.goBackButton)}
+						onClick={() => navigate(-1)}
 					>
-						Filter Folders
+						<img
+							src="https://static.thenounproject.com/png/1881199-200.png"
+							height="80%"
+						/>
 					</button>
-					<p>Your Folders</p>
+					<p>Your Items</p>
 					<button
 						className={classNames(
 							styles.addButton,
@@ -55,7 +61,7 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 						onClick={() => setIsEditMode(!isEditMode)}
 					>
 						<img src="/images/editIcon.png" className={styles.iconImage} />
-						Edit Folders
+						Edit Items
 					</button>
 				</div>
 				<div className={styles.gridContainer}>
@@ -66,18 +72,23 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 								isEditMode && styles.gridItemEditMode
 							)}
 							key={index}
+							onClick={onClickBox}
 						>
 							<img
-								src={item.image}
+								src={item.imageUrl}
 								alt={item.name}
 								className={styles.itemImage}
 							/>
 							{isEditMode && (
 								<button
-									onClick={() => onDelete(item.name)}
+									onClick={(e: any) => {
+										e.preventDefault();
+										e.stopPropagation();
+										onDelete(item);
+									}}
 									className={styles.deleteButton}
 								>
-									Delete Folder
+									Delete Item
 								</button>
 							)}
 							<div
@@ -89,7 +100,10 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 								<div className={styles.itemName}>
 									<p>{item.name}</p>
 								</div>
-								<p className={styles.itemQuantity}>Qty: {item.quantity}</p>
+								<p>Qty: {item.quantity}</p>
+								<p>
+									<i dangerouslySetInnerHTML={makeLinksClickable(item.note)} />
+								</p>
 							</div>
 						</div>
 					))}
@@ -98,15 +112,20 @@ const ItemBox = ({ items, onDelete, onAddNewItem }: ItemBoxProps) => {
 							onClick={() => setIsModalOpen(true)}
 							className={classNames(styles.gridItem, styles.addFolderBtn)}
 						>
-							Add New Folder
+							Add New Item
 						</button>
 					)}
 				</div>
-				<AddItemModal
+				<AddItem
 					isOpen={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
-					onAdd={(newItem) => {
-						onAddNewItem(newItem);
+					onAdd={async (
+						name: string,
+						quantity: number,
+						note: string,
+						imageUrl: string
+					) => {
+						await onAddNewItem(name, quantity, note, imageUrl);
 						setIsModalOpen(false);
 					}}
 				/>

@@ -1,67 +1,116 @@
-import React, { useState } from "react";
-import ItemBox from "../ItemBox/ItemBox.tsx";
-import Header from "../Header/Header.tsx";
-import theme from "../theme.tsx";
-import { ThemeProvider } from "@mui/material";
-import LeftOptionNav from "../LeftOptionNav/LeftOptionNav.tsx";
-import styles from "./Home.module.css";
+import React, { useEffect, useState } from 'react';
+import Header from '../Header/Header.tsx';
+import theme from '../theme.tsx';
+import { ThemeProvider } from '@mui/material';
+import styles from './Home.module.scss';
+import axios from 'axios';
+import { useAuth } from '../hooks/useAuth.ts';
+import ItemBoxFolder from '../ItemBoxFolder/ItemBoxFolder.tsx';
+import { FolderProps } from '../interfaces/interfaces.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-  const [folders, setFolders] = useState(['Default', 'Groceries', 'School Supplies']);
-  const [currentFolder, setCurrentFolder] = useState('Default');
-  const [itemsData, setItemsData] = useState([
-    // Preset items assigned to 'Default' folder or others as needed
-    { folder: 'Default', name: "Grocery List", quantity: 5, image: "/images/groceryList.jpg" },
-    { folder: 'Default', name: "Purse", quantity: 2, image: "/images/purseItems.jpg" },
-    { folder: 'Default', name: "Sneakers", quantity: 3, image: "/images/sneakers.jpg" },
-    { folder: 'Default', name: "Adam's Crafts", quantity: 5, image: "/images/etsyStore.jpg" },
-  ]);
+	const [itemsData, setItemsData] = useState<FolderProps[]>([]);
+	const [updateFolders, setUpdateFolders] = useState(false);
 
-  const handleFolderSelect = (folderName) => {
-    setCurrentFolder(folderName);
-  };
+	const { getUser, getJwt, logout } = useAuth();
+	const navigate = useNavigate();
 
-  const handleDelete = (itemName) => {
-    setItemsData(itemsData.filter(item => item.name !== itemName));
-  };
+	useEffect(() => {
+		if (!getUser()) {
+			navigate('/');
+		}
+		fetchFolders(getUser());
+	}, [getUser(), updateFolders]);
 
-  // Updated to include the current folder in new items
-  const handleAddNewItem = ({ name, image, quantity }) => {
-    const imageUrl = image ? URL.createObjectURL(image) : ''; // Assuming image is a File object
-    const newItem = { folder: currentFolder, name, quantity, image: imageUrl };
-    setItemsData(prevItems => [...prevItems, newItem]);
-  };
+	const fetchFolders = async (userId: string) => {
+		if (!userId) return;
+		try {
+			const response = await axios.get(
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
+			);
+			const dataArray = Object.values(response.data);
+			const formattedArray: any = dataArray.map(
+				(item: any) =>
+					({
+						name: item.name,
+						userId: item.userId,
+						imageUrl: item.image || '/images/etsyStore.jpg',
+						items: item.items,
+						id: item._id,
+					}) as FolderProps
+			);
+			console.log(userId);
+			setItemsData(formattedArray);
+		} catch (err) {
+			logout();
+			navigate('/');
+			console.error('err', err);
+		}
+	};
 
-  const handleCreateFolder = (folderName) => {
-    if (!folders.includes(folderName)) {
-      setFolders(prevFolders => [...prevFolders, folderName]);
-    } else {
-      alert("Folder already exists!");
-    }
-  };
+	const handleDelete = async (userId: string, folderName: string) => {
+		try {
+			const response = await axios.delete(
+				`${process.env.REACT_APP_BACKEND}/folders?folderName=${folderName}&userId=${userId.substring(1, userId.length - 1)}`,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
+			);
+			console.log(response);
+			setUpdateFolders(!updateFolders);
+		} catch (err) {
+			logout();
+			navigate('/');
+			console.error('err', err);
+		}
+	};
 
-  // Filter the items by the selected folder
-  const filteredItems = itemsData.filter(item => item.folder === currentFolder);
+	const handleAddNewItem: any = async (
+		name: string,
+		userId: string,
+		imageUrl: string
+	) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BACKEND}/folders?userId=${userId.substring(1, userId.length - 1)}&folderName=${name}&imageUrl=${imageUrl}`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${getJwt()}`,
+					},
+				}
+			);
+			console.log(response);
+			setUpdateFolders(!updateFolders);
+		} catch (err) {
+			logout();
+			navigate('/');
+			console.error('err', err);
+		}
+	};
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <div className={styles.homeContainer}>
-        {/* <LeftOptionNav 
-          folders={folders}
-          onFolderSelect={handleFolderSelect}
-          onCreateFolder={handleCreateFolder}
-        /> */}
-        <div className={styles.contentContainer}>
-          <ItemBox 
-            items={filteredItems} 
-            onDelete={handleDelete} 
-            onAddNewItem={handleAddNewItem}
-          />
-        </div>
-      </div>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={theme}>
+			<Header />
+			<div className={styles.homeContainer}>
+				<div className={styles.contentContainer}>
+					<ItemBoxFolder
+						items={itemsData}
+						onDelete={handleDelete}
+						onAddNewItem={handleAddNewItem}
+					/>
+				</div>
+			</div>
+		</ThemeProvider>
+	);
 };
 
 export default Home;

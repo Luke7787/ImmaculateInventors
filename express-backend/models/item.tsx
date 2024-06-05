@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
-//const Schema = mongoose.Schema;
-//const ObjectId = Schema.ObjectId;
 
 const ItemSchema = new mongoose.Schema(
 	{
 		userId: {
 			type: String,
-			required: true,
+			required: false,
 			trim: true,
 		},
 		name: {
@@ -24,10 +22,26 @@ const ItemSchema = new mongoose.Schema(
 			required: false,
 			trim: true,
 		},
+		date: {
+			type: Date,
+			required: true,
+			default: Date.now, // Default to the current date and time
+		},
+		folder: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Folder',
+		},
+		image: {
+			type: String,
+			required: true,
+			default: 'idk',
+		},
 	},
 	{ collection: 'items' }
 );
 
-const Item = mongoose.model("Item", ItemSchema);
+const Item = mongoose.model('Item', ItemSchema);
 
 module.exports = Item;
+module.exports = ItemSchema;
