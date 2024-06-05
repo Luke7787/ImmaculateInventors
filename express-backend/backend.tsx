@@ -400,7 +400,7 @@ app.post('/forgot-password', async (req: any, res: any) => {
 		console.log("Reset link created");
 
 	  	const data = await resend.emails.send({
-			from: 'Acme <onboarding@resend.dev>',
+			from: "My Inventory Support <victor.phan@myinventory-com.net>",
 			to: [user[0].email],
 			subject: 'My Inventory Password Recovery',
 			html: EmailTemplate({ name: user[0].firstName, resetLink: resetPasswordLink }),
@@ -414,6 +414,8 @@ app.post('/forgot-password', async (req: any, res: any) => {
 			},
 			body: JSON.stringify(data)
 		  };
+
+		  console.log("going to fetch")
 
 		  fetch("https://api.resend.com/emails", requestOptions)
   			.then((response: { text: () => any; }) => response.text())
