@@ -8,12 +8,12 @@ dotenv.config();
 
 mongoose.set('debug', true);
 
-let dbConnection : any
-function setConnection(newConn: any){
+let dbConnection: any;
+function setConnection(newConn: any) {
 	dbConnection = newConn;
 	return dbConnection;
-  }
-  
+}
+
 function getDbConnection() {
 	if (!dbConnection) {
 		dbConnection = mongoose.createConnection(process.env.MONGODB_URI, {
@@ -24,7 +24,6 @@ function getDbConnection() {
 	return dbConnection;
 }
 
-
 const uri = process.env.MONGODB_URI;
 mongoose.connect(uri, {
 	useNewUrlParser: true, //useFindAndModify: false,
@@ -32,7 +31,7 @@ mongoose.connect(uri, {
 });
 
 async function getUsers() {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	return await UserModel.find();
 }
 
@@ -46,14 +45,14 @@ async function findUserById(id: any) {
 }
 
 async function getFolders(userId: any) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
 	const folders = await FolderModel.find({ userId: userId });
 	return folders;
 }
 
 async function addFolder(userId: any, folderName: String, imageUrl: string) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToAdd = new FolderModel({
 		name: folderName,
@@ -68,7 +67,7 @@ async function addFolder(userId: any, folderName: String, imageUrl: string) {
 }
 
 async function getFolderContents(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	console.log(folderId);
 	const items = await ItemModel.find({ folder: folderId });
 	console.log(items);
@@ -76,7 +75,7 @@ async function getFolderContents(folderId: any) {
 }
 
 async function sortByQuantity(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
@@ -84,8 +83,8 @@ async function sortByQuantity(folderId: any) {
 }
 
 async function deleteFolder(userId: any, folderName: any) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const objUID = mongoose.Types.ObjectId(userId);
 	const folderToDel = await FolderModel.find({ name: folderName });
 	const user = await UserModel.findByIdAndUpdate(userId, {
@@ -108,8 +107,8 @@ async function deleteFolder(userId: any, folderName: any) {
 // 	return true;
 // }
 async function addItemToFolder(folderId: any, itemId: any) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const folder = await FolderModel.findByIdAndUpdate(
 		mongoose.Types.ObjectId(folderId),
 		{
@@ -125,8 +124,8 @@ async function addItemToFolder(folderId: any, itemId: any) {
 }
 
 async function deleteItemFromFolder(folderName: any, itemId: any) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const folderToUpdate = await FolderModel.find({ name: folderName });
 	const folder = await FolderModel.findByIdAndUpdate(folderToUpdate[0]._id, {
 		$pull: { items: mongoose.Types.ObjectId(itemId) },
@@ -140,7 +139,7 @@ async function deleteItemFromFolder(folderName: any, itemId: any) {
 }
 
 async function updateFolderName(folderId: any, newName: any) {
-	const FolderModel = getDbConnection().model("Folder", FolderSchema);
+	const FolderModel = getDbConnection().model('Folder', FolderSchema);
 	const folderToUpdate = await FolderModel.findByIdAndUpdate(
 		folderId,
 		{ name: newName },
@@ -151,7 +150,7 @@ async function updateFolderName(folderId: any, newName: any) {
 
 async function addUser(user: any) {
 	// userModel is a Model, a subclass of mongoose.Model
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
 		const userToAdd = new UserModel(user);
 		const savedUser = await userToAdd.save();
@@ -171,7 +170,7 @@ async function addUser(user: any) {
 }
 
 async function delUser(user: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
 		await UserModel.deleteOne(user);
 		return true;
@@ -182,8 +181,8 @@ async function delUser(user: any) {
 }
 
 async function addItemToUser(user_id: any, item_id: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	// connect to user collection and item collection databases
 	// find user with matching id
 	const user = await UserModel.findById(user_id);
@@ -201,15 +200,15 @@ async function addItemToUser(user_id: any, item_id: any) {
 }
 
 async function getItemFromUser(userId: any, itemId: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const user = await UserModel.findById(userId);
 	const userItem = await UserModel.find({ items: itemId });
 	return await ItemModel.find({ _id: itemId });
 }
 
 async function deleteItemFromUser(userId: any, itemId: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const user = await UserModel.findById(userId);
 	if (user) console.log(user.username);
 	const userItem = await UserModel.find({ items: itemId });
@@ -226,8 +225,8 @@ async function updateItemFromUser(
 	quantity: any,
 	option: any
 ) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const user = await UserModel.findById(userId);
 	if (option === 'add') {
 		const incItem = await ItemModel.findByIdAndUpdate(itemId, {
@@ -252,13 +251,13 @@ async function updateItemFromUser(
 }
 
 async function findUserByUsername(username: string) {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const user = await UserModel.find({ username: username });
 	return user[0];
 }
 
 async function findUserByUserAndPass(username: any, password: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	const user = await UserModel.find({
 		username: username,
 		password: password,
@@ -267,7 +266,7 @@ async function findUserByUserAndPass(username: any, password: any) {
 }
 
 async function deleteUserById(id: any) {
-	const UserModel = getDbConnection().model("User", UserSchema);
+	const UserModel = getDbConnection().model('User', UserSchema);
 	try {
 		if (await UserModel.findByIdAndDelete(id)) return true;
 	} catch (error) {
@@ -277,7 +276,7 @@ async function deleteUserById(id: any) {
 }
 
 async function sortByQuantityAsc(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: 1,
 	});
@@ -285,7 +284,7 @@ async function sortByQuantityAsc(folderId: any) {
 }
 
 async function sortByQuantityDes(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({
 		quantity: -1,
 	});
@@ -293,25 +292,25 @@ async function sortByQuantityDes(folderId: any) {
 }
 
 async function sortByDateAsc(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({ date: 1 });
 	return items;
 }
 
 async function sortByDateDes(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({ date: -1 });
 	return items;
 }
 
 async function sortByNameAsc(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({ name: 1 });
 	return items;
 }
 
 async function sortByNameDes(folderId: any) {
-	const ItemModel = getDbConnection().model("Item", ItemSchema);
+	const ItemModel = getDbConnection().model('Item', ItemSchema);
 	const items = await ItemModel.find({ folder: folderId }).sort({ name: -1 });
 	return items;
 }
