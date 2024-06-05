@@ -33,7 +33,7 @@ jobs:
           MONGODB_URI: '${{ secrets.MONGODB_URI }}'
         run: |
           touch .env
-          echo MONGODBURI=${{secrets.MONGODB_URI}} >> .env
+          echo MONGODBURI=mongodb+srv://awu98:inventoryUsers98@inventory.pen6xvt.mongodb.net/myInventory?retryWrites=true&w=majority&appName=Inventory >> .env
           cat .env
           npm install
           npm run build --if-present
