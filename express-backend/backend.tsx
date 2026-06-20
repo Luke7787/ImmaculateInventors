@@ -4,7 +4,6 @@ const userServices = require('./models/user-services.tsx');
 const itemServices = require('./models/item-services.tsx');
 const refreshTokenServices = require('./models/refreshTokens-services');
 // const upload = require('./models/aws-config');
-const AWS = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const { S3Client } = require('@aws-sdk/client-s3');
@@ -14,40 +13,44 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 dotenv.config();
 
-const s3client = new S3Client({
-	region: process.env.AWS_REGION,
-	credentials: {
-		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-	},
-});
+const s3Configured = Boolean(
+	process.env.S3_BUCKET_NAME &&
+		process.env.AWS_REGION &&
+		process.env.AWS_ACCESS_KEY_ID &&
+		process.env.AWS_SECRET_ACCESS_KEY
+);
 
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-//   region: process.env.AWS_REGION,
-// });
-
-const s3 = new AWS.S3();
-
-// const storage = multer.memoryStorage();
-const s3Storage = multerS3({
-	s3: s3client, // s3 instance
-	bucket: process.env.S3_BUCKET_NAME, // change it as per your project requirement
-	// ContentType : 'image/jpeg',
-	acl: 'public-read', // storage access type - makes it so that everyone can view it
-	metadata: (req: any, file: any, cb: any) => {
-		cb(null, { fieldname: file.fieldname });
-	},
-	key: (req: any, file: any, cb: any) => {
-		const fileName =
-			Date.now() + '_' + file.fieldname + '_' + file.originalname;
-		console.log(fileName);
-		cb(null, fileName);
-	},
-	contentType: multerS3.AUTO_CONTENT_TYPE, // Automatically sets the ContentType based on the file type
-});
-const uploadImage = multer({ storage: s3Storage });
+let uploadImage;
+if (s3Configured) {
+	const s3client = new S3Client({
+		region: process.env.AWS_REGION,
+		credentials: {
+			accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+			secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+		},
+	});
+	const s3Storage = multerS3({
+		s3: s3client,
+		bucket: process.env.S3_BUCKET_NAME,
+		acl: 'public-read',
+		metadata: (req: any, file: any, cb: any) => {
+			cb(null, { fieldname: file.fieldname });
+		},
+		key: (req: any, file: any, cb: any) => {
+			const fileName =
+				Date.now() + '_' + file.fieldname + '_' + file.originalname;
+			console.log(fileName);
+			cb(null, fileName);
+		},
+		contentType: multerS3.AUTO_CONTENT_TYPE,
+	});
+	uploadImage = multer({ storage: s3Storage });
+} else {
+	console.warn(
+		'S3 not configured (set S3_BUCKET_NAME and AWS credentials in .env). File uploads use in-memory storage.'
+	);
+	uploadImage = multer({ storage: multer.memoryStorage() });
+}
 
 const app = express();
 const port = 8000;
@@ -234,8 +237,9 @@ app.post(
 			}`;
 			// await uploadImage(req.file.buffer, fileName);
 
-			// // Construct the file URL or use the response from `uploadFile` as needed
-			const fileUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`;
+			const fileUrl = req.file.key
+				? `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${req.file.key}`
+				: `local://${fileName}`;
 
 			console.log(
 				'Success!',
