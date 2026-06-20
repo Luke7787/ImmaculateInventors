@@ -2,13 +2,13 @@
 
 ### Backend<br/>
 
-![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend.yml/badge.svg) <br/>
-https://mango-island-08612f41e.5.azurestaticapps.net/
+![backend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/main_immaculate-backend-luke.yml/badge.svg) <br/>
+https://immaculate-backend-luke-ghapc6h7grh8gngt.eastus-01.azurewebsites.net/
 
 ### Frontend<br/>
 
-![frontend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/azure-static-web-apps-mango-island-08612f41e.yml/badge.svg) <br/>
-https://immaculate-backend.azurewebsites.net/
+![frontend workflow](https://github.com/Luke7787/ImmaculateInventors/actions/workflows/azure-static-web-apps-delightful-wave-0026bfa0f.yml/badge.svg) <br/>
+https://delightful-wave-0026bfa0f.7.azurestaticapps.net/
 
 ## Architecture
 
