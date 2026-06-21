@@ -119,6 +119,13 @@ const Header = () => {
 			<div className={styles.headerCenter}>
 				<Button
 					className={styles.signInButton}
+					onClick={() => navigate('/')}
+					style={{ fontWeight: headerBg && 1000, color: headerBg && 'white' }}
+				>
+					HOME
+				</Button>
+				<Button
+					className={styles.signInButton}
 					onClick={() => navigate('/about')}
 					style={{ fontWeight: headerBg && 1000, color: headerBg && 'white' }}
 				>
@@ -312,7 +319,7 @@ const Header = () => {
 				}}
 			>
 				<Slide
-					direction="up"
+					direction="left"
 					in={profilePicModalOpen}
 					mountOnEnter
 					unmountOnExit
@@ -401,15 +408,6 @@ const Header = () => {
 								onClick={() =>
 									handleProfilePicSelect(
 										`${process.env.PUBLIC_URL}/images/pic9.png`
-									)
-								}
-							/>
-							<img
-								src={`${process.env.PUBLIC_URL}/images/pic10.png`}
-								alt="Profile 4"
-								onClick={() =>
-									handleProfilePicSelect(
-										`${process.env.PUBLIC_URL}/images/pic10.png`
 									)
 								}
 							/>

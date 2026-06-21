@@ -112,6 +112,94 @@ input::placeholder {
 	top: 60px;
 	margin-left: 75px;
 	font-family: 'Sniglet', cursive;
+	cursor: pointer;
+	width: fit-content;
+
+	&:hover {
+		text-decoration: underline;
+		color: #5a5252;
+	}
+}
+
+.forgotModal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 440px;
+	max-width: 90%;
+	background-color: #eadede;
+	border-radius: 30px;
+	padding: 40px 36px;
+	text-align: center;
+	box-sizing: border-box;
+	font-family: 'Sniglet', cursive;
+
+	&:focus-visible {
+		outline: none !important;
+	}
+}
+
+.forgotCloseIcon {
+	position: absolute;
+	right: 18px;
+	top: 18px;
+	cursor: pointer;
+	color: #000000;
+	font-size: 32px;
+}
+
+.forgotTitle {
+	font-family: 'Sniglet', cursive;
+	font-size: 28px;
+	color: #000000;
+	margin: 10px 0 20px;
+}
+
+.forgotText {
+	font-family: 'Sniglet', cursive;
+	font-size: 17px;
+	color: #5a5252;
+	line-height: 1.5;
+	margin-bottom: 28px;
+}
+
+.forgotInput {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: #cdcdcd;
+	border: 0;
+	border-radius: 90px;
+	padding: 14px 24px;
+	margin-bottom: 22px;
+	font-family: 'Sniglet', cursive;
+	font-size: 20px;
+	color: #fff;
+
+	&::placeholder {
+		color: #fff;
+	}
+
+	&:focus {
+		outline: none;
+		background-color: #c2c2c2;
+	}
+}
+
+.forgotButton {
+	background-color: #cdcdcd;
+	border-radius: 90px;
+	border: none;
+	color: #fbf29c;
+	padding: 12px 32px;
+	font-family: 'Sniglet', cursive;
+	font-size: 22px;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #bfbfbf;
+	}
 }
 
 .signUpGreeting {

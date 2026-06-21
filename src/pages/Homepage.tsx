@@ -136,11 +136,11 @@ const Homepage = () => {
 								img: 'addImage.png',
 							},
 							{
-								text: 'Secure Your Data: Advanced Password Encryption',
+								text: 'Advanced Password Encryption for Data Security',
 								img: 'Lock.png',
 							},
 							{
-								text: 'Real-Time Inventory Updates: Instant Notifications',
+								text: 'Get Instant Notifications with Real-Time Inventory Updates',
 								img: 'bell.png',
 							},
 						].map((feature, index) => (
@@ -194,15 +194,28 @@ const Homepage = () => {
 				>
 					Overview of Our Product
 				</Typography>
-				<iframe
-					width="1300"
-					height="764"
-					src="https://www.loom.com/embed/75faca4e598b4a4ba7b73c5c7d6a4ff8?sid=b40c6891-de69-4285-a923-ce36ad600f2a"
-					frameBorder="0"
-					allowFullScreen
-				/>
-				{/* <div className={styles.placeholderBox}></div> */}
+				<div className={styles.videoWrapper}>
+					<iframe
+						title="Product overview video"
+						src="https://www.loom.com/embed/75faca4e598b4a4ba7b73c5c7d6a4ff8?sid=b40c6891-de69-4285-a923-ce36ad600f2a"
+						allowFullScreen
+					/>
+				</div>
 			</div>
+			<footer className={styles.footer}>
+				<span>
+					© {new Date().getFullYear()} All rights reserved | This website is
+					made by
+				</span>
+				<a
+					href="https://github.com/Luke7787/ImmaculateInventors"
+					target="_blank"
+					rel="noopener noreferrer"
+					className={styles.footerButton}
+				>
+					The Immaculate Inventors
+				</a>
+			</footer>
 		</ThemeProvider>
 	);
 };

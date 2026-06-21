@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { Box, Modal } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface signInProps {
 	setCreateAccountOpen?: (e: boolean) => void;
@@ -17,8 +19,23 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 		password: '',
 	});
 	const [signInErr, setSignInErr] = useState<boolean>(false);
+	const [forgotOpen, setForgotOpen] = useState<boolean>(false);
+	const [forgotEmail, setForgotEmail] = useState<string>('');
+	const [forgotSubmitted, setForgotSubmitted] = useState<boolean>(false);
 	const { login } = useAuth();
 	const navigate = useNavigate();
+
+	const closeForgot = () => {
+		setForgotOpen(false);
+		setForgotEmail('');
+		setForgotSubmitted(false);
+	};
+
+	const handleForgotSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!forgotEmail) return;
+		setForgotSubmitted(true);
+	};
 	const handleUpdate = (e) => {
 		const { name, value } = e.target;
 		setSignInData((prev) => ({
@@ -86,8 +103,58 @@ const SignIn = ({ setCreateAccountOpen }: signInProps) => {
 						name="password"
 						value={signInData.password}
 					/>
-					<p className={styles.forgotPassword}>Forgot your password?</p>
+					<p
+						className={styles.forgotPassword}
+						onClick={() => setForgotOpen(true)}
+					>
+						Forgot your password?
+					</p>
 				</div>
+				<Modal open={forgotOpen} onClose={closeForgot}>
+					<Box className={styles.forgotModal}>
+						<CloseIcon
+							onClick={closeForgot}
+							className={styles.forgotCloseIcon}
+						/>
+						<h2 className={styles.forgotTitle}>Forgot your password?</h2>
+						{!forgotSubmitted ? (
+							<>
+								<p className={styles.forgotText}>
+									No worries! Enter the email linked to your account and
+									we&apos;ll send you a link to reset your password.
+								</p>
+								<form onSubmit={handleForgotSubmit}>
+									<input
+										type="email"
+										required
+										placeholder="Email"
+										className={styles.forgotInput}
+										value={forgotEmail}
+										onChange={(e) => setForgotEmail(e.target.value)}
+									/>
+									<button type="submit" className={styles.forgotButton}>
+										Send reset link
+									</button>
+								</form>
+							</>
+						) : (
+							<>
+								<p className={styles.forgotText}>
+									If an account is linked to <strong>{forgotEmail}</strong>,
+									a password reset link is on its way. Be sure to check your
+									spam folder.
+								</p>
+								<button
+									type="button"
+									className={styles.forgotButton}
+									onClick={closeForgot}
+								>
+									Got it
+								</button>
+							</>
+						)}
+					</Box>
+				</Modal>
 				{signInErr && (
 					<p className={styles.signInErr}>
 						Your username or password is incorrect.
